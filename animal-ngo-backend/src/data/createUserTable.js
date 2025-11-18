@@ -1,0 +1,24 @@
+import pool from "../config/db.js";
+
+export const createUserTable = async () => {
+  const query = `
+    CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    role VARCHAR(10) NOT NULL CHECK (role IN ('donor', 'volunteer')),
+    phone_number TEXT NOT NULL,
+    address TEXT NOT NULL,
+    location GEOGRAPHY(Point, 4326),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    `;
+
+  try {
+    await pool.query(query);
+    console.log("User table created or already exists");
+  } catch (error) {
+    console.error("Error creating user table:", error.message);
+  }
+};
