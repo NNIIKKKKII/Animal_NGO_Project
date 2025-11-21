@@ -13,6 +13,16 @@ import { useAuth } from "./context/AuthContext";
 // ----------------------------------------------------------------
 // ProtectedRoute Component (no changes)
 // ----------------------------------------------------------------
+
+
+//---------------------------ZUSTAND---------------------
+// import { useAuth } from "./stores/useAuthStore";
+// import { Navigate } from "react-router-dom";
+// const ProtectedRoute = ({ element }) => {
+//   const { user } = useAuth();
+//   return user ? element : <Navigate to="/login" replace />;
+// };
+
 const ProtectedRoute = ({ element }) => {
   const { isAuthenticated, isLoading } = useAuth();
   if (isLoading)

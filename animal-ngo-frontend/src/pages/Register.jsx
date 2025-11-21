@@ -1,6 +1,8 @@
 // animal-ngo-frontend/src/pages/Register.jsx
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+//ZUSTAND
+// import { useAuth } from "../stores/useAuthStore";
 import { Link } from 'react-router-dom';
 
 const Register = () => {
