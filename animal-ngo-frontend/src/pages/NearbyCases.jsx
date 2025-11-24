@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { getNearbyCases, assignVolunteerToCase } from "../api/rescueService";
 import { useAuth } from "../context/AuthContext";
+import RescueMap from "../components/RescueMap";
 
 const NearbyCases = () => {
   const [cases, setCases] = useState([]);
@@ -93,6 +94,15 @@ const NearbyCases = () => {
       <p className="text-gray-600 mb-8">
         Showing cases within 5km of your location.
       </p>
+
+      {location && cases.length > 0 && (
+        <div className="mb-8 shadow-lg rounded-xl overflow-hidden border border-gray-200">
+          <RescueMap
+            cases={cases}
+            center={[location.latitude, location.longitude]}
+          />
+        </div>
+      )}
 
       {cases.length === 0 ? (
         <div className="text-center p-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
