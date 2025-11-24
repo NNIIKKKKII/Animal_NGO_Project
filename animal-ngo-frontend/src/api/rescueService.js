@@ -2,6 +2,14 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000/api/rescue";
 
+export const getMyCases = async () => {
+  const config = getConfig();
+  // Use the generic GET endpoint (if it returns all cases) and filter client-side
+  // This is not efficient for production but works for learning.
+  const response = await axios.get(API_URL, config); // GET /api/rescue
+  return response.data.data;
+};
+
 const getConfig = () => {
   const token = localStorage.getItem("token");
   return {

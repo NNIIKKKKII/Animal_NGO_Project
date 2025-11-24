@@ -13,7 +13,7 @@ export const createDonationRequest = async ({
   const values = [user_id, title, description];
 
   try {
-    const { rows } = await db.query(query, values);
+    const { rows } = await pool.query(query, values);
     return rows[0];
   } catch (err) {
     // Log DB specific errors here

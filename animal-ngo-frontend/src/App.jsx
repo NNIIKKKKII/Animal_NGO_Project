@@ -9,10 +9,11 @@ import {
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import { useAuth } from "./context/AuthContext";
-import DonationFeed from "./pages/DonationFeed"; // Was a placeholder
+import DonationFeed from "./pages/DonationFeed.jsx"; // Was a placeholder
 import CreateDonation from "./pages/CreateDonation"; // Was a placeholder
 // import ReportRescue from './pages/ReportRescue';
 import NearbyCases from "./pages/NearbyCases";
+import VolunteerDashboard from "./pages/VolunteerDashboard";
 // ----------------------------------------------------------------
 // ProtectedRoute Component (no changes)
 // ----------------------------------------------------------------
@@ -89,6 +90,10 @@ const Dashboard = () => {
                 className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-center"
               >
                 Find Nearby Cases 🗺️
+              </Link>
+
+              <Link to="/volunteer/cases" className="...">
+                My Assigned Cases 📋
               </Link>
             </div>
           </div>
@@ -174,6 +179,11 @@ function App() {
           <Route
             path="/donations/new"
             element={<ProtectedRoute element={<CreateDonation />} />}
+          />
+
+          <Route
+            path="/volunteer/cases"
+            element={<ProtectedRoute element={<VolunteerDashboard />} />}
           />
 
           {/* Catch-all for 404 */}

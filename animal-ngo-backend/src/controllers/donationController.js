@@ -8,6 +8,8 @@ import {
 
 
 export const createDonation = async (req, res) => {
+  console.log("Create Donation Request - User:", req.user);
+  console.log("Create Donation Request - Body:", req.body);
   try {
     const { title, description } = req.body;
 
