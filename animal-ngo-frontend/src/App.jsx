@@ -9,14 +9,13 @@ import {
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import { useAuth } from "./context/AuthContext";
-import DonationFeed from './pages/DonationFeed';   // Was a placeholder
-import CreateDonation from './pages/CreateDonation'; // Was a placeholder
+import DonationFeed from "./pages/DonationFeed"; // Was a placeholder
+import CreateDonation from "./pages/CreateDonation"; // Was a placeholder
 // import ReportRescue from './pages/ReportRescue';
-
+import NearbyCases from "./pages/NearbyCases";
 // ----------------------------------------------------------------
 // ProtectedRoute Component (no changes)
 // ----------------------------------------------------------------
-
 
 //---------------------------ZUSTAND---------------------
 // import { useAuth } from "./stores/useAuthStore";
@@ -39,9 +38,9 @@ const ProtectedRoute = ({ element }) => {
 const ReportRescue = () => (
   <h2 className="p-8 text-2xl font-bold">Report a New Rescue Case</h2>
 );
-const NearbyCases = () => (
-  <h2 className="p-8 text-2xl font-bold">Nearby Cases (Volunteer View)</h2>
-);
+// const NearbyCases = () => (
+//   <h2 className="p-8 text-2xl font-bold">Nearby Cases (Volunteer View)</h2>
+// );
 
 const NotFound = () => (
   <h1 className="text-4xl text-red-500 p-8">404 - Not Found</h1>
