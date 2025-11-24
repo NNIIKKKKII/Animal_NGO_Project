@@ -14,6 +14,7 @@ import CreateDonation from "./pages/CreateDonation"; // Was a placeholder
 // import ReportRescue from './pages/ReportRescue';
 import NearbyCases from "./pages/NearbyCases";
 import VolunteerDashboard from "./pages/VolunteerDashboard";
+import ReportRescue from "./pages/ReportRescue";
 // ----------------------------------------------------------------
 // ProtectedRoute Component (no changes)
 // ----------------------------------------------------------------
@@ -36,9 +37,7 @@ const ProtectedRoute = ({ element }) => {
 // ----------------------------------------------------------------
 // Placeholder Pages (we will build these in later days)
 // ----------------------------------------------------------------
-const ReportRescue = () => (
-  <h2 className="p-8 text-2xl font-bold">Report a New Rescue Case</h2>
-);
+
 // const NearbyCases = () => (
 //   <h2 className="p-8 text-2xl font-bold">Nearby Cases (Volunteer View)</h2>
 // );

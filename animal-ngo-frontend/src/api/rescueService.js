@@ -21,7 +21,7 @@ const getConfig = () => {
 
 export const createRescueCase = async (caseData) => {
   const config = getConfig();
-  const response = await axios.post(API_URL, caseData, config());
+  const response = await axios.post(API_URL, caseData, config);
   return response.data;
 };
 
