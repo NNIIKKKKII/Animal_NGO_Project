@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 
 const VolunteerDashboard = () => {
   const [myCases, setMyCases] = useState([]);
+  const [filter, setFilter] = useState("active"); // 'active' or 'resolved'
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
@@ -28,9 +29,11 @@ const VolunteerDashboard = () => {
   };
 
   const handleStatusUpdate = async (caseId, newStatus) => {
+    if (!window.confirm(`Mark this case as ${newStatus}?`)) return;
+
     try {
       await updateCaseStatus(caseId, newStatus);
-      // Refresh the list locally
+      // Update local state immediately for snappy UI
       setMyCases((prev) =>
         prev.map((c) => (c.id === caseId ? { ...c, status: newStatus } : c))
       );
@@ -39,27 +42,67 @@ const VolunteerDashboard = () => {
     }
   };
 
+  // Filter logic
+  const displayedCases = myCases.filter((c) => {
+    if (filter === "active") return c.status !== "resolved";
+    if (filter === "resolved") return c.status === "resolved";
+    return true;
+  });
+
   if (loading)
-    return <div className="p-8 text-center">Loading your assignments...</div>;
+    return (
+      <div className="p-12 text-center text-gray-500 text-xl">
+        Loading your assignments...
+      </div>
+    );
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">
-        My Assigned Cases 📋
-      </h1>
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
+          My Assignments 📋
+        </h1>
 
-      {myCases.length === 0 ? (
-        <p className="text-gray-500 text-lg">
-          You have not accepted any cases yet.
-        </p>
+        {/* Filter Toggles */}
+        <div className="flex bg-gray-200 p-1 rounded-lg">
+          <button
+            onClick={() => setFilter("active")}
+            className={`px-4 py-2 rounded-md font-medium transition ${
+              filter === "active"
+                ? "bg-white text-blue-600 shadow"
+                : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            Active Cases
+          </button>
+          <button
+            onClick={() => setFilter("resolved")}
+            className={`px-4 py-2 rounded-md font-medium transition ${
+              filter === "resolved"
+                ? "bg-white text-green-600 shadow"
+                : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            Past History
+          </button>
+        </div>
+      </div>
+
+      {displayedCases.length === 0 ? (
+        <div className="text-center p-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+          <p className="text-xl text-gray-500">
+            No {filter} cases found.
+            {filter === "active" && " Great job clearing your queue!"}
+          </p>
+        </div>
       ) : (
         <div className="space-y-4">
-          {myCases.map((rescue) => (
+          {displayedCases.map((rescue) => (
             <div
               key={rescue.id}
-              className="bg-white p-6 rounded-xl shadow border border-gray-100 flex flex-col md:flex-row justify-between items-center"
+              className="bg-white p-6 rounded-xl shadow border border-gray-100 flex flex-col md:flex-row justify-between items-center transition hover:shadow-md"
             >
-              <div className="mb-4 md:mb-0">
+              <div className="mb-4 md:mb-0 flex-1">
                 <div className="flex items-center space-x-3 mb-2">
                   <h3 className="text-xl font-bold text-gray-800">
                     {rescue.title}
@@ -73,18 +116,23 @@ const VolunteerDashboard = () => {
                   >
                     {rescue.status}
                   </span>
+                  <span className="text-xs text-gray-400">
+                    reported on{" "}
+                    {new Date(rescue.created_at).toLocaleDateString()}
+                  </span>
                 </div>
-                <p className="text-gray-600">{rescue.description}</p>
+                <p className="text-gray-600 mb-2">{rescue.description}</p>
+                {/* Future: Add a "Show Map" button here */}
               </div>
 
               {/* Action Buttons */}
               {rescue.status !== "resolved" && (
-                <div className="flex space-x-3">
+                <div className="flex space-x-3 ml-4">
                   <button
                     onClick={() => handleStatusUpdate(rescue.id, "resolved")}
-                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition font-medium"
+                    className="bg-green-600 text-white px-5 py-2.5 rounded-lg hover:bg-green-700 transition font-medium shadow-sm"
                   >
-                    Mark as Resolved ✅
+                    Mark Resolved ✅
                   </button>
                 </div>
               )}
