@@ -1,32 +1,22 @@
 import express from "express";
-
+import { verifyToken } from "../middlewares/authMiddleware.js"; // ⬅️ IMPORT THIS
 import {
   createDonation,
   getAllDonations,
-  updateDonation,
-  deleteDonationRequest,
   getDonation,
+  updateDonation,
+  deleteDonationRequest
 } from "../controllers/donationController.js";
 
-import { verifyToken } from "../middlewares/authMiddleware.js";
-
 const router = express.Router();
-// POST /api/donations - Create donation request (Requires login)
-router.post("/", verifyToken, createDonation);
 
-// GET /api/donations - Get all (Public feed)
-router.get("/", getAllDonations);
+// 🚨 CRITICAL FIX: Add 'verifyToken' here!
+// Without this, req.user is undefined, and the database crashes (500 Error).
+router.post("/", verifyToken, createDonation); 
 
-// GET /api/donations/:id - Get one (Public)
-router.get("/:id", getDonation);
-
-// PATCH /api/donations/:id - Update status (Requires login, typically restricted to admins/reporters)
-router.patch("/:id", verifyToken, updateDonation);
-
-// DELETE /api/donations/:id - Delete (Requires login, typically restricted to admins/reporters)
-router.delete("/:id", verifyToken, deleteDonationRequest);
-
-console.log("Donation routes loaded!");
-
+router.get("/", getAllDonations); 
+router.get("/:id", getDonation); 
+router.patch("/:id", verifyToken, updateDonation); 
+router.delete("/:id", verifyToken, deleteDonationRequest); 
 
 export default router;

@@ -9,6 +9,9 @@ import {
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import { useAuth } from "./context/AuthContext";
+import DonationFeed from './pages/DonationFeed';   // Was a placeholder
+import CreateDonation from './pages/CreateDonation'; // Was a placeholder
+// import ReportRescue from './pages/ReportRescue';
 
 // ----------------------------------------------------------------
 // ProtectedRoute Component (no changes)
@@ -39,12 +42,7 @@ const ReportRescue = () => (
 const NearbyCases = () => (
   <h2 className="p-8 text-2xl font-bold">Nearby Cases (Volunteer View)</h2>
 );
-const DonationFeed = () => (
-  <h2 className="p-8 text-2xl font-bold">Donation Request Feed</h2>
-);
-const CreateDonation = () => (
-  <h2 className="p-8 text-2xl font-bold">Create New Donation Request</h2>
-);
+
 const NotFound = () => (
   <h1 className="text-4xl text-red-500 p-8">404 - Not Found</h1>
 );

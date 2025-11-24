@@ -5,13 +5,22 @@ export const createDonationRequest = async ({
   title,
   description,
 }) => {
-  const query = `INSERT INTO donation_requests(user_id, title, description)
-                VALUES($1, $2, $3) RETURNING *;`;
+  const query = `
+    INSERT INTO donation_requests (user_id, title, description)
+    VALUES ($1, $2, $3)
+    RETURNING *;
+  `;
   const values = [user_id, title, description];
-  const { rows } = pool.query(query, values);
-  return rows[0];
-};
 
+  try {
+    const { rows } = await db.query(query, values);
+    return rows[0];
+  } catch (err) {
+    // Log DB specific errors here
+    console.error("SQL Error in createDonationRequest:", err.message);
+    throw err;
+  }
+};
 export const getAllDonationRequests = async () => {
   const query = `SELECT * FROM donation_requests ORDER BY created_at DESC;`;
   const { rows } = await pool.query(query);
