@@ -64,3 +64,9 @@ export const getMyReportedRescues = async () => {
   const response = await axios.get(`${API_URL}/my-reports`, config);
   return response.data.data;
 };
+
+export const getMyAssignedRescues = async () => {
+  const config = getConfig();
+  const response = await axios.get(`${API_URL}/my-assigned`, config);
+  return response.data.data;
+};

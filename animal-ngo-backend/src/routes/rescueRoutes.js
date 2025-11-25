@@ -14,6 +14,7 @@ import {
   updateCaseStatus,
   getCases,
   getMyReportedCases,
+  getMyAssignedCases,
 } from "../controllers/rescueController.js";
 
 const router = express.Router();
@@ -49,5 +50,7 @@ router.put("/:id/status", verifyToken, validateStatusUpdate, updateCaseStatus);
 router.get("/", verifyToken, getCases);
 
 router.get("/my-reports", verifyToken, getMyReportedCases);
+
+router.get("/my-assigned", verifyToken, getMyAssignedCases);
 
 export default router;
