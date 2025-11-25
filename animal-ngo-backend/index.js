@@ -7,6 +7,7 @@ import donationRoutes from "./src/routes/donationRoutes.js"; // ⬅️ NEW IMPOR
 import { createUserTable } from "./src/data/createUserTable.js";
 import { createDonationRequestsTable } from "./src/data/createDonationReqTable.js";
 import { createRescueTable } from "./src/data/createRescueTable.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 const app = express();
 const port = 5000;
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use("/api/users", userRoutes); // ⬅️ NEW LINE to use the router
 app.use("/api/rescue", rescueRoutes); // ⬅️ NEW LINE
 app.use("/api/donations", donationRoutes); // ⬅️ NEW LINE
+app.use("/api/admin", adminRoutes);
 async function runDBMigrations() {
   try {
     await createUserTable();
