@@ -59,7 +59,7 @@ const MyRescues = () => {
                                 {getStatusBadge(rescue.status)}
                             </div>
                             
-                            <p className="text-gray-600 mb-4 flex-grow">{rescue.description}</p>
+                            <p className="text-gray-600 mb-4 grow">{rescue.description}</p>
                             
                             <div className="text-sm text-gray-400 mt-2 pt-3 border-t">
                                 Reported on: {new Date(rescue.created_at).toLocaleDateString()}

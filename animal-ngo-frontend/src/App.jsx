@@ -141,6 +141,13 @@ function App() {
                 Profile
               </Link>
 
+              <Link
+                to="/rescue/my-reports"
+                className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 text-center"
+              >
+                Track My Reports 📢
+              </Link>
+
               <button
                 onClick={logout}
                 className="text-red-500 hover:text-red-700 font-medium"
@@ -161,12 +168,6 @@ function App() {
                 className="text-blue-600 hover:text-blue-800 font-medium"
               >
                 Login
-              </Link>
-              <Link
-                to="/rescue/my-reports"
-                className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 text-center"
-              >
-                Track My Reports 📢
               </Link>
             </>
           )}

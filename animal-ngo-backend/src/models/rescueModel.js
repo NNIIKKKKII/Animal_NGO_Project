@@ -162,13 +162,19 @@ export const getAllRescueCases = async () => {
 export const getRescuesByReporter = async (userId) => {
   const query = `
     SELECT 
-      id, title, description, image_url, status, created_at,
-      ST_X(location) as longitude, 
-      ST_Y(location) as latitude
+      id,
+      title,
+      description,
+      image_url,
+      status,
+      created_at,
+      ST_Y(location::geometry) AS latitude,
+      ST_X(location::geometry) AS longitude
     FROM rescues
     WHERE reporter_user_id = $1
     ORDER BY created_at DESC;
   `;
+
   const { rows } = await pool.query(query, [userId]);
   return rows;
 };
