@@ -7,7 +7,7 @@ import donationRoutes from "./src/routes/donationRoutes.js"; // ⬅️ NEW IMPOR
 import { createUserTable } from "./src/data/createUserTable.js";
 import { createDonationRequestsTable } from "./src/data/createDonationReqTable.js";
 import { createRescueTable } from "./src/data/createRescueTable.js";
-import adminRoutes from "./routes/adminRoutes.js";
+import adminRoutes from "./src/routes/adminRoutes.js";
 
 const app = express();
 const port = 5000;

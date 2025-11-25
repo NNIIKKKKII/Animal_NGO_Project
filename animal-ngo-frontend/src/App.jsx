@@ -23,9 +23,8 @@ import MyAssignedRescues from "./pages/MyAssignedRescues.jsx";
 
 import LocationTracker from "./components/LocationTracker.jsx";
 
-// ----------------------------------------------------------------
-// ProtectedRoute Component (no changes)
-// ----------------------------------------------------------------
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminUsers from "./pages/AdminUsers";
 
 //---------------------------ZUSTAND---------------------
 // import { useAuth } from "./stores/useAuthStore";
@@ -35,20 +34,14 @@ import LocationTracker from "./components/LocationTracker.jsx";
 //   return user ? element : <Navigate to="/login" replace />;
 // };
 
-const ProtectedRoute = ({ element }) => {
-  const { isAuthenticated, isLoading } = useAuth();
-  if (isLoading)
-    return <div className="p-8 text-center text-xl">Loading...</div>;
-  return isAuthenticated ? element : <Navigate to="/login" replace />;
+const ProtectedRoute = ({ element, requiredRole }) => {
+  const { isAuthenticated, isLoading, user } = useAuth();
+  if (isLoading) return <div>Loading...</div>;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (requiredRole && user.role !== requiredRole)
+    return <Navigate to="/" replace />;
+  return element;
 };
-
-// ----------------------------------------------------------------
-// Placeholder Pages (we will build these in later days)
-// ----------------------------------------------------------------
-
-// const NearbyCases = () => (
-//   <h2 className="p-8 text-2xl font-bold">Nearby Cases (Volunteer View)</h2>
-// );
 
 const NotFound = () => (
   <h1 className="text-4xl text-red-500 p-8">404 - Not Found</h1>
@@ -76,6 +69,12 @@ const Dashboard = () => {
                 className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-center"
               >
                 Report New Rescue 🚨
+              </Link>
+              <Link
+                to="/rescue/my-reports"
+                className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 text-center"
+              >
+                Track My Reports 📢
               </Link>
               <Link
                 to="/donations/new"
@@ -154,13 +153,6 @@ function App() {
                 Profile
               </Link>
 
-              <Link
-                to="/rescue/my-reports"
-                className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 text-center"
-              >
-                Track My Reports 📢
-              </Link>
-
               <button
                 onClick={logout}
                 className="text-red-500 hover:text-red-700 font-medium"
@@ -216,10 +208,6 @@ function App() {
           />
           {/* Protected Routes */}
           <Route
-            path="/"
-            element={<ProtectedRoute element={<Dashboard />} />}
-          />
-          <Route
             path="/profile"
             element={<ProtectedRoute element={<Profile />} />}
           />{" "}
@@ -231,7 +219,21 @@ function App() {
             path="/rescue/my-assigned"
             element={<ProtectedRoute element={<MyAssignedRescues />} />}
           />
-          <Route path="*" element={<NotFound />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute
+                requiredRole="admin"
+                element={<AdminDashboard />}
+              />
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute requiredRole="admin" element={<AdminUsers />} />
+            }
+          />
         </Routes>
       </main>
     </div>
