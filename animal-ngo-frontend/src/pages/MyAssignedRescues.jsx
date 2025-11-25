@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // Corrected relative paths assuming standard frontend structure
-import { getMyAssignedRescues, updateRescueStatus } from '/src/api/rescueService.js'; 
+import { getMyAssignedRescues, updateCaseStatus } from '/src/api/rescueService.js'; 
 import { useAuth } from '/src/context/AuthContext.jsx'; 
 // Replaced react-icons/fa with inline SVGs
 
@@ -54,7 +54,7 @@ const MyAssignedRescues = () => {
         setConfirmAction(null); // Close confirmation immediately
         
         try {
-            await updateRescueStatus(caseId, newStatus);
+            await updateCaseStatus(caseId, newStatus);
             // After successful update, fetch the list again
             // The case will disappear from the list as it's no longer 'active'
             fetchAssignedCases(); 
