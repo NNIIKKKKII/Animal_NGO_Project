@@ -21,9 +21,9 @@ router.post('/login', loginUser);
 router.post('/logout', logoutUser); // Will be implemented later
 
 // Protected routes (Require the verifyToken middleware)
+router.put('/location', verifyToken, setUserLocation); 
 router.get("/:id", verifyToken, getUserById);
 router.put("/:id", verifyToken, updateUser);
-router.put('/location/:id', verifyToken, setUserLocation);
 router.get('/nearby', verifyToken, getNearbyUsers);
 
 // Admin/Protected routes

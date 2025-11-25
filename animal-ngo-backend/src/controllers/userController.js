@@ -5,6 +5,7 @@ import {
   findUserByEmail,
   updateUserProfile,
   getUserById as getUserByIdModel,
+  updateUserLocation,
 } from "../models/userModel.js";
 import pool from "../config/db.js";
 
@@ -190,9 +191,42 @@ export const updateUser = async (req, res) => {
   }
 };
 
-// Placeholders
-export const setUserLocation = (req, res) =>
-  res.status(501).json({ message: "Not Implemented Yet" });
+export const setUserLocation = async (req, res, next) => {
+  const { latitude, longitude } = req.body;
+  const userId = req.user.id; // Get user ID from the authentication token
+
+  if (typeof latitude === "undefined" || typeof longitude === "undefined") {
+    return res.status(400).json({
+      success: false,
+      message: "Missing latitude or longitude in request body.",
+    });
+  }
+
+  try {
+    const success = await updateUserLocation(userId, latitude, longitude);
+
+    if (success) {
+      res.status(200).json({
+        success: true,
+        message: "User location updated successfully.",
+        location: { latitude, longitude },
+      });
+    } else {
+      // This might happen if the user ID from the token doesn't exist
+      res.status(404).json({
+        success: false,
+        message: "User not found or location update failed.",
+      });
+    }
+  } catch (error) {
+    console.error("Error updating user location:", error);
+    next(error);
+  }
+};
+
+// // Placeholders
+// export const setUserLocation = (req, res) =>
+//   res.status(501).json({ message: "Not Implemented Yet" });
 export const getNearbyUsers = (req, res) =>
   res.status(501).json({ message: "Not Implemented Yet" });
 export const logoutUser = (req, res) =>

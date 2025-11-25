@@ -21,6 +21,8 @@ import MyRescues from "./pages/MyRescues.jsx"; // Add extension just in case
 
 import MyAssignedRescues from "./pages/MyAssignedRescues.jsx";
 
+import LocationTracker from "./components/LocationTracker.jsx";
+
 // ----------------------------------------------------------------
 // ProtectedRoute Component (no changes)
 // ----------------------------------------------------------------
@@ -90,6 +92,8 @@ const Dashboard = () => {
           <div className="p-6 bg-white shadow rounded-lg">
             <h3 className="text-xl font-semibold mb-4">Volunteer Actions</h3>
             <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
+              <LocationTracker />
+
               <Link
                 to="/rescue/my-assigned"
                 className="px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-center block shadow-md transition duration-150"

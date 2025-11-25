@@ -32,3 +32,13 @@ export const updateMyProfile = async (userId, profileData) => {
   const response = await axios.put(`${API_URL}/${userId}`, profileData, config);
   return response.data.user;
 };
+
+export const updateMyLocation = async (latitude, longitude) => {
+  const config = getConfig();
+  const response = await axios.put(
+    `${API_URL}/location`,
+    { latitude, longitude },
+    config
+  );
+  return response.data;
+};

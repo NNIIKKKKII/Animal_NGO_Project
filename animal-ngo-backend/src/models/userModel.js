@@ -55,3 +55,14 @@ export const getUserById = async (id) => {
   );
   return result.rows[0];
 };
+
+export const updateUserLocation = async (userId, latitude, longitude) => {
+  const query = `
+    UPDATE users
+    SET location = ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography
+    WHERE id = $3
+  `;
+
+  await pool.query(query, [longitude, latitude, userId]);
+  return true;
+};
