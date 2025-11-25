@@ -178,3 +178,20 @@ export const getRescuesByReporter = async (userId) => {
   const { rows } = await pool.query(query, [userId]);
   return rows;
 };
+
+export const getRescuesAssignedToVolunteer = async (volunteerId) => {
+  const query = `
+    SELECT 
+      r.id, r.title, r.description, r.image_url, r.status, r.created_at,
+      ST_X(r.location::geometry) as longitude, 
+      ST_Y(r.location::geometry) as latitude,
+      u.name as reporter_name, u.phone_number as reporter_phone
+    FROM rescues r
+    JOIN users u ON r.reporter_user_id = u.id
+    WHERE 
+      r.assigned_volunteer_id = $1 AND r.status IN ('pending', 'assigned')
+    ORDER BY r.created_at ASC;
+  `;
+  const { rows } = await pool.query(query, [volunteerId]);
+  return rows;
+};

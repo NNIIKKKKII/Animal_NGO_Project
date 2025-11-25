@@ -6,6 +6,7 @@ import {
   updateRescueStatus,
   getAllRescueCases,
   getRescuesByReporter,
+  getRescuesAssignedToVolunteer,
 } from "../models/rescueModel.js";
 import pool from "../config/db.js"; // Imported for specific checks inside controller
 
@@ -89,12 +90,10 @@ export const assignVolunteerToCase = async (req, res, next) => {
         .json({ success: false, message: "Rescue case not found" });
     }
     if (rescueCase.status !== "pending") {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: `Case is already ${rescueCase.status}.`,
-        });
+      return res.status(400).json({
+        success: false,
+        message: `Case is already ${rescueCase.status}.`,
+      });
     }
 
     // 2. Call the model function
@@ -134,13 +133,11 @@ export const updateCaseStatus = async (req, res, next) => {
 
     const assignedId = checkResult.rows[0].assigned_volunteer_id;
     if (assignedId !== user_id) {
-      return res
-        .status(403)
-        .json({
-          success: false,
-          message:
-            "You are not assigned to this case and cannot update its status",
-        });
+      return res.status(403).json({
+        success: false,
+        message:
+          "You are not assigned to this case and cannot update its status",
+      });
     }
 
     // Call the model function
@@ -183,6 +180,33 @@ export const getMyReportedCases = async (req, res, next) => {
     });
   } catch (error) {
     console.error("Get my reported cases error:", error);
+    next(error);
+  }
+};
+
+export const getMyAssignedCases = async (req, res, next) => {
+  try {
+    const volunteerId = req.user.id; // Get ID from token (must be volunteer role)
+
+    // Basic Role check (optional, but good practice)
+    if (req.user.role !== "volunteer") {
+      return res
+        .status(403)
+        .json({
+          success: false,
+          message: "Access denied. Only volunteers can view assigned cases.",
+        });
+    }
+
+    const cases = await getRescuesAssignedToVolunteer(volunteerId);
+
+    res.status(200).json({
+      success: true,
+      count: cases.length,
+      data: cases,
+    });
+  } catch (error) {
+    console.error("Get my assigned cases error:", error);
     next(error);
   }
 };
