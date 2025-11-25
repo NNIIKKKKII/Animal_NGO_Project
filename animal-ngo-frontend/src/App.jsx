@@ -16,6 +16,8 @@ import NearbyCases from "./pages/NearbyCases";
 import VolunteerDashboard from "./pages/VolunteerDashboard";
 import ReportRescue from "./pages/ReportRescue";
 import Profile from "./pages/Profile";
+
+import MyRescues from "./pages/MyRescues.jsx"; // Add extension just in case
 // ----------------------------------------------------------------
 // ProtectedRoute Component (no changes)
 // ----------------------------------------------------------------
@@ -160,6 +162,12 @@ function App() {
               >
                 Login
               </Link>
+              <Link
+                to="/rescue/my-reports"
+                className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 text-center"
+              >
+                Track My Reports 📢
+              </Link>
             </>
           )}
         </nav>
@@ -201,6 +209,10 @@ function App() {
             path="/profile"
             element={<ProtectedRoute element={<Profile />} />}
           />{" "}
+          <Route
+            path="/rescue/my-reports"
+            element={<ProtectedRoute element={<MyRescues />} />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
