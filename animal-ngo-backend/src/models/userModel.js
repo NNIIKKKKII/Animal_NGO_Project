@@ -24,3 +24,34 @@ export const createUser = async (
   );
   return result.rows[0];
 };
+
+export const updateUserProfile = async (
+  id,
+  { name, phone_number, address }
+) => {
+  const query = `
+      UPDATE users
+      SET 
+          name = $1, 
+          phone_number = $2, 
+          address = $3
+      WHERE id = $4
+      RETURNING id, name, email, role, phone_number, address, created_at; 
+  `;
+  const values = [name, phone_number, address, id];
+
+  const { rows } = await pool.query(query, values);
+  return rows[0];
+};
+
+export const getUserById = async (id) => {
+  const result = await pool.query(
+    `
+      SELECT id, name, email, role, phone_number, address, created_at
+      FROM users 
+      WHERE id = $1
+  `,
+    [id]
+  );
+  return result.rows[0];
+};

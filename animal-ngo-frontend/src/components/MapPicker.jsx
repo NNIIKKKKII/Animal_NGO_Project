@@ -99,7 +99,7 @@ const MapPicker = ({ onLocationSelect }) => {
                 />
             </MapContainer>
             
-            <div className="absolute top-2 right-2 bg-white px-3 py-1 rounded shadow text-xs font-bold z-[400] border border-gray-200">
+            <div className="absolute top-2 right-2 bg-white px-3 py-1 rounded shadow text-xs font-bold z-[400px] border border-gray-200">
                 Click map to adjust pin
             </div>
         </div>
