@@ -15,6 +15,7 @@ import CreateDonation from "./pages/CreateDonation"; // Was a placeholder
 import NearbyCases from "./pages/NearbyCases";
 import VolunteerDashboard from "./pages/VolunteerDashboard";
 import ReportRescue from "./pages/ReportRescue";
+import Profile from "./pages/Profile";
 // ----------------------------------------------------------------
 // ProtectedRoute Component (no changes)
 // ----------------------------------------------------------------
@@ -130,12 +131,21 @@ function App() {
           </Link>
 
           {isAuthenticated ? (
-            <button
-              onClick={logout}
-              className="text-red-500 hover:text-red-700 font-medium"
-            >
-              Logout
-            </button>
+            <>
+              <Link
+                to="/profile"
+                className="text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Profile
+              </Link>
+
+              <button
+                onClick={logout}
+                className="text-red-500 hover:text-red-700 font-medium"
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <>
               <Link
@@ -161,7 +171,6 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/donations" element={<DonationFeed />} />
-
           {/* Protected Routes */}
           <Route
             path="/"
@@ -179,13 +188,19 @@ function App() {
             path="/donations/new"
             element={<ProtectedRoute element={<CreateDonation />} />}
           />
-
           <Route
             path="/volunteer/cases"
             element={<ProtectedRoute element={<VolunteerDashboard />} />}
           />
-
-          {/* Catch-all for 404 */}
+          {/* Protected Routes */}
+          <Route
+            path="/"
+            element={<ProtectedRoute element={<Dashboard />} />}
+          />
+          <Route
+            path="/profile"
+            element={<ProtectedRoute element={<Profile />} />}
+          />{" "}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
