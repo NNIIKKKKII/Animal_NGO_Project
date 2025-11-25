@@ -1,12 +1,12 @@
-// animal-ngo-backend/src/controllers/userController.js
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+// 1. Rename getUserById to getUserByIdModel to avoid conflict with the controller function name
 import {
   findUserByEmail,
   updateUserProfile,
-  getUserById,
+  getUserById as getUserByIdModel,
 } from "../models/userModel.js";
-import pool from "../config/db.js"; // Needed for the location insert query
+import pool from "../config/db.js";
 
 // Helper function to create the JWT token
 const generateToken = (user) => {
@@ -16,7 +16,7 @@ const generateToken = (user) => {
 };
 
 // ----------------------
-// 🚨 REGISTER USER (POST /api/users/register)
+// 🚨 REGISTER USER
 // ----------------------
 export const registerUser = async (req, res, next) => {
   try {
@@ -31,7 +31,6 @@ export const registerUser = async (req, res, next) => {
       longitude,
     } = req.body;
 
-    // 1. Basic Validation
     if (
       !name ||
       !email ||
@@ -47,16 +46,13 @@ export const registerUser = async (req, res, next) => {
         .json({ message: "All fields including location are required" });
     }
 
-    // 2. Check for existing user
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
       return res.status(409).json({ message: "Email already registered" });
     }
 
-    // 3. Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 4. Insert user and location using PostGIS (ST_MakePoint, ST_SetSRID)
     const insertQuery = `
       INSERT INTO users (name, email, password, role, phone_number, address, location)
       VALUES ($1, $2, $3, $4, $5, $6, ST_SetSRID(ST_MakePoint($7, $8), 4326)::geography)
@@ -64,7 +60,6 @@ export const registerUser = async (req, res, next) => {
         ST_X(location::geometry) as longitude, ST_Y(location::geometry) as latitude; 
     `;
 
-    // Note: ST_MakePoint takes (longitude, latitude)
     const values = [
       name,
       email,
@@ -78,7 +73,6 @@ export const registerUser = async (req, res, next) => {
     const { rows } = await pool.query(insertQuery, values);
     const newUser = rows[0];
 
-    // 5. Generate Token and respond
     const token = generateToken(newUser);
     res.status(201).json({
       message: "User registered successfully",
@@ -87,34 +81,29 @@ export const registerUser = async (req, res, next) => {
     });
   } catch (error) {
     console.error("Registration error:", error.message);
-    // 500 error will be caught by Express default error handler or you can create a custom one
     next(error);
   }
 };
 
 // ----------------------
-// 🔑 LOGIN USER (POST /api/users/login)
+// 🔑 LOGIN USER
 // ----------------------
 export const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    // 1. Find user
     const user = await findUserByEmail(email);
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // 2. Compare password hash
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // 3. Generate Token and respond
     const token = generateToken(user);
 
-    // Create a user object without the password
     const userResponse = {
       id: user.id,
       name: user.name,
@@ -133,16 +122,38 @@ export const loginUser = async (req, res, next) => {
   }
 };
 
-// animal-ngo-backend/src/controllers/userController.js (Modify the existing updateUser)
+// ----------------------
+// 👤 GET USER BY ID (New Function)
+// ----------------------
+export const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-// ... (Ensure updateUserProfile and getUserById are imported from the model)
+    // Call the renamed model function
+    const user = await getUserByIdModel(id);
 
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Remove password from response if it exists
+    delete user.password;
+
+    res.status(200).json({ user }); // Ensure frontend expects { user: ... } or adjust to just json(user)
+  } catch (error) {
+    console.error("Get User Error:", error.message);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// ----------------------
+// ✏️ UPDATE USER
+// ----------------------
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const authUserId = req.user.id; // Get user ID from the token
+    const authUserId = req.user.id;
 
-    // 1. Authorization check: User can only update their own profile
     if (String(id) !== String(authUserId)) {
       return res
         .status(403)
@@ -157,7 +168,6 @@ export const updateUser = async (req, res) => {
         .json({ message: "Name, phone number, and address are required." });
     }
 
-    // Call model function to update data
     const updatedUser = await updateUserProfile(authUserId, {
       name,
       phone_number,
@@ -168,7 +178,6 @@ export const updateUser = async (req, res) => {
       return res.status(404).json({ message: "User not found." });
     }
 
-    // Return the sanitized user object (no password or raw location data)
     res.status(200).json({
       message: "Profile updated successfully",
       user: updatedUser,
@@ -181,9 +190,7 @@ export const updateUser = async (req, res) => {
   }
 };
 
-// Implement placeholder functions from userRoutes.js (to avoid errors)
-export const getUserById = (req, res) =>
-  res.status(501).json({ message: "Not Implemented Yet" });
+// Placeholders
 export const setUserLocation = (req, res) =>
   res.status(501).json({ message: "Not Implemented Yet" });
 export const getNearbyUsers = (req, res) =>
