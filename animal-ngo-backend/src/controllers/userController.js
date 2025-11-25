@@ -1,7 +1,11 @@
 // animal-ngo-backend/src/controllers/userController.js
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { findUserByEmail } from '../models/userModel.js';
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import {
+  findUserByEmail,
+  updateUserProfile,
+  getUserById,
+} from "../models/userModel.js";
 import pool from "../config/db.js"; // Needed for the location insert query
 
 // Helper function to create the JWT token
@@ -16,17 +20,37 @@ const generateToken = (user) => {
 // ----------------------
 export const registerUser = async (req, res, next) => {
   try {
-    const { name, email, password, role, phone_number, address, latitude, longitude } = req.body;
+    const {
+      name,
+      email,
+      password,
+      role,
+      phone_number,
+      address,
+      latitude,
+      longitude,
+    } = req.body;
 
     // 1. Basic Validation
-    if (!name || !email || !password || !role || !phone_number || !address || latitude == null || longitude == null) {
-      return res.status(400).json({ message: 'All fields including location are required' });
+    if (
+      !name ||
+      !email ||
+      !password ||
+      !role ||
+      !phone_number ||
+      !address ||
+      latitude == null ||
+      longitude == null
+    ) {
+      return res
+        .status(400)
+        .json({ message: "All fields including location are required" });
     }
 
     // 2. Check for existing user
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
-      return res.status(409).json({ message: 'Email already registered' });
+      return res.status(409).json({ message: "Email already registered" });
     }
 
     // 3. Hash the password
@@ -41,22 +65,30 @@ export const registerUser = async (req, res, next) => {
     `;
 
     // Note: ST_MakePoint takes (longitude, latitude)
-    const values = [name, email, hashedPassword, role, phone_number, address, longitude, latitude];
+    const values = [
+      name,
+      email,
+      hashedPassword,
+      role,
+      phone_number,
+      address,
+      longitude,
+      latitude,
+    ];
     const { rows } = await pool.query(insertQuery, values);
     const newUser = rows[0];
 
     // 5. Generate Token and respond
     const token = generateToken(newUser);
-    res.status(201).json({ 
-      message: 'User registered successfully', 
-      user: newUser, 
-      token 
+    res.status(201).json({
+      message: "User registered successfully",
+      user: newUser,
+      token,
     });
-
   } catch (error) {
     console.error("Registration error:", error.message);
     // 500 error will be caught by Express default error handler or you can create a custom one
-    next(error); 
+    next(error);
   }
 };
 
@@ -70,43 +102,95 @@ export const loginUser = async (req, res, next) => {
     // 1. Find user
     const user = await findUserByEmail(email);
     if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     // 2. Compare password hash
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     // 3. Generate Token and respond
     const token = generateToken(user);
-    
+
     // Create a user object without the password
-    const userResponse = { 
-        id: user.id, 
-        name: user.name, 
-        email: user.email, 
-        role: user.role 
+    const userResponse = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
     };
 
-    res.status(200).json({ 
-      message: 'Login successful', 
-      user: userResponse, 
-      token 
+    res.status(200).json({
+      message: "Login successful",
+      user: userResponse,
+      token,
     });
-
   } catch (error) {
     console.error("Login error:", error.message);
     next(error);
   }
 };
 
+// animal-ngo-backend/src/controllers/userController.js (Modify the existing updateUser)
+
+// ... (Ensure updateUserProfile and getUserById are imported from the model)
+
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const authUserId = req.user.id; // Get user ID from the token
+
+    // 1. Authorization check: User can only update their own profile
+    if (String(id) !== String(authUserId)) {
+      return res
+        .status(403)
+        .json({ message: "Forbidden: You can only update your own profile." });
+    }
+
+    const { name, phone_number, address } = req.body;
+
+    if (!name || !phone_number || !address) {
+      return res
+        .status(400)
+        .json({ message: "Name, phone number, and address are required." });
+    }
+
+    // Call model function to update data
+    const updatedUser = await updateUserProfile(authUserId, {
+      name,
+      phone_number,
+      address,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Return the sanitized user object (no password or raw location data)
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("Profile update error:", error);
+    res
+      .status(500)
+      .json({ message: "Error updating profile", error: error.message });
+  }
+};
+
 // Implement placeholder functions from userRoutes.js (to avoid errors)
-export const getUserById = (req, res) => res.status(501).json({ message: "Not Implemented Yet" });
-export const updateUser = (req, res) => res.status(501).json({ message: "Not Implemented Yet" });
-export const setUserLocation = (req, res) => res.status(501).json({ message: "Not Implemented Yet" });
-export const getNearbyUsers = (req, res) => res.status(501).json({ message: "Not Implemented Yet" });
-export const logoutUser = (req, res) => res.status(501).json({ message: "Not Implemented Yet" });
-export const getAllUsers = (req, res) => res.status(501).json({ message: "Not Implemented Yet" });
-export const deleteUser = (req, res) => res.status(501).json({ message: "Not Implemented Yet" });
+export const getUserById = (req, res) =>
+  res.status(501).json({ message: "Not Implemented Yet" });
+export const setUserLocation = (req, res) =>
+  res.status(501).json({ message: "Not Implemented Yet" });
+export const getNearbyUsers = (req, res) =>
+  res.status(501).json({ message: "Not Implemented Yet" });
+export const logoutUser = (req, res) =>
+  res.status(501).json({ message: "Not Implemented Yet" });
+export const getAllUsers = (req, res) =>
+  res.status(501).json({ message: "Not Implemented Yet" });
+export const deleteUser = (req, res) =>
+  res.status(501).json({ message: "Not Implemented Yet" });
