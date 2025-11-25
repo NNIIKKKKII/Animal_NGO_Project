@@ -13,6 +13,7 @@ import {
   assignVolunteerToCase,
   updateCaseStatus,
   getCases,
+  getMyReportedCases,
 } from "../controllers/rescueController.js";
 
 const router = express.Router();
@@ -46,5 +47,7 @@ router.put("/:id/status", verifyToken, validateStatusUpdate, updateCaseStatus);
 
 // GET /api/rescue → Get all cases (Can be restricted to Admin/Superuser later)
 router.get("/", verifyToken, getCases);
+
+router.get("/my-reports", verifyToken, getMyReportedCases);
 
 export default router;
