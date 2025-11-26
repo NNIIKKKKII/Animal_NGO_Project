@@ -44,6 +44,12 @@ app.get("/", (req, res) => {
   res.send("Animal NGO API is running ....");
 });
 
+//Below line is for render to send me signal that my backend is running properly
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
+
 runDBMigrations().then(() => {
   app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
