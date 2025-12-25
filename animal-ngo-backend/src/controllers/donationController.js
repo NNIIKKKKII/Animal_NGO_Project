@@ -1,4 +1,4 @@
-import { razorpay } from "../services/razorpayService.js";
+
 import {
   createDonationRequest,
   getAllDonationRequests,
@@ -124,19 +124,6 @@ export const deleteDonationRequest = async (req, res) => {
 };
 
 
-export const createRazorpayOrder = async (req, res) => {
-  try {
-    const { amount } = req.body;
 
-    const order = await razorpay.orders.create({
-      amount: amount * 100, // ₹ → paise
-      currency: "INR",
-      receipt: `receipt_${Date.now()}`,
-    });
 
-    res.status(200).json(order);
-  } catch (error) {
-    console.error("Razorpay order error:", error);
-    res.status(500).json({ message: "Payment order failed" });
-  }
-};
+

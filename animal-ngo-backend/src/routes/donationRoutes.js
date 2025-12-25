@@ -7,7 +7,6 @@ import {
   updateDonation,
   deleteDonationRequest,
 } from "../controllers/donationController.js";
-import { createRazorpayOrder } from "../controllers/donationController.js";
 const router = express.Router();
 
 // 🚨 CRITICAL FIX: Add 'verifyToken' here!
@@ -18,6 +17,5 @@ router.get("/", getAllDonations);
 router.get("/:id", getDonation);
 router.patch("/:id", verifyToken, updateDonation);
 router.delete("/:id", verifyToken, deleteDonationRequest);
-router.post("/create-order", createRazorpayOrder);
 
 export default router;

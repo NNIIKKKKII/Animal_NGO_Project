@@ -2,11 +2,14 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000/api/payments";
 
-const getConfig = () => ({
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
-});
+const getConfig = () => {
+  const token = localStorage.getItem("token");
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+};
 
 export const createOrder = async (amount) => {
   const res = await axios.post(
@@ -14,10 +17,5 @@ export const createOrder = async (amount) => {
     { amount },
     getConfig()
   );
-  return res.data;
-};
-
-export const verifyPayment = async (data) => {
-  const res = await axios.post(`${API_URL}/verify`, data, getConfig());
   return res.data;
 };

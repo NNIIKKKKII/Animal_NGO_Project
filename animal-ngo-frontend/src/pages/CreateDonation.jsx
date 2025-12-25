@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createDonationRequest } from "../api/donationService";
-import { createOrder, verifyPayment } from "../api/paymentService";
+import { createOrder } from "../api/paymentService";
 import { createPaymentOrder } from "../api/donationService";
 
 const CreateDonation = () => {
