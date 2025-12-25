@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import paymentRoutes from "./src/routes/paymentRoutes.js";
 
 import userRoutes from "./src/routes/userRoutes.js"; // ⬅️ NEW IMPORT
 import rescueRoutes from "./src/routes/rescueRoutes.js"; // ⬅️ NEW IMPORT
@@ -24,6 +25,7 @@ app.use("/api/users", userRoutes); // ⬅️ NEW LINE to use the router
 app.use("/api/rescue", rescueRoutes); // ⬅️ NEW LINE
 app.use("/api/donations", donationRoutes); // ⬅️ NEW LINE
 app.use("/api/admin", adminRoutes);
+app.use("/api/payments", paymentRoutes);
 async function runDBMigrations() {
   try {
     await createUserTable();
@@ -48,7 +50,6 @@ app.get("/", (req, res) => {
 app.get("/health", (req, res) => {
   res.status(200).send("OK");
 });
-
 
 runDBMigrations().then(() => {
   app.listen(port, () => {

@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createDonationRequest } from "../api/donationService";
+import { createOrder, verifyPayment } from "../api/paymentService";
+import { createPaymentOrder } from "../api/donationService";
 
 const CreateDonation = () => {
   const navigate = useNavigate();
@@ -31,6 +33,27 @@ const CreateDonation = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handlePayment = async () => {
+    const order = await createPaymentOrder(500); // ₹500
+  
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      amount: order.amount,
+      currency: "INR",
+      name: "Animal NGO",
+      description: "Donation",
+      order_id: order.id,
+      handler: function (response) {
+        alert("Payment successful!");
+        console.log(response);
+      },
+      theme: { color: "#16a34a" },
+    };
+  
+    const razor = new window.Razorpay(options);
+    razor.open();
   };
 
   return (
@@ -83,6 +106,13 @@ const CreateDonation = () => {
             className="w-full py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition disabled:bg-blue-400"
           >
             {isLoading ? "Submitting..." : "Post Request"}
+          </button>
+
+          <button
+            onClick={handlePayment}
+            className="bg-green-600 text-white px-4 py-2 rounded"
+          >
+            Donate ₹500
           </button>
         </form>
       </div>

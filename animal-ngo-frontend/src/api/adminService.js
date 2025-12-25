@@ -1,54 +1,94 @@
-// // src/api/adminService.js
-// import axios from "axios";
+import axios from "axios";
 
-// const API_URL = "http://localhost:5000/api/admin";
+// Base API URL
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
-// const getConfig = () => {
-//   const token = localStorage.getItem("token");
-//   return { headers: { Authorization: `Bearer ${token}` } };
-// };
-
-// export const getAdminStats = async () => {
-//   const res = await axios.get(`${API_URL}/stats`, getConfig());
-//   return res.data;
-// };
-
-// export const getAllUsers = async (page = 1, limit = 20, role) => {
-//   const params = { page, limit };
-//   if (role) params.role = role;
-//   const res = await axios.get(`${API_URL}/users`, { ...getConfig(), params });
-//   return res.data;
-// };
-
-// export const deleteUser = async (id) => {
-//   const res = await axios.delete(`${API_URL}/users/${id}`, getConfig());
-//   return res.data;
-// };
-
-// export const updateUserRole = async (id, role) => {
-//   const res = await axios.put(`${API_URL}/users/${id}/role`, { role }, getConfig());
-//   return res.data;
-// };
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-
-const getAuthHeaders = () => ({
-  "Content-Type": "application/json",
-  Authorization: `Bearer ${localStorage.getItem("token")}`,
+// Create axios instance (admin-scoped)
+const adminApi = axios.create({
+  baseURL: API_URL,
 });
 
-export const getSystemStatistics = async () => {
-  const response = await fetch(`${API_URL}/admin/stats`, {
-    headers: getAuthHeaders(),
-  });
-  if (!response.ok) throw new Error("Failed to fetch stats");
-  return response.json();
+// Attach auth token automatically
+adminApi.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+/* ------------------------------------------------------------------
+   ADMIN DASHBOARD
+------------------------------------------------------------------- */
+
+/**
+ * GET /admin/stats
+ * Fetch admin dashboard statistics
+ */
+export const fetchAdminStats = async () => {
+  const res = await adminApi.get("/admin/stats");
+  return res.data;
 };
 
-export const getAllUsersForAdmin = async () => {
-  const response = await fetch(`${API_URL}/admin/users`, {
-    headers: getAuthHeaders(),
-  });
-  if (!response.ok) throw new Error("Failed to fetch users");
-  return response.json();
+/**
+ * GET /admin/rescues
+ * Fetch all rescue cases for admin
+ */
+export const fetchAdminRescues = async () => {
+  const res = await adminApi.get("/admin/rescues");
+  return res.data;
+};
+
+/**
+ * PATCH /admin/rescues/:id/assign
+ * Assign volunteer to rescue
+ */
+export const assignVolunteerToRescue = async (rescueId, volunteerId) => {
+  const res = await adminApi.patch(
+    `/admin/rescues/${rescueId}/assign`,
+    { volunteerId }
+  );
+  return res.data;
+};
+
+/* ------------------------------------------------------------------
+   ADMIN USER MANAGEMENT
+------------------------------------------------------------------- */
+
+/**
+ * GET /admin/users
+ * Fetch all users (with pagination & role filter)
+ */
+export const getAllUsers = async ({
+  page = 1,
+  limit = 20,
+  role,
+} = {}) => {
+  const params = { page, limit };
+  if (role) params.role = role;
+
+  const res = await adminApi.get("/admin/users", { params });
+  return res.data;
+};
+
+/**
+ * PUT /admin/users/:id/role
+ * Update user role
+ */
+export const updateUserRole = async (userId, role) => {
+  const res = await adminApi.put(
+    `/admin/users/${userId}/role`,
+    { role }
+  );
+  return res.data;
+};
+
+/**
+ * DELETE /admin/users/:id
+ * Delete a user
+ */
+export const deleteUser = async (userId) => {
+  const res = await adminApi.delete(`/admin/users/${userId}`);
+  return res.data;
 };

@@ -42,3 +42,11 @@ export const getDonationById = async (id) => {
   const response = await axios.get(`${API_URL}/${id}`);
   return response.data;
 };
+
+// ✅ Razorpay
+export const createPaymentOrder = async (amount) => {
+  const res = await axios.post(`${API_URL}/create-order`, {
+    amount,
+  });
+  return res.data;
+};

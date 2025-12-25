@@ -5,18 +5,19 @@ import {
   getAllDonations,
   getDonation,
   updateDonation,
-  deleteDonationRequest
+  deleteDonationRequest,
 } from "../controllers/donationController.js";
-
+import { createRazorpayOrder } from "../controllers/donationController.js";
 const router = express.Router();
 
 // 🚨 CRITICAL FIX: Add 'verifyToken' here!
 // Without this, req.user is undefined, and the database crashes (500 Error).
-router.post("/", verifyToken, createDonation); 
+router.post("/", verifyToken, createDonation);
 
-router.get("/", getAllDonations); 
-router.get("/:id", getDonation); 
-router.patch("/:id", verifyToken, updateDonation); 
-router.delete("/:id", verifyToken, deleteDonationRequest); 
+router.get("/", getAllDonations);
+router.get("/:id", getDonation);
+router.patch("/:id", verifyToken, updateDonation);
+router.delete("/:id", verifyToken, deleteDonationRequest);
+router.post("/create-order", createRazorpayOrder);
 
 export default router;
