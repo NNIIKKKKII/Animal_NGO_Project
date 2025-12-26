@@ -1,12 +1,19 @@
 import { createOrder } from "../api/paymentService";
 
 const PayButton = ({ amount }) => {
+  if (!amount) return null;
+
   const handlePayment = async () => {
     try {
+      if (!window.Razorpay) {
+        alert("Razorpay SDK not loaded");
+        return;
+      }
+
       const order = await createOrder(amount);
 
       const options = {
-        key: "rzp_test_RvsaSoM3GJlb7L", // Razorpay TEST public key
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: order.amount,
         currency: "INR",
         name: "Animal NGO",

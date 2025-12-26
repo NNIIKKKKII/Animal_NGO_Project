@@ -1,4 +1,3 @@
-
 import {
   createDonationRequest,
   getAllDonationRequests,
@@ -11,11 +10,15 @@ export const createDonation = async (req, res) => {
   console.log("Create Donation Request - User:", req.user);
   console.log("Create Donation Request - Body:", req.body);
   try {
-    const { title, description } = req.body;
+    const { title, description, amount } = req.body;
 
     // 1. Debugging: Log what we received
     console.log("Create Donation Request - User:", req.user);
     console.log("Create Donation Request - Body:", req.body);
+
+    if (!amount || amount <= 0) {
+      return res.status(400).json({ message: "Amount is required" });
+    }
 
     // 2. Safety Check: Ensure user is logged in
     if (!req.user || !req.user.id) {
@@ -37,6 +40,7 @@ export const createDonation = async (req, res) => {
       user_id,
       title,
       description,
+      amount,
     });
 
     // 4. Success Response
@@ -122,8 +126,3 @@ export const deleteDonationRequest = async (req, res) => {
     });
   }
 };
-
-
-
-
-

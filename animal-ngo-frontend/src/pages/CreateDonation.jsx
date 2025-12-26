@@ -10,6 +10,7 @@ const CreateDonation = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    amount: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -36,8 +37,8 @@ const CreateDonation = () => {
   };
 
   const handlePayment = async () => {
-    const order = await createPaymentOrder(500); // ₹500
-  
+    const order = await createPaymentOrder(Number(formData.amount));
+
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: order.amount,
@@ -51,7 +52,7 @@ const CreateDonation = () => {
       },
       theme: { color: "#16a34a" },
     };
-  
+
     const razor = new window.Razorpay(options);
     razor.open();
   };
@@ -100,6 +101,22 @@ const CreateDonation = () => {
             />
           </div>
 
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">
+              Amount (₹)
+            </label>
+            <input
+              type="number"
+              name="amount"
+              value={formData.amount}
+              onChange={handleChange}
+              placeholder="e.g. 500"
+              min="1"
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+            />
+          </div>
+
           <button
             type="submit"
             disabled={isLoading}
@@ -108,12 +125,12 @@ const CreateDonation = () => {
             {isLoading ? "Submitting..." : "Post Request"}
           </button>
 
-          <button
+          {/* <button
             onClick={handlePayment}
             className="bg-green-600 text-white px-4 py-2 rounded"
           >
-            Donate ₹500
-          </button>
+            Donate 
+          </button> */}
         </form>
       </div>
     </div>

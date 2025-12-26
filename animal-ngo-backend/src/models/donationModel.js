@@ -4,16 +4,18 @@ export const createDonationRequest = async ({
   user_id,
   title,
   description,
+  amount,
 }) => {
   const query = `
-    INSERT INTO donation_requests (user_id, title, description)
-    VALUES ($1, $2, $3)
+    INSERT INTO donation_requests (user_id, title, description, amount)
+    VALUES ($1, $2, $3, $4)
     RETURNING *;
   `;
-  const values = [user_id, title, description];
+  const values = [user_id, title, description, amount];
 
   try {
     const { rows } = await pool.query(query, values);
+    // console.log(request.amount);
     return rows[0];
   } catch (err) {
     // Log DB specific errors here
