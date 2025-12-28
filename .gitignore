@@ -3,7 +3,10 @@ dist/
 build/
 
 
+# Environment variables
 .env
+.env.*
+
 config.json
 
 
@@ -17,3 +20,9 @@ secret/*
 
 
 package-lock.json
+
+animal-ngo-backend/uploads/*
+uploads/lost-pets/*
+
+*.csv
+rzp-*

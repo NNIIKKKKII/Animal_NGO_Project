@@ -16,7 +16,7 @@ import NearbyCases from "./pages/NearbyCases";
 import VolunteerDashboard from "./pages/VolunteerDashboard";
 import ReportRescue from "./pages/ReportRescue";
 import Profile from "./pages/Profile";
-
+import RegisterNgo from "./pages/RegisterNgo";
 import MyRescues from "./pages/MyRescues.jsx"; // Add extension just in case
 
 import MyAssignedRescues from "./pages/MyAssignedRescues.jsx";
@@ -26,6 +26,12 @@ import LocationTracker from "./components/LocationTracker.jsx";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsers from "./pages/AdminUsers";
 
+import LoginNgo from "./pages/LoginNgo";
+import NgoDashboard from "./pages/NgoDashboard";
+import NgoProfile from "./pages/NgoProfile";
+
+import ReportLostPet from "./pages/ReportLostPet";
+import LostPetsFeed from "./pages/LostPetsFeed";
 //---------------------------ZUSTAND---------------------
 // import { useAuth } from "./stores/useAuthStore";
 // import { Navigate } from "react-router-dom";
@@ -106,8 +112,10 @@ const Dashboard = () => {
                 Find Nearby Cases 🗺️
               </Link>
 
-              <Link to="/volunteer/cases" 
-              className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-center">
+              <Link
+                to="/volunteer/cases"
+                className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-center"
+              >
                 My Assigned Cases 📋
               </Link>
             </div>
@@ -145,6 +153,14 @@ function App() {
             Donation Feed
           </Link>
 
+          <Link
+            to="/ngo/register"
+            className="text-green-600 hover:text-green-800 font-medium"
+          >
+            NGO Register
+          </Link>
+          <Link to="/ngo/login">NGO Login</Link>
+
           {isAuthenticated ? (
             <>
               <Link
@@ -160,6 +176,8 @@ function App() {
               >
                 Logout
               </button>
+              <Link to="/lost-pets/report">Report Lost Pet</Link>
+              <Link to="/lost-pets">Lost Pets</Link>
             </>
           ) : (
             <>
@@ -186,6 +204,12 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/donations" element={<DonationFeed />} />
+          <Route path="/ngo/register" element={<RegisterNgo />} />
+          <Route path="/ngo/login" element={<LoginNgo />} />
+          <Route path="/ngo/dashboard" element={<NgoDashboard />} />
+          <Route path="/ngo/:id" element={<NgoProfile />} />
+          <Route path="/lost-pets/report" element={<ReportLostPet />} />
+          <Route path="/lost-pets" element={<LostPetsFeed />} />
           {/* Protected Routes */}
           <Route
             path="/"
