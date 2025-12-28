@@ -9,7 +9,7 @@ const LostPetFeed = () => {
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/lost-pets")
-      .then((res) => setPets(res.data))
+      .then((res) => setPets(res.data.data))
       .catch(console.error);
   }, []);
 
