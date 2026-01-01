@@ -1,16 +1,168 @@
-# React + Vite
+Animal NGO Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack platform built to connect donors, volunteers, NGOs, and animal owners to support animal welfare through rescue operations, donations, and lost-pet reporting.
 
-Currently, two official plugins are available:
+🚀 Features
+👤 User Roles
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Donor
 
-## React Compiler
+Request donations
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Report animal rescue cases
 
-## Expanding the ESLint configuration
+Volunteer
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+View nearby rescue cases
+
+Accept and manage rescue missions
+
+NGO
+
+Register & login separately
+
+Manage NGO profile
+
+View reported cases
+
+Admin
+
+Manage users and NGOs
+
+💰 Donations
+
+Donation requests with title, description, and amount
+
+Razorpay payment gateway integration
+
+Secure order creation and payment flow
+
+🐕 Lost Pets
+
+Report lost pets with:
+
+Owner name
+
+Phone number
+
+Last seen location
+
+Image upload
+
+Description
+
+Public feed showing all reported lost pets
+
+Images served from backend uploads directory
+
+🚨 Rescue System
+
+Report injured/stray animals
+
+Assign volunteers to rescue cases
+
+Track rescue status
+
+🧱 Tech Stack
+Frontend
+
+React (Vite)
+
+Tailwind CSS
+
+Axios
+
+React Router
+
+Backend
+
+Node.js
+
+Express.js
+
+PostgreSQL
+
+PostGIS (for geolocation features)
+
+Multer (image uploads)
+
+JWT Authentication
+
+Payments
+
+Razorpay (Test & Live modes)
+
+Deployment
+
+Render (Backend, Frontend, PostgreSQL)
+
+
+PROJECT STRUCTURE
+
+animal-ngo-project/
+│
+├── animal-ngo-backend/
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── middlewares/
+│   │   ├── data/
+│   │   └── config/
+│   ├── uploads/        # ignored in git
+│   ├── index.js
+│   └── package.json
+│
+├── animal-ngo-frontend/
+│   ├── src/
+│   │   ├── pages/
+│   │   ├── components/
+│   │   ├── api/
+│   │   ├── context/
+│   │   └── stores/
+│   ├── index.html
+│   └── package.json
+│
+└── README.md
+
+
+Running Locally
+1️⃣ Backend
+cd animal-ngo-backend
+npm install
+npm run dev
+
+
+Backend runs on:
+
+http://localhost:5000
+
+2️⃣ Frontend
+cd animal-ngo-frontend
+npm install
+npm run dev
+
+
+Frontend runs on:
+
+http://localhost:5173
+
+🔐 Security Notes
+
+Razorpay keys are stored only in environment variables
+
+Uploaded images are excluded from Git
+
+JWT-based authentication
+
+CORS configured per environment
+
+📦 Deployment Notes
+
+Backend deployed as Render Web Service
+
+Frontend deployed as Render Static Site
+
+PostgreSQL with PostGIS enabled
+
+Image uploads are ephemeral on Render (recommended: Cloudinary/S3 for production)
