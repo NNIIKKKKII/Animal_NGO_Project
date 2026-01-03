@@ -1,19 +1,16 @@
-import axios from "axios";
-
-const API_URL = "http://localhost:5000/api/ngos";
+import api from "./apiClient";
 
 export const registerNgo = async (data) => {
-  const res = await axios.post(`${API_URL}/register`, data);
+  const res = await api.post("/api/ngos/register", data);
   return res.data;
 };
 
 export const loginNgo = async (data) => {
-    const res = await axios.post(`${API_URL}/login`, data);
-    return res.data;
-  };
-  
-  export const getNgoProfile = async (id) => {
-    const res = await axios.get(`${API_URL}/${id}`);
-    return res.data.ngo;
-  };
-  
+  const res = await api.post("/api/ngos/login", data);
+  return res.data;
+};
+
+export const getNgoProfile = async (id) => {
+  const res = await api.get(`/api/ngos/${id}`);
+  return res.data.ngo;
+};

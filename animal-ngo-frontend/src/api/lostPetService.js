@@ -1,19 +1,13 @@
-import axios from "axios";
+import api from "./apiClient";
 
-const API_URL = "http://localhost:5000/api/lost-pets";
-
-const getConfig = () => ({
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
-});
-
-export const reportLostPet = async (data) => {
-  const res = await axios.post(API_URL, data, getConfig());
+export const reportLostPet = async (formData) => {
+  const res = await api.post("/api/lost-pets/report", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
   return res.data;
 };
 
 export const getLostPets = async () => {
-  const res = await axios.get(API_URL);
+  const res = await api.get("/api/lost-pets");
   return res.data.data;
 };

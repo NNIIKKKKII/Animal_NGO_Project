@@ -1,21 +1,6 @@
-import axios from "axios";
-
-const API_URL = "http://localhost:5000/api/payments";
-
-const getConfig = () => {
-  const token = localStorage.getItem("token");
-  return {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-};
+import api from "./apiClient";
 
 export const createOrder = async (amount) => {
-  const res = await axios.post(
-    `${API_URL}/create-order`,
-    { amount },
-    getConfig()
-  );
+  const res = await api.post("/api/payments/create-order", { amount });
   return res.data;
 };

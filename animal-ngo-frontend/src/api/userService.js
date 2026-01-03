@@ -1,44 +1,32 @@
 // animal-ngo-frontend/src/api/userService.js
-import axios from "axios";
-
-const API_URL = "http://localhost:5000/api/users";
-
-const getConfig = () => {
-  const token = localStorage.getItem("token");
-  return {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-};
+import api from "./apiClient";
 
 /**
- * Fetches the currently logged-in user's profile data.
+ * Fetch the currently logged-in user's profile
+ * GET /api/users/:id
  */
 export const getMyProfile = async (userId) => {
-  const config = getConfig();
-  // Your backend route: GET /api/users/:id
-  const response = await axios.get(`${API_URL}/${userId}`, config);
-  // Note: The structure of the response depends on the controller's implementation
-  return response.data.data || response.data.user;
+  const res = await api.get(`/api/users/${userId}`);
+  return res.data.data || res.data.user;
 };
 
 /**
- * Updates the user's profile details.
+ * Update user profile details
+ * PUT /api/users/:id
  */
 export const updateMyProfile = async (userId, profileData) => {
-  const config = getConfig();
-  // Your backend route: PUT /api/users/:id
-  const response = await axios.put(`${API_URL}/${userId}`, profileData, config);
-  return response.data.user;
+  const res = await api.put(`/api/users/${userId}`, profileData);
+  return res.data.user;
 };
 
+/**
+ * Update user's live location
+ * PUT /api/users/location
+ */
 export const updateMyLocation = async (latitude, longitude) => {
-  const config = getConfig();
-  const response = await axios.put(
-    `${API_URL}/location`,
-    { latitude, longitude },
-    config
-  );
-  return response.data;
+  const res = await api.put("/api/users/location", {
+    latitude,
+    longitude,
+  });
+  return res.data;
 };

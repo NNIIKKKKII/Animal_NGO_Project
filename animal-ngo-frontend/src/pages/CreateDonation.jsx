@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createDonationRequest } from "../api/donationService";
 import { createOrder } from "../api/paymentService";
-import { createPaymentOrder } from "../api/donationService";
+// import { createPaymentOrder } from "../api/donationService";
 
 const CreateDonation = () => {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const CreateDonation = () => {
   };
 
   const handlePayment = async () => {
-    const order = await createPaymentOrder(Number(formData.amount));
+    const order = await createOrder(Number(formData.amount));
 
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,

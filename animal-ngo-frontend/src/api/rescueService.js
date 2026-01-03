@@ -1,72 +1,67 @@
-import axios from "axios";
+import api from "./apiClient";
 
-const API_URL = "http://localhost:5000/api/rescue";
-
-export const getMyCases = async () => {
-  const config = getConfig();
-  // Use the generic GET endpoint (if it returns all cases) and filter client-side
-  // This is not efficient for production but works for learning.
-  const response = await axios.get(API_URL, config); // GET /api/rescue
-  return response.data.data;
+/**
+ * CREATE a rescue case
+ * POST /api/rescue
+ */
+export const createRescueCase = async (data) => {
+  const res = await api.post("/api/rescue", data);
+  return res.data;
 };
 
-const getConfig = () => {
-  const token = localStorage.getItem("token");
-  return {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-};
-
-export const createRescueCase = async (caseData) => {
-  const config = getConfig();
-  const response = await axios.post(API_URL, caseData, config);
-  return response.data;
-};
-
+/**
+ * GET nearby rescue cases
+ * POST /api/rescue/nearby
+ */
 export const getNearbyCases = async (latitude, longitude, radius = 5000) => {
-  const config = getConfig();
-  const response = await axios.post(
-    `${API_URL}/nearby`,
-    { latitude, longitude, radius },
-    config
-  );
-  return response.data.data;
+  const res = await api.post("/api/rescue/nearby", {
+    latitude,
+    longitude,
+    radius,
+  });
+  return res.data.data;
 };
 
-export const assignVolunteerToCase = async (caseId) => {
-  const config = getConfig();
-  // Your backend route: PUT /api/rescue/:id/assign
-  const response = await axios.put(`${API_URL}/${caseId}/assign`, {}, config);
-  return response.data;
+/**
+ * ASSIGN volunteer to case
+ * PUT /api/rescue/:id/assign
+ */
+export const assignVolunteerToCase = async (id) => {
+  const res = await api.put(`/api/rescue/${id}/assign`);
+  return res.data;
 };
 
-export const updateCaseStatus = async (caseId, status) => {
-  const config = getConfig();
-  // Your backend route: PUT /api/rescue/:id/status
-  const response = await axios.put(
-    `${API_URL}/${caseId}/status`,
-    { status },
-    config
-  );
-  return response.data;
+/**
+ * UPDATE rescue status
+ * PUT /api/rescue/:id/status
+ */
+export const updateCaseStatus = async (id, status) => {
+  const res = await api.put(`/api/rescue/${id}/status`, { status });
+  return res.data;
 };
 
-export const getAllCases = async () => {
-  const config = getConfig();
-  const response = await axios.get(API_URL, config);
-  return response.data;
-};
-
+/**
+ * GET rescues reported by logged-in user
+ * GET /api/rescue/my-reports
+ */
 export const getMyReportedRescues = async () => {
-  const config = getConfig();
-  const response = await axios.get(`${API_URL}/my-reports`, config);
-  return response.data.data;
+  const res = await api.get("/api/rescue/my-reports");
+  return res.data.data;
 };
 
+/**
+ * GET rescues assigned to logged-in volunteer
+ * GET /api/rescue/my-assigned
+ */
 export const getMyAssignedRescues = async () => {
-  const config = getConfig();
-  const response = await axios.get(`${API_URL}/my-assigned`, config);
-  return response.data.data;
+  const res = await api.get("/api/rescue/my-assigned");
+  return res.data.data;
+};
+
+/**
+ * ⚠️ LEGACY SUPPORT (DO NOT USE IN NEW CODE)
+ * Alias used by VolunteerDashboard.jsx
+ */
+export const getMyCases = async () => {
+  return getMyAssignedRescues();
 };
