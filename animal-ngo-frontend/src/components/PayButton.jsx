@@ -1,16 +1,24 @@
 import { createOrder } from "../api/paymentService";
 
 const PayButton = ({ amount }) => {
-  if (!amount) return null;
+  const numericAmount = Number(amount);
+
+  if (!numericAmount || numericAmount <= 0) {
+    return (
+      <p className="text-sm text-red-500">
+        Invalid donation amount
+      </p>
+    );
+  }
 
   const handlePayment = async () => {
     try {
-      if (!window.Razorpay) {
-        alert("Razorpay SDK not loaded");
+      if (typeof window === "undefined" || !window.Razorpay) {
+        alert("Payment system not loaded. Please refresh the page.");
         return;
       }
 
-      const order = await createOrder(amount);
+      const order = await createOrder(numericAmount);
 
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
@@ -21,18 +29,24 @@ const PayButton = ({ amount }) => {
         order_id: order.id,
         handler: function (response) {
           console.log("Payment Success:", response);
-          alert("Payment successful!");
+          alert("Payment successful 🐾");
         },
         theme: {
           color: "#22c55e",
         },
       };
 
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
+      const rzp = new window.Razorpay(options);
+      rzp.open();
     } catch (err) {
-      console.error("Payment failed:", err);
-      alert("Payment failed");
+      console.error("❌ Payment failed:", err);
+
+      const message =
+        err?.response?.status === 503
+          ? "Payments are temporarily unavailable"
+          : "Payment failed. Please try again.";
+
+      alert(message);
     }
   };
 
@@ -41,7 +55,7 @@ const PayButton = ({ amount }) => {
       onClick={handlePayment}
       className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
     >
-      Pay ₹{amount}
+      Pay ₹{numericAmount}
     </button>
   );
 };

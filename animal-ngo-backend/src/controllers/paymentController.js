@@ -3,14 +3,21 @@ import crypto from "crypto";
 
 export const createOrder = async (req, res) => {
   try {
+    // 🔐 Guard: Razorpay not configured
+    if (!razorpay) {
+      return res.status(503).json({
+        message: "Payment service not configured",
+      });
+    }
+
     const { amount } = req.body;
 
-    if (!amount || amount <= 0) {
+    if (!amount || Number(amount) <= 0) {
       return res.status(400).json({ message: "Invalid amount" });
     }
 
     const order = await razorpay.orders.create({
-      amount: amount * 100, // INR → paise
+      amount: Math.round(Number(amount) * 100), // INR → paise
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
     });
@@ -23,19 +30,46 @@ export const createOrder = async (req, res) => {
 };
 
 export const verifyPayment = (req, res) => {
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-    req.body;
+  try {
+    // 🔐 Guard: secret missing
+    if (!process.env.RAZORPAY_KEY_SECRET) {
+      return res.status(503).json({
+        success: false,
+        message: "Payment verification unavailable",
+      });
+    }
 
-  const body = razorpay_order_id + "|" + razorpay_payment_id;
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+    } = req.body;
 
-  const expectedSignature = crypto
-    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-    .update(body)
-    .digest("hex");
+    if (
+      !razorpay_order_id ||
+      !razorpay_payment_id ||
+      !razorpay_signature
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing payment verification fields",
+      });
+    }
 
-  if (expectedSignature === razorpay_signature) {
-    res.json({ success: true });
-  } else {
+    const body = `${razorpay_order_id}|${razorpay_payment_id}`;
+
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(body)
+      .digest("hex");
+
+    if (expectedSignature === razorpay_signature) {
+      return res.json({ success: true });
+    }
+
     res.status(400).json({ success: false });
+  } catch (err) {
+    console.error("❌ Payment verification error:", err);
+    res.status(500).json({ success: false });
   }
 };

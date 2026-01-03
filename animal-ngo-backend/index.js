@@ -29,17 +29,28 @@ import { createLostPetsTable } from "./src/data/createLostPetsTable.js";
 const app = express();
 const port = process.env.PORT || 5000;
 
-// --- Middleware ---
+// --- CORS (LOCAL + RENDER) ---
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.FRONTEND_URL,
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed"));
+      }
+    },
     credentials: true,
   })
 );
 
 app.use(express.json());
 
-// 🔥 Serve uploaded images (THIS IS THE IMPORTANT PART)
+// --- Static uploads ---
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // --- Routes ---
@@ -76,6 +87,6 @@ async function runDBMigrations() {
 
 runDBMigrations().then(() => {
   app.listen(port, () => {
-    console.log(`🚀 Server running on http://localhost:${port}`);
+    console.log(`🚀 Server running on port ${port}`);
   });
 });
