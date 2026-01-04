@@ -9,7 +9,7 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
-    role: "donor",
+    role: "donor",          // ✅ default
     phone_number: "",
     address: "",
   });
@@ -43,7 +43,10 @@ const Register = () => {
           navigate("/login");
         } catch (err) {
           console.error(err);
-          setError("Registration failed. Please try again.");
+          setError(
+            err?.response?.data?.message ||
+              "Registration failed. Please try again."
+          );
         } finally {
           setLoading(false);
         }
@@ -71,43 +74,48 @@ const Register = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             name="name"
+            value={formData.name}
+            onChange={handleChange}
             placeholder="Full Name"
             required
-            onChange={handleChange}
             className="w-full border rounded-lg px-4 py-2"
           />
 
           <input
             name="email"
+            value={formData.email}
+            onChange={handleChange}
             type="email"
             placeholder="Email"
             required
-            onChange={handleChange}
             className="w-full border rounded-lg px-4 py-2"
           />
 
           <input
             name="password"
+            value={formData.password}
+            onChange={handleChange}
             type="password"
             placeholder="Password"
             required
-            onChange={handleChange}
             className="w-full border rounded-lg px-4 py-2"
           />
 
           <input
             name="phone_number"
+            value={formData.phone_number}
+            onChange={handleChange}
             placeholder="Phone Number"
             required
-            onChange={handleChange}
             className="w-full border rounded-lg px-4 py-2"
           />
 
           <input
             name="address"
+            value={formData.address}
+            onChange={handleChange}
             placeholder="Address"
             required
-            onChange={handleChange}
             className="w-full border rounded-lg px-4 py-2"
           />
 

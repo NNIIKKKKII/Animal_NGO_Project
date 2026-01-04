@@ -57,6 +57,15 @@ app.use("/api/ngos", ngoRoutes);
 app.use("/api/lost-pets", lostPetRoutes);
 
 // --- Health ---
+
+app.use((err, req, res, next) => {
+  console.error("🔥 SERVER ERROR:", err);
+  res.status(500).json({
+    message: "Internal server error",
+    error: err.message,
+  });
+});
+
 app.get("/", (req, res) => {
   res.send("Animal NGO API is running ....");
 });
