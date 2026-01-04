@@ -10,6 +10,8 @@ const Register = () => {
     email: "",
     password: "",
     role: "donor",
+    phone_number: "",
+    address: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -23,14 +25,34 @@ const Register = () => {
     setLoading(true);
     setError("");
 
-    try {
-      await register(formData);
-      navigate("/login");
-    } catch (err) {
-      setError("Registration failed");
-    } finally {
+    if (!navigator.geolocation) {
+      setError("Geolocation not supported by your browser");
       setLoading(false);
+      return;
     }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          await register({
+            ...formData,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+
+          navigate("/login");
+        } catch (err) {
+          console.error(err);
+          setError("Registration failed. Please try again.");
+        } finally {
+          setLoading(false);
+        }
+      },
+      () => {
+        setError("Location permission is required to register");
+        setLoading(false);
+      }
+    );
   };
 
   return (
@@ -68,6 +90,22 @@ const Register = () => {
             name="password"
             type="password"
             placeholder="Password"
+            required
+            onChange={handleChange}
+            className="w-full border rounded-lg px-4 py-2"
+          />
+
+          <input
+            name="phone_number"
+            placeholder="Phone Number"
+            required
+            onChange={handleChange}
+            className="w-full border rounded-lg px-4 py-2"
+          />
+
+          <input
+            name="address"
+            placeholder="Address"
             required
             onChange={handleChange}
             className="w-full border rounded-lg px-4 py-2"
