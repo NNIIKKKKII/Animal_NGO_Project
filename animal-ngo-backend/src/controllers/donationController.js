@@ -16,8 +16,10 @@ export const createDonation = async (req, res) => {
     console.log("Create Donation Request - User:", req.user);
     console.log("Create Donation Request - Body:", req.body);
 
-    if (!amount || amount <= 0) {
-      return res.status(400).json({ message: "Amount is required" });
+    const amountValue = Number(amount);
+
+    if (!Number.isFinite(amountValue) || amountValue <= 0) {
+      return res.status(400).json({ message: "Invalid donation amount" });
     }
 
     // 2. Safety Check: Ensure user is logged in
@@ -40,7 +42,7 @@ export const createDonation = async (req, res) => {
       user_id,
       title,
       description,
-      amount,
+      amount: amountValue,
     });
 
     // 4. Success Response
