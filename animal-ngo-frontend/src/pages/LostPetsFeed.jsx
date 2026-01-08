@@ -1,17 +1,36 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import LostPetCard from "../components/LostPetCard";
 
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
 const LostPetFeed = () => {
   const [pets, setPets] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/lost-pets")
+      .get(`${BACKEND_URL}/api/lost-pets`)
       .then((res) => setPets(res.data.data))
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this lost pet report?")) return;
+
+    try {
+      await axios.delete(`${BACKEND_URL}/api/lost-pets/${id}`);
+      setPets((prev) => prev.filter((pet) => pet.id !== id));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to delete lost pet");
+    }
+  };
+
+  if (loading) {
+    return <div className="p-6">Loading...</div>;
+  }
 
   return (
     <div className="max-w-6xl mx-auto p-6">
@@ -19,23 +38,12 @@ const LostPetFeed = () => {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {pets.map((pet) => (
-          <div key={pet.id} className="bg-white rounded-xl shadow p-4">
-            <img
-              src={`${BACKEND_URL}${pet.image_url}`}
-              alt="Lost Pet"
-              className="w-full h-56 object-cover rounded-lg"
-            />
-
-            <h3 className="text-xl font-bold mt-3">Owner: {pet.owner_name}</h3>
-
-            <p className="text-gray-600">📍 Last seen: {pet.last_seen}</p>
-
-            <p className="text-gray-600">📞 Contact: {pet.owner_phone}</p>
-
-            {pet.description && (
-              <p className="text-gray-700 mt-2">{pet.description}</p>
-            )}
-          </div>
+          <LostPetCard
+            key={pet.id}
+            pet={pet}
+            onDelete={handleDelete}
+            canDelete={true} // later: restrict by owner/admin
+          />
         ))}
       </div>
     </div>

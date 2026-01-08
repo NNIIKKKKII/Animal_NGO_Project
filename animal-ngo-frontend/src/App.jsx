@@ -95,7 +95,7 @@
 
 //         {/* ---------- VOLUNTEER ACTIONS ---------- */}
 //         {user.role === "volunteer" && (
-          
+
 //           <div className="p-6 bg-white shadow rounded-lg">
 //             <h3 className="text-xl font-semibold mb-4">Volunteer Actions</h3>
 //             <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
@@ -444,7 +444,9 @@ function App() {
                 Logout
               </button>
               <Link to="/lost-pets/report">Report Lost Pet</Link>
-              <Link to="/lost-pets">Lost Pets</Link>
+              <Link to="/lost-pets" aria-label="View lost pets">
+                Lost Pet
+              </Link>
             </>
           ) : (
             <>
@@ -477,6 +479,7 @@ function App() {
           <Route path="/ngo/:id" element={<NgoProfile />} />
           <Route path="/lost-pets/report" element={<ReportLostPet />} />
           <Route path="/lost-pets" element={<LostPetsFeed />} />
+          <Route path="*" element={<NotFound />} />
           {/* Protected Routes */}
           <Route
             path="/"

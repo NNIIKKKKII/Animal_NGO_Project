@@ -26,6 +26,8 @@ import { createRescueTable } from "./src/data/createRescueTable.js";
 import { createNgoTable } from "./src/data/createNgoTable.js";
 import { createLostPetsTable } from "./src/data/createLostPetsTable.js";
 
+import testRoutes from "./src/routes/testRoutes.js";
+
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -55,6 +57,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/ngos", ngoRoutes);
 app.use("/api/lost-pets", lostPetRoutes);
+app.use("/api/test", testRoutes);
 
 // --- Health ---
 
