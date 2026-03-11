@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { reportLostPet } from "../api/lostPetService";
 import { useNavigate } from "react-router-dom";
+import catImage from "../assets/pics/cat.jpg";
 
 const ReportLostPet = () => {
   const navigate = useNavigate();
@@ -49,66 +50,90 @@ const ReportLostPet = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white rounded shadow">
-      <h2 className="text-2xl font-bold mb-4">Report Lost Pet 🐾</h2>
+    <div
+      className="min-h-screen w-full bg-cover bg-center flex items-center justify-center px-4 py-12"
+      style={{ backgroundImage: `url(${catImage})` }}
+    >
+      {/* Glass Card */}
+      <div className="w-full max-w-lg backdrop-blur-lg bg-white/30 border border-white/40 shadow-2xl rounded-2xl p-8">
 
-      {error && (
-        <div className="mb-4 bg-red-100 text-red-700 p-3 rounded">
-          {error}
-        </div>
-      )}
+        <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+          Report Lost Pet 🐾
+        </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          name="owner_name"
-          placeholder="Owner Name"
-          value={form.owner_name}
-          onChange={handleChange}
-          required
-          className="w-full border p-2"
-        />
+        {error && (
+          <div className="mb-4 bg-red-100/80 text-red-700 p-3 rounded-lg text-sm text-center">
+            {error}
+          </div>
+        )}
 
-        <input
-          name="owner_phone"
-          placeholder="Phone Number"
-          value={form.owner_phone}
-          onChange={handleChange}
-          required
-          className="w-full border p-2"
-        />
+        <form onSubmit={handleSubmit} className="space-y-4">
 
-        <input
-          name="last_seen"
-          placeholder="Last Seen Location"
-          value={form.last_seen}
-          onChange={handleChange}
-          required
-          className="w-full border p-2"
-        />
+          {/* Owner Name */}
+          <input
+            name="owner_name"
+            placeholder="Owner Name"
+            value={form.owner_name}
+            onChange={handleChange}
+            required
+            className="w-full rounded-lg border border-gray-300 bg-white/80 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
 
-        <textarea
-          name="description"
-          placeholder="Pet description"
-          value={form.description}
-          onChange={handleChange}
-          required
-          className="w-full border p-2"
-        />
+          {/* Phone */}
+          <input
+            name="owner_phone"
+            placeholder="Phone Number"
+            value={form.owner_phone}
+            onChange={handleChange}
+            required
+            className="w-full rounded-lg border border-gray-300 bg-white/80 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setImage(e.target.files[0])}
-          required
-        />
+          {/* Last Seen */}
+          <input
+            name="last_seen"
+            placeholder="Last Seen Location"
+            value={form.last_seen}
+            onChange={handleChange}
+            required
+            className="w-full rounded-lg border border-gray-300 bg-white/80 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
 
-        <button
-          disabled={loading}
-          className="bg-red-600 text-white px-4 py-2 rounded disabled:opacity-60"
-        >
-          {loading ? "Submitting..." : "Submit"}
-        </button>
-      </form>
+          {/* Description */}
+          <textarea
+            name="description"
+            placeholder="Pet Description"
+            value={form.description}
+            onChange={handleChange}
+            required
+            rows="3"
+            className="w-full rounded-lg border border-gray-300 bg-white/80 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
+
+          {/* File Upload */}
+          <label className="flex items-center justify-center cursor-pointer border border-dashed border-gray-400 rounded-lg py-3 bg-white/60 hover:bg-white/80 transition">
+            <span className="text-gray-700 font-medium">
+              {image ? image.name : "Upload Pet Image"}
+            </span>
+
+            <input
+              type="file"
+              className="hidden"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files[0])}
+            />
+          </label>
+
+          {/* Submit */}
+          <button
+            disabled={loading}
+            className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg shadow-md transition disabled:opacity-60"
+          >
+            {loading ? "Submitting..." : "Submit Report"}
+          </button>
+
+        </form>
+      </div>
     </div>
   );
 };

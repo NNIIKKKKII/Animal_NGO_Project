@@ -2,34 +2,57 @@ import React from "react";
 
 const LostPetCard = ({ pet, onDelete, canDelete = false }) => {
   return (
-    <div className="bg-white rounded-xl shadow p-4 flex flex-col">
-      <img
-        src={pet.image_url}
-        alt={`Photo of lost pet reported by ${pet.owner_name}`}
-        className="w-full h-56 object-cover rounded-lg"
-      />
+    <div className="backdrop-blur-lg bg-white/30 border border-white/40 shadow-xl rounded-2xl overflow-hidden flex flex-col transition transform hover:-translate-y-1 hover:shadow-2xl">
 
-      <h3 className="text-xl font-bold mt-3">Owner: {pet.owner_name}</h3>
+      {/* Image */}
+      <div className="relative">
+        <img
+          src={pet.image_url}
+          alt={`Lost pet reported by ${pet.owner_name}`}
+          className="w-full h-56 object-cover"
+        />
 
-      <p className="text-gray-600">📍 Last seen: {pet.last_seen}</p>
-      <p className="text-gray-600">📞 Contact: {pet.owner_phone}</p>
+        {/* gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-      {pet.description && (
-        <p className="text-gray-700 mt-2">{pet.description}</p>
-      )}
+        {/* owner name on image */}
+        <h3 className="absolute bottom-2 left-3 text-white font-semibold text-lg drop-shadow">
+          {pet.owner_name}
+        </h3>
+      </div>
 
-      {/* Push actions to bottom */}
-      {canDelete && (
-        <div className="mt-auto pt-4">
+      <div className="p-4 flex flex-col flex-grow">
+
+        <p className="text-sm text-white font-medium">
+          📍 Last Seen
+        </p>
+        <p className=" ml-6 text-white text-sm mb-2">
+          {pet.last_seen}
+        </p>
+
+        <p className="text-sm text-white font-medium">
+          📞 Contact
+        </p>
+        <p className=" ml-6 text-white font-semibold text-sm">
+          {pet.owner_phone}
+        </p>
+
+        {pet.description && (
+          <p className=" ml-6 text-white text-sm mt-3 line-clamp-3">
+            {pet.description}
+          </p>
+        )}
+
+        {canDelete && (
           <button
             onClick={() => onDelete(pet.id)}
-            aria-label="Delete lost pet"
-            className="mt-3 bg-red-600 text-white px-3 py-2 rounded w-full"
+            className="mt-4 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition"
           >
-            Delete
+            Delete Report
           </button>
-        </div>
-      )}
+        )}
+
+      </div>
     </div>
   );
 };

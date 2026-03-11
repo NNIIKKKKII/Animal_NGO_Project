@@ -1,4 +1,3 @@
-// animal-ngo-frontend/src/pages/ReportRescue.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createRescueCase } from "../api/rescueService";
@@ -6,6 +5,7 @@ import MapPicker from "../components/MapPicker";
 
 const ReportRescue = () => {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -13,15 +13,14 @@ const ReportRescue = () => {
     latitude: null,
     longitude: null,
   });
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Update text fields
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Update location from MapPicker
   const handleLocationSelect = (coords) => {
     setFormData((prev) => ({
       ...prev,
@@ -35,7 +34,6 @@ const ReportRescue = () => {
     setIsLoading(true);
     setError(null);
 
-    // Validation
     if (!formData.latitude || !formData.longitude) {
       setError("Please click on the map to pin the location.");
       setIsLoading(false);
@@ -44,102 +42,121 @@ const ReportRescue = () => {
 
     try {
       await createRescueCase(formData);
-      alert(
-        "Rescue case reported successfully! A volunteer will check it soon."
-      );
-      navigate("/"); // Redirect to Dashboard
+      alert("Rescue case reported successfully!");
+      navigate("/");
     } catch (err) {
-      console.error("Report Error:", err);
+      console.error(err);
       setError("Failed to report case. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
+  const inputStyle =
+    "w-full px-4 py-2 rounded-lg border border-gray-300 bg-white/80 focus:outline-none focus:ring-2 focus:ring-red-400";
+
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
-        <h1 className="text-3xl font-extrabold text-red-600 mb-6 flex items-center">
-          🚨 Report a Rescue Case
-        </h1>
+    <div className="min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 flex items-center justify-center px-4 py-12">
+
+      <div className="w-full max-w-3xl backdrop-blur-lg bg-white/30 border border-white/40 shadow-2xl rounded-2xl p-8">
+
+        {/* Header */}
+        <div className="mb-6 text-center">
+          <h1 className="text-3xl md:text-4xl font-bold text-red-600 flex items-center justify-center gap-2">
+            🚨 Report Rescue Case
+          </h1>
+          <p className="text-gray-700 text-sm mt-2">
+            Provide accurate details so volunteers can respond quickly.
+          </p>
+        </div>
 
         {error && (
-          <div className="bg-red-100 text-red-700 p-3 rounded mb-4 border border-red-200">
+          <div className="bg-red-100/80 text-red-700 p-3 rounded-lg mb-4 text-center">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
+
           {/* Title */}
           <div>
-            <label className="block text-gray-700 font-bold mb-2">
+            <label className="block text-sm font-semibold text-gray-800 mb-1">
               What is the emergency?
             </label>
+
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              placeholder="e.g., Injured Dog on Highway"
+              placeholder="Injured dog near highway"
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
+              className={inputStyle}
             />
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-gray-700 font-bold mb-2">
+            <label className="block text-sm font-semibold text-gray-800 mb-1">
               Description
             </label>
+
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
-              placeholder="Describe the animal, injury, and exact situation..."
               rows="3"
+              placeholder="Describe the animal condition..."
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
+              className={inputStyle}
             />
           </div>
 
-          {/* Image URL (Optional) */}
+          {/* Image URL */}
           <div>
-            <label className="block text-gray-700 font-bold mb-2">
-              Image URL (Optional)
+            <label className="block text-sm font-semibold text-gray-800 mb-1">
+              Image URL (optional)
             </label>
+
             <input
               type="url"
               name="image_url"
               value={formData.image_url}
               onChange={handleChange}
-              placeholder="https://example.com/photo.jpg"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
+              placeholder="https://example.com/image.jpg"
+              className={inputStyle}
             />
           </div>
 
-          {/* Map Picker */}
+          {/* Map */}
           <div>
-            <label className="block text-gray-700 font-bold mb-2">
-              Location <span className="text-red-500">*</span> (Click on map)
+            <label className="block text-sm font-semibold text-gray-800 mb-2">
+              Pin Rescue Location
             </label>
-            <MapPicker onLocationSelect={handleLocationSelect} />
+
+            <div className="rounded-xl overflow-hidden border border-gray-300 shadow-sm">
+              <MapPicker onLocationSelect={handleLocationSelect} />
+            </div>
+
             {formData.latitude && (
-              <p className="text-sm text-green-600 mt-1 font-medium">
-                ✅ Location pinned: {formData.latitude.toFixed(4)},{" "}
+              <p className="text-green-700 text-sm mt-2 font-medium">
+                📍 Location pinned: {formData.latitude.toFixed(4)},{" "}
                 {formData.longitude.toFixed(4)}
               </p>
             )}
           </div>
 
-          {/* Submit Button */}
+          {/* Submit */}
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-4 bg-red-600 text-white font-bold text-lg rounded-lg hover:bg-red-700 transition shadow-md disabled:bg-red-400"
+            className="w-full py-4 bg-red-600 text-white font-bold text-lg rounded-xl shadow-lg hover:bg-red-700 transition disabled:opacity-60"
           >
-            {isLoading ? "Submitting Report..." : "REPORT CASE NOW"}
+            {isLoading ? "Submitting..." : "Report Rescue"}
           </button>
+
         </form>
+
       </div>
     </div>
   );

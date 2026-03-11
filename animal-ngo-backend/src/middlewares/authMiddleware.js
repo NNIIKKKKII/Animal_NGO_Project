@@ -15,10 +15,10 @@ export const verifyToken = (req, res, next) => {
   try {
     // Verify the token using the secret key from your .env
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+
     // Attach the user's data (id, role) to the request object
-    req.user = decoded; 
-    
+    req.user = decoded;
+
     // Proceed to the next controller function
     next();
   } catch (ex) {

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { register } from "../api/authService";
 import { useNavigate, Link } from "react-router-dom";
+import VideoBackground from "../components/VideoBackground";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
-    role: "donor",          // ✅ default
+    role: "donor",
     phone_number: "",
     address: "",
   });
@@ -45,7 +46,7 @@ const Register = () => {
           console.error(err);
           setError(
             err?.response?.data?.message ||
-              "Registration failed. Please try again."
+            "Registration failed. Please try again."
           );
         } finally {
           setLoading(false);
@@ -59,92 +60,109 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white w-full max-w-md p-8 rounded-xl shadow-lg">
-        <h2 className="text-3xl font-bold text-center mb-6">
-          Create Account 🐾
-        </h2>
+    <VideoBackground>
 
-        {error && (
-          <div className="mb-4 bg-red-100 text-red-700 p-3 rounded">
-            {error}
-          </div>
-        )}
+      <div className="flex items-center justify-center min-h-screen px-4">
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Full Name"
-            required
-            className="w-full border rounded-lg px-4 py-2"
-          />
+        <div className="w-full max-w-md backdrop-blur-xl bg-white/40 border border-white/40 shadow-2xl rounded-2xl p-10">
 
-          <input
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            type="email"
-            placeholder="Email"
-            required
-            className="w-full border rounded-lg px-4 py-2"
-          />
+          <h2 className="text-4xl font-bold text-center text-gray-800 mb-2">
+            Create Account 🐾
+          </h2>
 
-          <input
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            type="password"
-            placeholder="Password"
-            required
-            className="w-full border rounded-lg px-4 py-2"
-          />
+          <p className="text-center text-gray-600 mb-8">
+            Join the community helping animals
+          </p>
 
-          <input
-            name="phone_number"
-            value={formData.phone_number}
-            onChange={handleChange}
-            placeholder="Phone Number"
-            required
-            className="w-full border rounded-lg px-4 py-2"
-          />
+          {error && (
+            <div className="mb-4 bg-red-100/90 text-red-700 p-3 rounded-lg text-sm text-center">
+              {error}
+            </div>
+          )}
 
-          <input
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            placeholder="Address"
-            required
-            className="w-full border rounded-lg px-4 py-2"
-          />
+          <form onSubmit={handleSubmit} className="space-y-4">
 
-          <select
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            className="w-full border rounded-lg px-4 py-2"
-          >
-            <option value="donor">Donor</option>
-            <option value="volunteer">Volunteer</option>
-          </select>
+            <input
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Full Name"
+              required
+              className="w-full rounded-xl border border-gray-300 bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+            />
 
-          <button
-            disabled={loading}
-            className="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition"
-          >
-            {loading ? "Creating..." : "Register"}
-          </button>
-        </form>
+            <input
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              type="email"
+              placeholder="Email Address"
+              required
+              className="w-full rounded-xl border border-gray-300 bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+            />
 
-        <p className="text-sm text-center mt-6 text-gray-600">
-          Already have an account?{" "}
-          <Link to="/login" className="text-blue-600 hover:underline">
-            Login
-          </Link>
-        </p>
+            <input
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              type="password"
+              placeholder="Password"
+              required
+              className="w-full rounded-xl border border-gray-300 bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+            />
+
+            <input
+              name="phone_number"
+              value={formData.phone_number}
+              onChange={handleChange}
+              placeholder="Phone Number"
+              required
+              className="w-full rounded-xl border border-gray-300 bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+            />
+
+            <input
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              placeholder="Address"
+              required
+              className="w-full rounded-xl border border-gray-300 bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+            />
+
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className="w-full rounded-xl border border-gray-300 bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+            >
+              <option value="donor">Donor</option>
+              <option value="volunteer">Volunteer</option>
+            </select>
+
+            <button
+              disabled={loading}
+              className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition disabled:opacity-60"
+            >
+              {loading ? "Creating..." : "Register"}
+            </button>
+
+          </form>
+
+          <p className="text-sm text-center mt-6 text-gray-700">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-green-600 hover:text-green-800 font-semibold transition"
+            >
+              Login
+            </Link>
+          </p>
+
+        </div>
+
       </div>
-    </div>
+
+    </VideoBackground>
   );
 };
 

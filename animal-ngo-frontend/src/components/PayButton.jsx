@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { createOrder } from "../api/paymentService";
 
 const PayButton = ({ amount }) => {
+  const [loading, setLoading] = useState(false);
   const numericAmount = Number(amount);
 
   if (!numericAmount || numericAmount <= 0) {
     return (
-      <p className="text-sm text-red-500">
+      <p className="text-sm text-red-500 font-medium">
         Invalid donation amount
       </p>
     );
@@ -13,8 +15,11 @@ const PayButton = ({ amount }) => {
 
   const handlePayment = async () => {
     try {
+      setLoading(true);
+
       if (typeof window === "undefined" || !window.Razorpay) {
         alert("Payment system not loaded. Please refresh the page.");
+        setLoading(false);
         return;
       }
 
@@ -47,15 +52,24 @@ const PayButton = ({ amount }) => {
           : "Payment failed. Please try again.";
 
       alert(message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <button
       onClick={handlePayment}
-      className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+      disabled={loading}
+      className="w-full flex items-center justify-center gap-2 bg-green-600 text-white font-semibold px-5 py-3 rounded-xl shadow-md hover:bg-green-700 hover:shadow-lg transition transform hover:scale-105 disabled:opacity-60"
     >
-      Pay ₹{numericAmount}
+      {loading ? (
+        "Processing..."
+      ) : (
+        <>
+          💚 Donate ₹{numericAmount}
+        </>
+      )}
     </button>
   );
 };

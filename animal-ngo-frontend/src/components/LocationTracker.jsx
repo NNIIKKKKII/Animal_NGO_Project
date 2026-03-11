@@ -115,11 +115,10 @@ const LocationTracker = () => {
   }
 
   return (
-    <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl shadow-inner mt-4">
-      <h4 className="text-lg font-semibold text-gray-700 mb-2 flex items-center">
-        <SvgMapPin className="w-5 h-5 mr-2 text-blue-500 fill-current" />
-        Volunteer Live Location Service
-      </h4>
+    <div className="bg-gray-50 border border-gray-200 rounded-xl shadow-inner p-6 flex flex-col justify-between">      <h4 className="text-lg font-semibold text-gray-700 mb-2 flex items-center">
+      <SvgMapPin className="w-5 h-5 mr-2 text-blue-500 fill-current" />
+      Volunteer Live Location Service
+    </h4>
 
       {isTracking ? (
         <>
