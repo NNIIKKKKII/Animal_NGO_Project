@@ -11,6 +11,7 @@ const Login = () => {
   const login = useStore((state) => state.login);
   const isLoading = useStore((state) => state.isLoading);
   const isAuthenticated = useStore((state) => state.isAuthenticated);
+  const user = useStore((state) => state.user);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,13 +24,26 @@ const Login = () => {
     return <Navigate to="/" replace />;
   }
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
 
     try {
       await login(email, password);
-      navigate("/")
+
+      // read role from store after login completes
+      const loggedInUser = useStore.getState().user;
+
+      if (loggedInUser?.role === "admin") {
+        navigate("/admin");
+      } else if (loggedInUser?.role === "volunteer") {
+        navigate("/volunteer/cases");
+      } else {
+        navigate("/");
+      }
+
     } catch (err) {
       setError(typeof err === "string" ? err : "Login failed");
     }

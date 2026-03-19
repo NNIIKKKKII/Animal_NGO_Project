@@ -7,17 +7,20 @@ import {
   getAllUsersAdmin,
   deleteUserAdmin,
   updateUserRoleAdmin,
+  getAllRescuesAdmin,
+  assignVolunteerAdmin,
 } from "../controllers/adminController.js";
 
 const router = express.Router();
 
-// Protect all admin routes: authenticated and admin role
+// Every admin route requires authentication + admin role
 router.use(verifyToken, requireAdmin);
 
-// Admin endpoints
 router.get("/stats", getAdminStats);
 router.get("/users", getAllUsersAdmin);
 router.delete("/users/:id", deleteUserAdmin);
 router.put("/users/:id/role", updateUserRoleAdmin);
+router.get("/rescues", getAllRescuesAdmin);
+router.patch("/rescues/:id/assign", assignVolunteerAdmin);
 
 export default router;
