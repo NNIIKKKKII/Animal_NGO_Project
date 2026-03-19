@@ -1,10 +1,12 @@
-import { useAuth } from "../context/AuthContext.jsx";
+// import { useAuth } from "../context/AuthContext.jsx";
+import useStore from "../stores/store.js"
 import LocationTracker from "../components/LocationTracker.jsx";
 import VideoBackgroundforDog from "../components/VideoBackgroundforDog.jsx";
 import { Link } from "react-router-dom";
 
 export const Dashboard = () => {
-  const { user } = useAuth();
+  // const { user } = useAuth();
+  const user = useStore((state) => state.user);
 
   const cardStyle =
     "backdrop-blur-lg bg-white/30 border border-white/40 shadow-xl rounded-xl p-6 hover:scale-105 transition";

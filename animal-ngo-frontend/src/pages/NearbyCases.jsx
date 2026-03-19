@@ -1,7 +1,9 @@
 // animal-ngo-frontend/src/pages/NearbyCases.jsx
 import React, { useState, useEffect } from "react";
 import { getNearbyCases, assignVolunteerToCase } from "../api/rescueService";
-import { useAuth } from "../context/AuthContext";
+// import { useAuth } from "../context/AuthContext";
+import useStore from "../stores/store.js"
+
 import RescueMap from "../components/RescueMap";
 
 const NearbyCases = () => {
@@ -9,7 +11,8 @@ const NearbyCases = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [location, setLocation] = useState(null);
-  const { user } = useAuth();
+  // const { user } = useAuth();
+  const user = useStore((state) => state.user);
 
   useEffect(() => {
     // 1. Get User's Location on Mount

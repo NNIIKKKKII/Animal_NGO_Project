@@ -7,7 +7,9 @@ import {
   Navigate,
 } from "react-router-dom";
 //authentication
-import { useAuth } from "./context/AuthContext";
+// import { useAuth } from "./context/AuthContext";
+import useStore from "./stores/store.js";
+
 import { Dashboard } from "./pages/Dashboard.jsx";
 import Navbar from "./components/Navbar.jsx";
 
@@ -47,7 +49,12 @@ import LostPetsFeed from "./pages/LostPetsFeed";
 
 // Acts as a security guard for routes based on user role
 const ProtectedRoute = ({ element, requiredRole }) => {
-  const { isAuthenticated, isLoading, user } = useAuth();
+  // const { isAuthenticated, isLoading, user } = useAuth();
+  const user = useStore((state) => state.user);
+  const isAuthenticated = useStore((state) => state.isAuthenticated);
+  const isLoading = useStore((state) => state.isLoading);
+
+
   if (isLoading) return <div>Loading...</div>;
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   if (requiredRole && user.role !== requiredRole)
@@ -68,7 +75,7 @@ const NotFound = () => (
 // App Component (Updated with New Routes)
 // ----------------------------------------------------------------
 function App() {
-  const { isAuthenticated, logout } = useAuth();
+  // const { isAuthenticated, logout } = useAuth();
 
   return (
     <div className="min-h-screen">

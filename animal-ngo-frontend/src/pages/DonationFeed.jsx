@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getAllDonationRequests } from "../api/donationService";
-import { useAuth } from "../context/AuthContext";
+// import { useAuth } from "../context/AuthContext";
+import useStore from "../stores/store.js"
 import PayButton from "../components/PayButton";
 
 const DonationFeed = () => {
   const [donations, setDonations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { user } = useAuth();
+  // const { user } = useAuth();
+  const user = useStore((state) => state.user);
+
 
   useEffect(() => {
     fetchDonations();

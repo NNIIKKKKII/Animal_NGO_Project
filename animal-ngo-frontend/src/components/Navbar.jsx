@@ -1,9 +1,15 @@
 import { Link, useLocation } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+// import { useAuth } from "../context/AuthContext";
+import useStore from "../stores/store.js"
+
 import { useState } from "react";
 
 const Navbar = () => {
-  const { isAuthenticated, logout } = useAuth();
+  // const { isAuthenticated, logout } = useAuth();
+  const isAuthenticated = useStore((state) => state.isAuthenticated);
+  const logout = useStore((state) => state.logout)
+
+
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
 

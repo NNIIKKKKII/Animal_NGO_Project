@@ -1,13 +1,16 @@
 // animal-ngo-frontend/src/pages/VolunteerDashboard.jsx
 import React, { useState, useEffect } from "react";
 import { getMyCases, updateCaseStatus } from "../api/rescueService";
-import { useAuth } from "../context/AuthContext";
+// import { useAuth } from "../context/AuthContext";
+import useStore from "../stores/store.js"
+
 
 const VolunteerDashboard = () => {
   const [myCases, setMyCases] = useState([]);
   const [filter, setFilter] = useState("active"); // 'active' or 'resolved'
   const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
+  // const { user } = useAuth();
+  const user = useStore((state) => state.user);
 
   useEffect(() => {
     fetchMyAssignments();
@@ -67,21 +70,19 @@ const VolunteerDashboard = () => {
         <div className="flex bg-gray-200 p-1 rounded-lg">
           <button
             onClick={() => setFilter("active")}
-            className={`px-4 py-2 rounded-md font-medium transition ${
-              filter === "active"
-                ? "bg-white text-blue-600 shadow"
-                : "text-gray-600 hover:text-gray-900"
-            }`}
+            className={`px-4 py-2 rounded-md font-medium transition ${filter === "active"
+              ? "bg-white text-blue-600 shadow"
+              : "text-gray-600 hover:text-gray-900"
+              }`}
           >
             Active Cases
           </button>
           <button
             onClick={() => setFilter("resolved")}
-            className={`px-4 py-2 rounded-md font-medium transition ${
-              filter === "resolved"
-                ? "bg-white text-green-600 shadow"
-                : "text-gray-600 hover:text-gray-900"
-            }`}
+            className={`px-4 py-2 rounded-md font-medium transition ${filter === "resolved"
+              ? "bg-white text-green-600 shadow"
+              : "text-gray-600 hover:text-gray-900"
+              }`}
           >
             Past History
           </button>
@@ -108,11 +109,10 @@ const VolunteerDashboard = () => {
                     {rescue.title}
                   </h3>
                   <span
-                    className={`px-2 py-1 text-xs font-bold uppercase rounded ${
-                      rescue.status === "resolved"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-blue-100 text-blue-800"
-                    }`}
+                    className={`px-2 py-1 text-xs font-bold uppercase rounded ${rescue.status === "resolved"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-blue-100 text-blue-800"
+                      }`}
                   >
                     {rescue.status}
                   </span>

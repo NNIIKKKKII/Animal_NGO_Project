@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { updateMyLocation } from "../api/userService.js"; // Corrected path
-import { useAuth } from "../context/AuthContext.jsx"; // Corrected path
+// import { useAuth } from "../context/AuthContext.jsx"; // Corrected path
+import useStore from "../stores/store.js"
+
 
 // Custom SVG Icons (to replace react-icons/fa and ensure self-contained file)
 const SvgMapPin = (props) => (
@@ -32,7 +34,8 @@ const SvgSpinner = (props) => (
 );
 
 const LocationTracker = () => {
-  const { user } = useAuth();
+  // const { user } = useAuth();
+  const user = useStore((state) => state.user)
   const [isTracking, setIsTracking] = useState(false);
   const [status, setStatus] = useState("");
   const [lastUpdate, setLastUpdate] = useState(null);

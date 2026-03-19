@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
+// import { useAuth } from "../context/AuthContext";
+import useStore from "../stores/store.js"
+
 import { getMyProfile, updateMyProfile } from "../api/userService";
 
 const Profile = () => {
-    const { user, updateUserContext } = useAuth();
+    // const { user, updateUserContext } = useAuth();
+    const user = useStore((state) => state.user);
+    const updateUserContext = useStore((state) => state.updateUserContext)
 
     const [profile, setProfile] = useState(null);
     const [formData, setFormData] = useState({});

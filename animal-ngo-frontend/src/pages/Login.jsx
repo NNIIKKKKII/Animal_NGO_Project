@@ -1,16 +1,23 @@
 // animal-ngo-frontend/src/pages/Login.jsx
 
 import React, { useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { Link, Navigate } from "react-router-dom";
+// import { useAuth } from "../context/AuthContext";
+import useStore from "../stores/store.js"
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import VideoBackground from "../components/VideoBackground";
 
 const Login = () => {
-  const { login, isLoading, isAuthenticated } = useAuth();
+  // const { login, isLoading, isAuthenticated } = useAuth();
+  const login = useStore((state) => state.login);
+  const isLoading = useStore((state) => state.isLoading);
+  const isAuthenticated = useStore((state) => state.isAuthenticated);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+
 
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
@@ -22,6 +29,7 @@ const Login = () => {
 
     try {
       await login(email, password);
+      navigate("/")
     } catch (err) {
       setError(typeof err === "string" ? err : "Login failed");
     }
