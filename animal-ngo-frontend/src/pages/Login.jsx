@@ -21,7 +21,7 @@ const Login = () => {
 
 
   if (isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/" replace />; //Its a JSX Component.
   }
 
 
@@ -94,6 +94,16 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white/80 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
               />
+            </div>
+
+            {/* Forgot Password Link */}
+            <div className="text-right">
+              <Link
+                to="/forgot-password"
+                className="text-sm text-gray-600 hover:text-gray-800 hover:underline"
+              >
+                Forgot Password?
+              </Link>
             </div>
 
             {/* Login Button */}

@@ -25,6 +25,7 @@ import { createDonationRequestsTable } from "./src/data/createDonationReqTable.j
 import { createRescueTable } from "./src/data/createRescueTable.js";
 import { createNgoTable } from "./src/data/createNgoTable.js";
 import { createLostPetsTable } from "./src/data/createLostPetsTable.js";
+import { addResetTokenColumns } from "./src/data/addResetTokenColumns.js";
 
 import testRoutes from "./src/routes/testRoutes.js";
 
@@ -85,6 +86,7 @@ async function runDBMigrations() {
     await createRescueTable();
     await createNgoTable();
     await createLostPetsTable();
+    await addResetTokenColumns();
     console.log("✅ All DATABASES checked!");
   } catch (error) {
     console.error("❌ Database setup failed:", error);

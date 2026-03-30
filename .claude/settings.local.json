@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find P:animal-ngo-project -maxdepth 2 -name README* -type f)"
+    ]
+  }
+}

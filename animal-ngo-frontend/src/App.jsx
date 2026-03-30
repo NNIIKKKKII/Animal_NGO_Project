@@ -17,6 +17,8 @@ import Navbar from "./components/Navbar.jsx";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 // Donation pages
 import DonationFeed from "./pages/DonationFeed.jsx";
@@ -86,6 +88,8 @@ function App() {
           {/* Public Routes */}
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/donations" element={<DonationFeed />} />
           <Route path="/ngo/register" element={<RegisterNgo />} />
           <Route path="/ngo/login" element={<LoginNgo />} />

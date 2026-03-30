@@ -3,13 +3,6 @@ import pool from "../config/db.js";
 // @param {string} email
 // @returns {object}
 
-export const findUserByEmail = async (email) => {
-  const result = await pool.query("SELECT * FROM users WHERE email = $1;", [
-    email,
-  ]);
-  return result.rows[0];
-};
-
 export const createUser = async (
   name,
   email,
@@ -25,24 +18,50 @@ export const createUser = async (
   return result.rows[0];
 };
 
+
+
+
+
+
+
+
+
+
 export const updateUserProfile = async (
   id,
   { name, phone_number, address }
 ) => {
   const query = `
-      UPDATE users
-      SET 
-          name = $1, 
-          phone_number = $2, 
-          address = $3
-      WHERE id = $4
-      RETURNING id, name, email, role, phone_number, address, created_at; 
+  UPDATE users
+  SET 
+  name = $1, 
+  phone_number = $2, 
+  address = $3
+  WHERE id = $4
+  RETURNING id, name, email, role, phone_number, address, created_at; 
   `;
   const values = [name, phone_number, address, id];
 
   const { rows } = await pool.query(query, values);
   return rows[0];
 };
+
+
+
+
+
+
+export const findUserByEmail = async (email) => {
+  const result = await pool.query("SELECT * FROM users WHERE email = $1;", [
+    email,
+  ]);
+  return result.rows[0];
+};
+
+
+
+
+
 
 export const getUserById = async (id) => {
   const result = await pool.query(
@@ -55,6 +74,10 @@ export const getUserById = async (id) => {
   );
   return result.rows[0];
 };
+
+
+
+
 
 export const updateUserLocation = async (userId, latitude, longitude) => {
   const query = `

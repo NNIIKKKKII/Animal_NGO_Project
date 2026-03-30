@@ -224,6 +224,119 @@ export const setUserLocation = async (req, res, next) => {
   }
 };
 
+// ----------------------
+// 🔑 FORGOT PASSWORD
+// ----------------------
+export const forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const user = await findUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Generate reset token (JWT) with 15-minute expiry
+    const resetToken = jwt.sign(
+      { id: user.id, purpose: "reset" },
+      process.env.JWT_SECRET,
+      { expiresIn: "15m" }
+    );
+
+    // Calculate expiry timestamp (15 minutes from now)
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+    // Store token and expiry in database
+    const updateQuery = `
+      UPDATE users
+      SET reset_token = $1, reset_token_expires = $2
+      WHERE id = $3
+    `;
+    await pool.query(updateQuery, [resetToken, expiresAt, user.id]);
+
+    res.status(200).json({
+      message: "Reset token generated successfully",
+      resetToken,
+    });
+  } catch (error) {
+    console.error("Forgot password error:", error.message);
+    next(error);
+  }
+};
+
+// ----------------------
+// 🔐 RESET PASSWORD
+// ----------------------
+export const resetPassword = async (req, res, next) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    if (!token || !newPassword) {
+      return res
+        .status(400)
+        .json({ message: "Token and new password are required" });
+    }
+
+    // Verify JWT token
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      return res
+        .status(401)
+        .json({ message: "Invalid or expired token" });
+    }
+
+    // Check purpose
+    if (decoded.purpose !== "reset") {
+      return res.status(401).json({ message: "Invalid token purpose" });
+    }
+
+    // Look up user and check stored token
+    const userQuery = `
+      SELECT id, reset_token, reset_token_expires
+      FROM users
+      WHERE id = $1
+    `;
+    const { rows } = await pool.query(userQuery, [decoded.id]);
+    const user = rows[0];
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if stored token matches
+    if (user.reset_token !== token) {
+      return res.status(401).json({ message: "Token mismatch" });
+    }
+
+    // Check if token is expired
+    if (new Date() > new Date(user.reset_token_expires)) {
+      return res.status(401).json({ message: "Reset token has expired" });
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update password and clear reset token fields
+    const updateQuery = `
+      UPDATE users
+      SET password = $1, reset_token = NULL, reset_token_expires = NULL
+      WHERE id = $2
+    `;
+    await pool.query(updateQuery, [hashedPassword, user.id]);
+
+    res.status(200).json({ message: "Password reset successful" });
+  } catch (error) {
+    console.error("Reset password error:", error.message);
+    next(error);
+  }
+};
+
 // // Placeholders
 // export const setUserLocation = (req, res) =>
 //   res.status(501).json({ message: "Not Implemented Yet" });

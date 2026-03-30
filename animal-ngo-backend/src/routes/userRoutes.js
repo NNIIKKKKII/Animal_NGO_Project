@@ -1,27 +1,31 @@
 // animal-ngo-backend/src/routes/userRoutes.js
 import express from 'express';
-import { 
-  registerUser, 
-  loginUser, 
-  getUserById, 
-  updateUser, 
-  setUserLocation, 
+import {
+  registerUser,
+  loginUser,
+  getUserById,
+  updateUser,
+  setUserLocation,
   getNearbyUsers,
   logoutUser,
   getAllUsers,
-  deleteUser
+  deleteUser,
+  forgotPassword,
+  resetPassword
 } from '../controllers/userController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
 // Public routes for Authentication
-router.post('/register', registerUser); 
-router.post('/login', loginUser); 
+router.post('/register', registerUser);
+router.post('/login', loginUser);
 router.post('/logout', logoutUser); // Will be implemented later
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 
 // Protected routes (Require the verifyToken middleware)
-router.put('/location', verifyToken, setUserLocation); 
+router.put('/location', verifyToken, setUserLocation);
 router.get("/:id", verifyToken, getUserById);
 router.put("/:id", verifyToken, updateUser);
 router.get('/nearby', verifyToken, getNearbyUsers);

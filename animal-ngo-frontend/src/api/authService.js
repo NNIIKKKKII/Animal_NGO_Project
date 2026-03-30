@@ -14,3 +14,13 @@ export const logout = () => {
   localStorage.removeItem("user");
   localStorage.removeItem("token");
 };
+
+export const forgotPassword = async (email) => {
+  const res = await api.post("/api/users/forgot-password", { email });
+  return res.data;
+};
+
+export const resetPassword = async (token, newPassword) => {
+  const res = await api.post("/api/users/reset-password", { token, newPassword });
+  return res.data;
+};
