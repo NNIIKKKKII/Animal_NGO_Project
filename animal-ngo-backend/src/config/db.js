@@ -4,14 +4,11 @@ import pkg from "pg";
 dotenv.config();
 const { Pool } = pkg;
 
-// 🔥 Smart DB config: Render OR Localhost
 const pool = new Pool(
   process.env.DATABASE_URL
     ? {
       connectionString: process.env.DATABASE_URL,
-      ssl: process.env.NODE_ENV === "production"
-        ? { rejectUnauthorized: false }
-        : false,
+      ssl: { rejectUnauthorized: false },
     }
     : {
       user: process.env.DB_USER,
@@ -26,7 +23,6 @@ pool.on("connect", () => {
   console.log("✅ Connected to PostgreSQL");
 });
 
-// Optional sanity test (safe)
 pool
   .query("SELECT 1")
   .then(() => console.log("✅ DB test query passed"))
