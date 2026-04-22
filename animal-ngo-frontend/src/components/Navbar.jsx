@@ -1,17 +1,20 @@
-import { Link, useLocation } from "react-router-dom";
-// import { useAuth } from "../context/AuthContext";
-import useStore from "../stores/store.js"
-
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import useStore from "../stores/store.js";
 import { useState } from "react";
 
 const Navbar = () => {
-  // const { isAuthenticated, logout } = useAuth();
   const isAuthenticated = useStore((state) => state.isAuthenticated);
-  const logout = useStore((state) => state.logout)
-
+  const isNgoAuthenticated = useStore((state) => state.isNgoAuthenticated);
+  const logoutActiveSession = useStore((state) => state.logoutActiveSession);
+  const user = useStore((state) => state.user);
+  const ngo = useStore((state) => state.ngo);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const activeSession = isNgoAuthenticated ? "ngo" : isAuthenticated ? "user" : null;
+  const isLandingPage = location.pathname === "/" && !activeSession;
 
   const isAuthPage =
     location.pathname === "/login" ||
@@ -19,17 +22,146 @@ const Navbar = () => {
     location.pathname === "/ngo/login" ||
     location.pathname === "/ngo/register";
 
-  const navLink =
-    "text-purple-900 hover:text-blue-900 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105";
+  const navLink = isLandingPage
+    ? "text-[#463833] hover:text-[#c0392b] transition-all duration-300"
+    : "text-purple-900 hover:text-blue-900 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105";
+
+  const handleLogout = (isMobile = false) => {
+    const redirectPath = activeSession === "ngo" ? "/ngo/login" : "/login";
+
+    logoutActiveSession();
+    if (isMobile) setMenuOpen(false);
+    navigate(redirectPath, { replace: true });
+  };
+
+  const renderSessionLinks = (isMobile = false) => {
+    if (activeSession === "ngo") {
+      return (
+        <>
+          <Link
+            to="/ngo/dashboard"
+            onClick={isMobile ? () => setMenuOpen(false) : undefined}
+            className={navLink}
+          >
+            {ngo?.name || "NGO Dashboard"}
+          </Link>
+
+          <button
+            onClick={() => handleLogout(isMobile)}
+            className={`text-red-500 hover:text-red-900 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105${isMobile ? " text-left" : ""}`}
+          >
+            Logout
+          </button>
+        </>
+      );
+    }
+
+    if (activeSession === "user") {
+      return (
+        <>
+          <Link
+            to="/profile"
+            onClick={isMobile ? () => setMenuOpen(false) : undefined}
+            className={navLink}
+          >
+            Profile
+          </Link>
+
+          {user?.role === "donor" && (
+            <Link
+              to="/rescue/my-reports"
+              onClick={isMobile ? () => setMenuOpen(false) : undefined}
+              className={navLink}
+            >
+              My Reports
+            </Link>
+          )}
+
+          {user?.role === "volunteer" && (
+            <Link
+              to="/volunteer/cases"
+              onClick={isMobile ? () => setMenuOpen(false) : undefined}
+              className={navLink}
+            >
+              My Assignments
+            </Link>
+          )}
+
+          <Link
+            to="/lost-pets/report"
+            onClick={isMobile ? () => setMenuOpen(false) : undefined}
+            className={navLink}
+          >
+            Report Lost Pet
+          </Link>
+
+          <Link
+            to="/lost-pets"
+            onClick={isMobile ? () => setMenuOpen(false) : undefined}
+            className={navLink}
+          >
+            Lost Pets
+          </Link>
+
+          <button
+            onClick={() => handleLogout(isMobile)}
+            className={`text-red-500 hover:text-red-900 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105${isMobile ? " text-left" : ""}`}
+          >
+            Logout
+          </button>
+        </>
+      );
+    }
+
+    if (isAuthPage) return null;
+
+    return (
+      <>
+        <Link
+          to="/ngo/register"
+          onClick={isMobile ? () => setMenuOpen(false) : undefined}
+          className={navLink}
+        >
+          NGO Register
+        </Link>
+
+        <Link
+          to="/ngo/login"
+          onClick={isMobile ? () => setMenuOpen(false) : undefined}
+          className={navLink}
+        >
+          NGO Login
+        </Link>
+
+        <Link
+          to="/register"
+          onClick={isMobile ? () => setMenuOpen(false) : undefined}
+          className={navLink}
+        >
+          Register
+        </Link>
+
+        <Link
+          to="/login"
+          onClick={isMobile ? () => setMenuOpen(false) : undefined}
+          className={navLink}
+        >
+          Login
+        </Link>
+      </>
+    );
+  };
 
   return (
-    <header className="bg-gradient-to-r from-pink-400/90 via-purple-400/90 to-blue-400/90 backdrop-blur-md shadow-lg border-b border-white/20">
-
+    <header
+      className={
+        isLandingPage
+          ? "sticky top-0 z-40 border-b border-[#eadfd8] bg-[#f9f6f4]/95 backdrop-blur-md shadow-sm"
+          : "bg-gradient-to-r from-pink-400/90 via-purple-400/90 to-blue-400/90 backdrop-blur-md shadow-lg border-b border-white/20"
+      }
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
         <div className="flex items-center justify-between h-16">
-
-          {/* Logo */}
           <>
             <style>
               {`
@@ -53,86 +185,45 @@ const Navbar = () => {
             </style>
 
             <Link
-              to="/"
-              className="text-2xl font-bold tracking-wide logo-animation drop-shadow-lg"
+              to={activeSession === "ngo" ? "/ngo/dashboard" : activeSession === "user" ? "/dashboard" : "/"}
+              className={isLandingPage
+                ? "text-2xl font-bold tracking-wide text-[#1f1d1b]"
+                : "text-2xl font-bold tracking-wide logo-animation drop-shadow-lg"}
             >
-              🐾 Animal NGO
+              Animal NGO
             </Link>
           </>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6 text-base font-semibold">
-
             <Link to="/donations" className={navLink}>
               Donation Feed
             </Link>
 
-            {!isAuthPage && (
-              <>
-                <Link to="/ngo/register" className={navLink}>
-                  NGO Register
-                </Link>
+            <Link to="/lost-pets" className={navLink}>
+              Lost Pets
+            </Link>
 
-                <Link to="/ngo/login" className={navLink}>
-                  NGO Login
-                </Link>
-              </>
-            )}
-
-            {isAuthenticated ? (
-              <>
-                <Link to="/profile" className={navLink}>
-                  Profile
-                </Link>
-
-                <Link to="/lost-pets/report" className={navLink}>
-                  Report Lost Pet
-                </Link>
-
-                <Link to="/lost-pets" className={navLink}>
-                  Lost Pets
-                </Link>
-
-                <button
-                  onClick={logout}
-                  className="text-red-500 hover:text-red-900 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              !isAuthPage && (
-                <>
-                  <Link to="/register" className={navLink}>
-                    Register
-                  </Link>
-
-                  <Link to="/login" className={navLink}>
-                    Login
-                  </Link>
-                </>
-              )
-            )}
-
+            {renderSessionLinks(false)}
           </nav>
 
-          {/* Burger Icon */}
           <button
-            className="md:hidden text-white text-2xl hover:scale-110 transition"
+            className={isLandingPage
+              ? "md:hidden text-[#1f1d1b] text-base font-semibold hover:text-[#c0392b] transition"
+              : "md:hidden text-white text-2xl hover:scale-110 transition"}
             onClick={() => setMenuOpen(!menuOpen)}
           >
-            ☰
+            Menu
           </button>
-
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden border-t border-white/20 backdrop-blur-md bg-white/20">
-
-          <div className="flex flex-col space-y-4 px-4 py-4 text-base font-medium text-white">
-
+        <div className={isLandingPage
+          ? "md:hidden border-t border-[#eadfd8] backdrop-blur-md bg-[#f9f6f4]"
+          : "md:hidden border-t border-white/20 backdrop-blur-md bg-white/20"}>
+          <div className={isLandingPage
+            ? "flex flex-col space-y-4 px-4 py-4 text-base font-medium text-[#463833]"
+            : "flex flex-col space-y-4 px-4 py-4 text-base font-medium text-white"}>
             <Link
               to="/donations"
               onClick={() => setMenuOpen(false)}
@@ -141,84 +232,15 @@ const Navbar = () => {
               Donation Feed
             </Link>
 
-            {!isAuthPage && (
-              <>
-                <Link
-                  to="/ngo/register"
-                  onClick={() => setMenuOpen(false)}
-                  className={navLink}
-                >
-                  NGO Register
-                </Link>
+            <Link
+              to="/lost-pets"
+              onClick={() => setMenuOpen(false)}
+              className={navLink}
+            >
+              Lost Pets
+            </Link>
 
-                <Link
-                  to="/ngo/login"
-                  onClick={() => setMenuOpen(false)}
-                  className={navLink}
-                >
-                  NGO Login
-                </Link>
-              </>
-            )}
-
-            {isAuthenticated ? (
-              <>
-                <Link
-                  to="/profile"
-                  onClick={() => setMenuOpen(false)}
-                  className={navLink}
-                >
-                  Profile
-                </Link>
-
-                <Link
-                  to="/lost-pets/report"
-                  onClick={() => setMenuOpen(false)}
-                  className={navLink}
-                >
-                  Report Lost Pet
-                </Link>
-
-                <Link
-                  to="/lost-pets"
-                  onClick={() => setMenuOpen(false)}
-                  className={navLink}
-                >
-                  Lost Pets
-                </Link>
-
-                <button
-                  onClick={() => {
-                    logout();
-                    setMenuOpen(false);
-                  }}
-                  className="text-red-500 hover:text-red-900 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 text-left"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              !isAuthPage && (
-                <>
-                  <Link
-                    to="/register"
-                    onClick={() => setMenuOpen(false)}
-                    className={navLink}
-                  >
-                    Register
-                  </Link>
-
-                  <Link
-                    to="/login"
-                    onClick={() => setMenuOpen(false)}
-                    className={navLink}
-                  >
-                    Login
-                  </Link>
-                </>
-              )
-            )}
-
+            {renderSessionLinks(true)}
           </div>
         </div>
       )}

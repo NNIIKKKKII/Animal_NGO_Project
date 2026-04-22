@@ -11,7 +11,7 @@ const Login = () => {
   const login = useStore((state) => state.login);
   const isLoading = useStore((state) => state.isLoading);
   const isAuthenticated = useStore((state) => state.isAuthenticated);
-  const user = useStore((state) => state.user);
+  const getDefaultRoute = useStore((state) => state.getDefaultRoute);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +21,7 @@ const Login = () => {
 
 
   if (isAuthenticated) {
-    return <Navigate to="/" replace />; //Its a JSX Component.
+    return <Navigate to={getDefaultRoute()} replace />; //Its a JSX Component.
   }
 
 
@@ -38,10 +38,8 @@ const Login = () => {
 
       if (loggedInUser?.role === "admin") {
         navigate("/admin");
-      } else if (loggedInUser?.role === "volunteer") {
-        navigate("/volunteer/cases");
       } else {
-        navigate("/");
+        navigate("/dashboard");
       }
 
     } catch (err) {

@@ -1,29 +1,25 @@
-// animal-ngo-frontend/src/pages/VolunteerDashboard.jsx
 import React, { useState, useEffect } from "react";
-import { getMyCases, updateCaseStatus } from "../api/rescueService";
-// import { useAuth } from "../context/AuthContext";
-import useStore from "../stores/store.js"
-
+import { getMyAssignedRescues, updateCaseStatus } from "../api/rescueService";
+import useStore from "../stores/store.js";
 
 const VolunteerDashboard = () => {
   const [myCases, setMyCases] = useState([]);
-  const [filter, setFilter] = useState("active"); // 'active' or 'resolved'
+  const [filter, setFilter] = useState("active");
   const [loading, setLoading] = useState(true);
-  // const { user } = useAuth();
   const user = useStore((state) => state.user);
 
   useEffect(() => {
-    fetchMyAssignments();
-  }, []);
+    if (user?.role === "volunteer") {
+      fetchMyAssignments();
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
 
   const fetchMyAssignments = async () => {
     try {
-      const allCases = await getMyCases();
-      // Client-side filter: Keep only cases assigned to ME
-      const assignedToMe = allCases.filter(
-        (c) => c.assigned_volunteer_id === user.id
-      );
-      setMyCases(assignedToMe);
+      const assignedCases = await getMyAssignedRescues();
+      setMyCases(assignedCases);
       setLoading(false);
     } catch (err) {
       console.error("Error fetching assignments:", err);
@@ -36,16 +32,14 @@ const VolunteerDashboard = () => {
 
     try {
       await updateCaseStatus(caseId, newStatus);
-      // Update local state immediately for snappy UI
       setMyCases((prev) =>
         prev.map((c) => (c.id === caseId ? { ...c, status: newStatus } : c))
       );
-    } catch (err) {
+    } catch {
       alert("Failed to update status.");
     }
   };
 
-  // Filter logic
   const displayedCases = myCases.filter((c) => {
     if (filter === "active") return c.status !== "resolved";
     if (filter === "resolved") return c.status === "resolved";
@@ -63,10 +57,9 @@ const VolunteerDashboard = () => {
     <div className="max-w-6xl mx-auto p-6">
       <div className="flex flex-col md:flex-row justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
-          My Assignments 📋
+          My Assignments
         </h1>
 
-        {/* Filter Toggles */}
         <div className="flex bg-gray-200 p-1 rounded-lg">
           <button
             onClick={() => setFilter("active")}
@@ -122,17 +115,15 @@ const VolunteerDashboard = () => {
                   </span>
                 </div>
                 <p className="text-gray-600 mb-2">{rescue.description}</p>
-                {/* Future: Add a "Show Map" button here */}
               </div>
 
-              {/* Action Buttons */}
               {rescue.status !== "resolved" && (
                 <div className="flex space-x-3 ml-4">
                   <button
                     onClick={() => handleStatusUpdate(rescue.id, "resolved")}
                     className="bg-green-600 text-white px-5 py-2.5 rounded-lg hover:bg-green-700 transition font-medium shadow-sm"
                   >
-                    Mark Resolved ✅
+                    Mark Resolved
                   </button>
                 </div>
               )}

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { loginNgo } from "../api/ngoService";
-import { useNavigate, Link } from "react-router-dom";
+import useStore from "../stores/store.js";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 
 const LoginNgo = () => {
   const navigate = useNavigate();
+  const loginNgo = useStore((state) => state.loginNgo);
+  const isNgoAuthenticated = useStore((state) => state.isNgoAuthenticated);
 
   const [form, setForm] = useState({});
   const [error, setError] = useState(null);
@@ -12,20 +14,20 @@ const LoginNgo = () => {
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
+  if (isNgoAuthenticated) {
+    return <Navigate to="/ngo/dashboard" replace />;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
 
     try {
-      const data = await loginNgo(form);
-
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("ngo", JSON.stringify(data.ngo));
-
+      await loginNgo(form);
       navigate("/ngo/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(typeof err === "string" ? err : "Login failed");
     } finally {
       setLoading(false);
     }
@@ -36,16 +38,13 @@ const LoginNgo = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200">
-
-      {/* Glass Card */}
       <div className="w-full max-w-md backdrop-blur-lg bg-white/30 border border-white/40 shadow-2xl rounded-2xl p-8">
-
         <div className="text-center mb-6">
           <h2 className="text-3xl font-bold text-gray-800">
             NGO Login
           </h2>
           <p className="text-sm text-gray-700 mt-2">
-            Access your NGO dashboard 🐾
+            Access your NGO dashboard
           </p>
         </div>
 
@@ -56,7 +55,6 @@ const LoginNgo = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-
           <input
             name="email"
             type="email"
@@ -82,12 +80,9 @@ const LoginNgo = () => {
           >
             {loading ? "Logging in..." : "Login"}
           </button>
-
         </form>
 
-        {/* Register link */}
         <div className="mt-6 text-center border-t pt-4">
-
           <p className="text-sm text-gray-700">
             Don't have an NGO account?
           </p>
@@ -98,9 +93,7 @@ const LoginNgo = () => {
           >
             Register here
           </Link>
-
         </div>
-
       </div>
     </div>
   );

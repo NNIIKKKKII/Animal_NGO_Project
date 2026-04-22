@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import LostPetCard from "../components/LostPetCard";
 import squirrelImage from "../assets/pics/squirrel.jpg";
 import { Link } from "react-router-dom";
-
-const BACKEND_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+import useStore from "../stores/store.js";
+import { deleteLostPet, getLostPets } from "../api/lostPetService";
 
 const LostPetFeed = () => {
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const user = useStore((state) => state.user);
+  const isAuthenticated = useStore((state) => state.isAuthenticated);
+  const isNgoAuthenticated = useStore((state) => state.isNgoAuthenticated);
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_URL}/api/lost-pets`)
-      .then((res) => setPets(res.data.data))
+    getLostPets()
+      .then(setPets)
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
@@ -23,12 +23,17 @@ const LostPetFeed = () => {
     if (!window.confirm("Delete this lost pet report?")) return;
 
     try {
-      await axios.delete(`${BACKEND_URL}/api/lost-pets/${id}`);
+      await deleteLostPet(id);
       setPets((prev) => prev.filter((pet) => pet.id !== id));
     } catch (err) {
       console.error(err);
       alert("Failed to delete lost pet");
     }
+  };
+
+  const canDeletePet = (pet) => {
+    if (!isAuthenticated || isNgoAuthenticated || !user) return false;
+    return pet.created_by === user.id;
   };
 
   if (loading) {
@@ -41,22 +46,17 @@ const LostPetFeed = () => {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
-
-      {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center blur-md scale-110 brightness-75"
         style={{ backgroundImage: `url(${squirrelImage})` }}
       />
 
-      {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/40" />
 
-      {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-12">
         <div className="relative flex items-center justify-center mb-10">
-
           <h2 className="text-3xl md:text-4xl font-bold text-white text-center drop-shadow-lg">
-            Lost Pets 🐾
+            Lost Pets
           </h2>
 
           <div className="absolute right-0 hidden md:block">
@@ -67,7 +67,6 @@ const LostPetFeed = () => {
               Report Lost Pet
             </Link>
           </div>
-
         </div>
 
         <div className="flex justify-center md:hidden mb-6">
@@ -78,10 +77,11 @@ const LostPetFeed = () => {
             Report Lost Pet
           </Link>
         </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {pets.length === 0 ? (
             <div className="text-center text-white text-xl mt-10">
-              No lost pets reported yet 🐾
+              No lost pets reported yet
             </div>
           ) : (
             pets.map((pet) => (
@@ -89,12 +89,11 @@ const LostPetFeed = () => {
                 key={pet.id}
                 pet={pet}
                 onDelete={handleDelete}
-                canDelete={true}
+                canDelete={canDeletePet(pet)}
               />
             ))
           )}
         </div>
-
       </div>
     </div>
   );
