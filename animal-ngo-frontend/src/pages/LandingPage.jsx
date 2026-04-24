@@ -93,81 +93,91 @@ const roles = [
 
 const LandingPage = () => {
   return (
-    <div className="bg-[#f9f6f4] text-[#1f1d1b]">
-      <section className="mx-auto grid min-h-[calc(100svh-4rem)] max-w-7xl items-center gap-12 px-6 py-16 md:px-10 lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
-        <div className="landing-fade-up max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#c0392b]">
-            ANIMAL RESCUE NETWORK
-          </p>
-          <h1 className="mt-5 max-w-3xl font-serif text-5xl font-bold leading-[0.95] text-[#1f1d1b] md:text-6xl lg:text-7xl">
-            Compassion in Action for Every Animal in Need
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-[#5d5753]">
-            Report injured animals, coordinate rescues, support treatment
-            through donations, and reunite lost pets - all in one unified
-            platform.
-          </p>
+    <div className="overflow-hidden bg-[#fff8f6] text-[#221c1a]">
+      <section className="relative isolate">
+        <div className="landing-cinema-glow landing-cinema-glow-one" />
+        <div className="landing-cinema-glow landing-cinema-glow-two" />
+        <div className="landing-cinema-glow landing-cinema-glow-three" />
 
-          <div className="mt-9 flex flex-wrap gap-4">
-            <Link
-              to="/rescue/report"
-              className="inline-flex items-center justify-center rounded-xl bg-[#c0392b] px-6 py-3 text-sm font-semibold text-white shadow-[0_18px_35px_rgba(192,57,43,0.24)] transition hover:-translate-y-0.5 hover:bg-[#a73124]"
-            >
-              Report a Rescue
-            </Link>
-            <Link
-              to="/register"
-              className="inline-flex items-center justify-center rounded-xl border border-[#c0392b] px-6 py-3 text-sm font-semibold text-[#c0392b] transition hover:-translate-y-0.5 hover:bg-[#fff1ee]"
-            >
-              Join as Volunteer
-            </Link>
+        <div className="mx-auto grid min-h-[calc(100svh-4rem)] max-w-7xl items-center gap-12 px-6 pb-20 pt-16 md:px-10 lg:grid-cols-[1.05fr_0.95fr] lg:pb-28 lg:pt-24">
+          <div className="landing-fade-up relative z-10 max-w-3xl">
+            <p className="inline-flex rounded-full border border-[#f0d7d2] bg-white/80 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#b74d59] shadow-[0_10px_24px_rgba(180,101,101,0.08)] backdrop-blur">
+              Animal Rescue Network
+            </p>
+
+            <h1 className="mt-7 max-w-4xl font-serif text-6xl font-bold leading-[0.88] tracking-[-0.04em] text-[#221c1a] md:text-7xl lg:text-[6.1rem]">
+              Compassion in Action for Every Animal in Need
+            </h1>
+
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-[#5c4a48] md:text-xl">
+              Report injured animals, coordinate rescues, support treatment
+              through donations, and reunite lost pets - all in one unified
+              platform.
+            </p>
+
+            <div className="mt-10 flex flex-wrap gap-4">
+              <Link
+                to="/rescue/report"
+                className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-[#cd5b66] via-[#c74758] to-[#b83d55] px-7 py-3.5 text-sm font-semibold text-white shadow-[0_20px_45px_rgba(196,78,101,0.28)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_52px_rgba(196,78,101,0.34)]"
+              >
+                Report a Rescue
+              </Link>
+              <Link
+                to="/register"
+                className="inline-flex items-center justify-center rounded-xl border border-[#e6b8bf] bg-white/85 px-7 py-3.5 text-sm font-semibold text-[#b53f53] shadow-[0_12px_28px_rgba(194,139,139,0.12)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#fff0f2]"
+              >
+                Join as Volunteer
+              </Link>
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-5 text-sm font-medium text-[#7b6661]">
+              <Link to="/donations" className="transition hover:text-[#b83d55]">
+                Browse Donations
+              </Link>
+              <Link to="/lost-pets" className="transition hover:text-[#b83d55]">
+                Lost Pets Feed
+              </Link>
+              <Link
+                to="/ngo/register"
+                className="transition hover:text-[#b83d55]"
+              >
+                NGO Registration
+              </Link>
+            </div>
           </div>
 
-          <div className="mt-7 flex flex-wrap gap-5 text-sm font-medium text-[#6c615b]">
-            <Link to="/donations" className="transition hover:text-[#c0392b]">
-              Browse Donations
-            </Link>
-            <Link to="/lost-pets" className="transition hover:text-[#c0392b]">
-              Lost Pets Feed
-            </Link>
-            <Link
-              to="/ngo/register"
-              className="transition hover:text-[#c0392b]"
-            >
-              NGO Registration
-            </Link>
+          <div className="landing-fade-up landing-delay-1 relative z-10 flex min-h-[34rem] items-center justify-center lg:min-h-[44rem]">
+            <div className="landing-blob landing-blob-one border border-white/70 bg-white/25 p-2">
+              <img
+                src={catImage}
+                alt="Rescued cat resting safely"
+                className="h-full w-full rounded-[inherit] object-cover"
+              />
+            </div>
+            <div className="landing-blob landing-blob-two border border-white/70 bg-white/25 p-2">
+              <img
+                src={volunteerImage}
+                alt="Volunteer caring for rescued dogs at a shelter"
+                className="h-full w-full rounded-[inherit] object-cover"
+              />
+            </div>
+            <div className="landing-blob landing-blob-three border border-white/70 bg-white/25 p-2">
+              <img
+                src={reunionImage}
+                alt="Pet owner hugging a reunited dog"
+                className="h-full w-full rounded-[inherit] object-cover"
+              />
+            </div>
+            <div className="landing-accent-orb landing-accent-orb-one" />
+            <div className="landing-accent-orb landing-accent-orb-two" />
+            <div className="landing-ring landing-ring-one" />
+            <div className="landing-ring landing-ring-two" />
           </div>
-        </div>
-
-        <div className="landing-fade-up landing-delay-1 relative flex min-h-[30rem] items-center justify-center lg:min-h-[38rem]">
-          <div className="landing-blob landing-blob-one">
-            <img
-              src={catImage}
-              alt="Rescued cat resting safely"
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div className="landing-blob landing-blob-two">
-            <img
-              src={volunteerImage}
-              alt="Volunteer caring for rescued dogs at a shelter"
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div className="landing-blob landing-blob-three">
-            <img
-              src={reunionImage}
-              alt="Pet owner hugging a reunited dog"
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div className="landing-accent-orb landing-accent-orb-one" />
-          <div className="landing-accent-orb landing-accent-orb-two" />
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 pb-6 md:px-10">
-        <div className="landing-fade-up landing-delay-2 rounded-xl border border-[#eadfd8] bg-white px-6 py-8 shadow-[0_18px_45px_rgba(97,74,64,0.08)] md:px-10">
+      <section className="relative z-10 mx-auto max-w-7xl px-6 pb-8 md:px-10">
+        <div className="landing-fade-up landing-delay-2 rounded-[30px] border border-[#f0dbd8] bg-white/88 px-6 py-8 shadow-[0_28px_60px_rgba(139,98,86,0.09)] backdrop-blur md:px-10">
           <div className="flex flex-col gap-8 md:flex-row md:items-start md:gap-0">
             {stats.map((item) => (
               <Stat key={item.label} value={item.value} label={item.label} />
@@ -176,40 +186,43 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-        <div className="landing-fade-up max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#c0392b]">
-            Built around real rescue work
-          </p>
-          <h2 className="mt-4 font-serif text-4xl font-bold leading-tight text-[#1f1d1b] md:text-5xl">
-            One platform for rescue coordination, funding, visibility, and
-            follow-through.
-          </h2>
-        </div>
+      <section className="relative">
+        <div className="landing-section-tint landing-section-tint-one" />
+        <div className="mx-auto max-w-7xl px-6 py-24 md:px-10">
+          <div className="landing-fade-up max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#b9505d]">
+              Built around real rescue work
+            </p>
+            <h2 className="mt-5 font-serif text-5xl font-bold leading-[0.95] tracking-[-0.03em] text-[#221c1a] md:text-6xl">
+              One platform for rescue coordination, funding, visibility, and
+              follow-through.
+            </h2>
+          </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-          {features.map((feature, index) => (
-            <FeatureCard
-              key={feature.title}
-              icon={feature.icon}
-              title={feature.title}
-              description={feature.description}
-              delayClass={`landing-delay-${(index % 3) + 1}`}
-            />
-          ))}
+          <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {features.map((feature, index) => (
+              <FeatureCard
+                key={feature.title}
+                icon={feature.icon}
+                title={feature.title}
+                description={feature.description}
+                delayClass={`landing-delay-${(index % 3) + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-        <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+      <section className="mx-auto max-w-7xl px-6 py-24 md:px-10">
+        <div className="grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
           <div className="landing-fade-up">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#c0392b]">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#b9505d]">
               How it works
             </p>
-            <h2 className="mt-4 font-serif text-4xl font-bold leading-tight text-[#1f1d1b] md:text-5xl">
+            <h2 className="mt-5 font-serif text-5xl font-bold leading-[0.95] tracking-[-0.03em] text-[#221c1a] md:text-6xl">
               A rescue pipeline people can actually act on.
             </h2>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-[#5d5753]">
+            <p className="mt-6 max-w-xl text-lg leading-8 text-[#5c4a48]">
               The system connects urgent reports, nearby volunteer response,
               donation-backed treatment, and public lost-pet visibility in one
               coordinated flow.
@@ -230,41 +243,47 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="landing-fade-up">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#c0392b]">
-              Who it serves
-            </p>
-            <h2 className="mt-4 font-serif text-4xl font-bold leading-tight text-[#1f1d1b] md:text-5xl">
-              Clear tools for the people who make rescue possible.
-            </h2>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-[#5d5753]">
-              Pet owners can report urgent cases and lost pets, while admins
-              oversee rescue flow, people, and accountability across the
-              network.
-            </p>
-          </div>
+      <section className="relative">
+        <div className="landing-section-tint landing-section-tint-two" />
+        <div className="mx-auto max-w-7xl px-6 py-24 md:px-10">
+          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="landing-fade-up">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#b9505d]">
+                Who it serves
+              </p>
+              <h2 className="mt-5 font-serif text-5xl font-bold leading-[0.95] tracking-[-0.03em] text-[#221c1a] md:text-6xl">
+                Clear tools for the people who make rescue possible.
+              </h2>
+              <p className="mt-6 max-w-xl text-lg leading-8 text-[#5c4a48]">
+                Pet owners can report urgent cases and lost pets, while admins
+                oversee rescue flow, people, and accountability across the
+                network.
+              </p>
+            </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            {roles.map((role, index) => (
-              <div
-                key={role.title}
-                className={`landing-fade-up ${`landing-delay-${(index % 3) + 1}`} rounded-xl border border-[#eadfd8] bg-white p-7 shadow-[0_18px_45px_rgba(97,74,64,0.06)] transition-transform duration-200 hover:-translate-y-1`}
-              >
-                <h3 className="text-xl font-semibold text-[#1f1d1b]">
-                  {role.title}
-                </h3>
-                <p className="mt-3 leading-7 text-[#5d5753]">{role.body}</p>
-              </div>
-            ))}
+            <div className="grid gap-6 md:grid-cols-3">
+              {roles.map((role, index) => (
+                <div
+                  key={role.title}
+                  className={`landing-fade-up landing-delay-${(index % 3) + 1} rounded-[28px] border border-[#efd7d7] bg-white/90 p-8 shadow-[0_24px_55px_rgba(126,89,89,0.08)] backdrop-blur transition duration-300 hover:-translate-y-1`}
+                >
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#bc6570]">
+                    Role
+                  </p>
+                  <h3 className="mt-4 text-2xl font-semibold text-[#221c1a]">
+                    {role.title}
+                  </h3>
+                  <p className="mt-4 leading-7 text-[#5c4a48]">{role.body}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-        <div className="landing-fade-up grid gap-10 rounded-[28px] bg-white p-8 shadow-[0_20px_50px_rgba(97,74,64,0.08)] md:p-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-          <div className="overflow-hidden rounded-[24px]">
+      <section className="mx-auto max-w-7xl px-6 py-24 md:px-10">
+        <div className="landing-fade-up grid gap-10 rounded-[36px] border border-[#f0dbd8] bg-white/92 p-8 shadow-[0_28px_65px_rgba(126,89,89,0.1)] backdrop-blur md:p-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+          <div className="overflow-hidden rounded-[28px] shadow-[0_18px_40px_rgba(126,89,89,0.12)]">
             <img
               src={volunteerImage}
               alt="Volunteer caring for rescued animals"
@@ -273,14 +292,14 @@ const LandingPage = () => {
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#c0392b]">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#b9505d]">
               Trust from the field
             </p>
-            <blockquote className="mt-5 font-serif text-3xl font-semibold leading-tight text-[#1f1d1b] md:text-4xl">
+            <blockquote className="mt-5 font-serif text-4xl font-semibold leading-tight tracking-[-0.03em] text-[#221c1a] md:text-5xl">
               "This platform helped us respond faster and save more animals than
               ever before."
             </blockquote>
-            <p className="mt-5 text-base leading-8 text-[#5d5753]">
+            <p className="mt-6 max-w-xl text-base leading-8 text-[#5c4a48] md:text-lg">
               Rescue coordination works best when reports, volunteers, support,
               and updates all live in one place. That is exactly what your
               platform is built to do.
@@ -289,14 +308,14 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="px-6 py-20 md:px-10">
-        <div className="landing-fade-up mx-auto max-w-7xl rounded-[32px] bg-gradient-to-r from-[#c0392b] via-[#c44b3d] to-[#d05b4d] px-8 py-14 text-white shadow-[0_26px_70px_rgba(192,57,43,0.25)] md:px-12 md:py-16">
+      <section className="px-6 pb-24 pt-8 md:px-10">
+        <div className="landing-fade-up mx-auto max-w-7xl overflow-hidden rounded-[40px] bg-gradient-to-r from-[#c84d67] via-[#d95f77] to-[#e57d8a] px-8 py-14 text-white shadow-[0_30px_75px_rgba(199,80,109,0.28)] md:px-12 md:py-16">
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/80">
                 Be part of the rescue network
               </p>
-              <h2 className="mt-4 font-serif text-4xl font-bold leading-tight md:text-5xl">
+              <h2 className="mt-4 max-w-3xl font-serif text-5xl font-bold leading-[0.95] tracking-[-0.03em] md:text-6xl">
                 Be part of the rescue network
               </h2>
               <p className="mt-5 max-w-2xl text-lg leading-8 text-white/85">
@@ -308,13 +327,13 @@ const LandingPage = () => {
             <div className="flex flex-wrap gap-4 lg:justify-end">
               <Link
                 to="/register"
-                className="inline-flex items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-[#c0392b] transition hover:bg-[#fff0ec]"
+                className="inline-flex items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-[#bf4860] transition hover:-translate-y-0.5 hover:bg-[#fff2f4]"
               >
                 Join Now
               </Link>
               <Link
                 to="/rescue/report"
-                className="inline-flex items-center justify-center rounded-xl border border-white/60 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+                className="inline-flex items-center justify-center rounded-xl border border-white/60 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-white/15"
               >
                 Report a Case
               </Link>

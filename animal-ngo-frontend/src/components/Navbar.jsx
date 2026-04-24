@@ -23,7 +23,7 @@ const Navbar = () => {
     location.pathname === "/ngo/register";
 
   const navLink = isLandingPage
-    ? "text-[#463833] hover:text-[#c0392b] transition-all duration-300"
+    ? "text-[#5c4846] hover:text-[#bf4860] transition-all duration-300"
     : "text-purple-900 hover:text-blue-900 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105";
 
   const handleLogout = (isMobile = false) => {
@@ -156,7 +156,7 @@ const Navbar = () => {
     <header
       className={
         isLandingPage
-          ? "sticky top-0 z-40 border-b border-[#eadfd8] bg-[#f9f6f4]/95 backdrop-blur-md shadow-sm"
+          ? "sticky top-0 z-40 border-b border-[#f1d8d5] bg-[#fff8f6]/85 backdrop-blur-xl shadow-[0_10px_30px_rgba(145,103,103,0.06)]"
           : "bg-gradient-to-r from-pink-400/90 via-purple-400/90 to-blue-400/90 backdrop-blur-md shadow-lg border-b border-white/20"
       }
     >
@@ -187,7 +187,7 @@ const Navbar = () => {
             <Link
               to={activeSession === "ngo" ? "/ngo/dashboard" : activeSession === "user" ? "/dashboard" : "/"}
               className={isLandingPage
-                ? "text-2xl font-bold tracking-wide text-[#1f1d1b]"
+                ? "text-2xl font-bold tracking-[0.04em] text-[#221c1a]"
                 : "text-2xl font-bold tracking-wide logo-animation drop-shadow-lg"}
             >
               Animal NGO
@@ -208,7 +208,7 @@ const Navbar = () => {
 
           <button
             className={isLandingPage
-              ? "md:hidden text-[#1f1d1b] text-base font-semibold hover:text-[#c0392b] transition"
+              ? "md:hidden text-[#221c1a] text-base font-semibold hover:text-[#bf4860] transition"
               : "md:hidden text-white text-2xl hover:scale-110 transition"}
             onClick={() => setMenuOpen(!menuOpen)}
           >
@@ -219,10 +219,10 @@ const Navbar = () => {
 
       {menuOpen && (
         <div className={isLandingPage
-          ? "md:hidden border-t border-[#eadfd8] backdrop-blur-md bg-[#f9f6f4]"
+          ? "md:hidden border-t border-[#f1d8d5] backdrop-blur-xl bg-[#fff8f6]/95"
           : "md:hidden border-t border-white/20 backdrop-blur-md bg-white/20"}>
           <div className={isLandingPage
-            ? "flex flex-col space-y-4 px-4 py-4 text-base font-medium text-[#463833]"
+            ? "flex flex-col space-y-4 px-4 py-4 text-base font-medium text-[#5c4846]"
             : "flex flex-col space-y-4 px-4 py-4 text-base font-medium text-white"}>
             <Link
               to="/donations"
