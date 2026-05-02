@@ -1,14 +1,10 @@
 import React from "react";
 
-const StatCard = ({ label, value, accent = "border-indigo-600" }) => {
+const StatCard = ({ label, value }) => {
   return (
-    <div
-      className={`bg-white p-6 rounded-2xl shadow-sm border-l-4 ${accent} transition-transform hover:scale-[1.02]`}
-    >
-      <p className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em]">
-        {label}
-      </p>
-      <p className="text-3xl font-black text-gray-900 mt-1 tracking-tighter">
+    <div className="app-card-strong p-6 transition duration-300 hover:-translate-y-1">
+      <p className="app-label">{label}</p>
+      <p className="mt-2 font-serif text-4xl font-bold tracking-[-0.03em] text-[#2f2321]">
         {value}
       </p>
     </div>

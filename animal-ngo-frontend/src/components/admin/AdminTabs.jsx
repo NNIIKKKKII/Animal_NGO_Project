@@ -2,13 +2,13 @@ import React from "react";
 
 const AdminTabs = ({ activeTab, onChange }) => {
   return (
-    <div className="inline-flex bg-gray-100 p-1 rounded-xl shadow-inner">
+    <div className="inline-flex rounded-xl border border-[#edd8d6] bg-white p-1 shadow-sm">
       <button
         onClick={() => onChange("overview")}
-        className={`px-6 py-2 rounded-lg text-[10px] font-black tracking-widest transition-all ${
+        className={`rounded-lg px-5 py-2 text-xs font-semibold tracking-[0.15em] transition ${
           activeTab === "overview"
-            ? "bg-white shadow-sm text-indigo-600"
-            : "text-gray-400 hover:text-gray-600"
+            ? "bg-[#ffeef1] text-[#b83d55]"
+            : "text-[#8a726d] hover:text-[#3f312e]"
         }`}
       >
         OVERVIEW
@@ -16,10 +16,10 @@ const AdminTabs = ({ activeTab, onChange }) => {
 
       <button
         onClick={() => onChange("rescues")}
-        className={`px-6 py-2 rounded-lg text-[10px] font-black tracking-widest transition-all ${
+        className={`rounded-lg px-5 py-2 text-xs font-semibold tracking-[0.15em] transition ${
           activeTab === "rescues"
-            ? "bg-white shadow-sm text-indigo-600"
-            : "text-gray-400 hover:text-gray-600"
+            ? "bg-[#ffeef1] text-[#b83d55]"
+            : "text-[#8a726d] hover:text-[#3f312e]"
         }`}
       >
         RESCUE LOGS

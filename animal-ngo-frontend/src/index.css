@@ -7,6 +7,213 @@ html {
 body {
   background: #fff8f6;
   color: #221c1a;
+  font-family: "Segoe UI", "Trebuchet MS", "Helvetica Neue", Arial, sans-serif;
+}
+
+:root {
+  --app-bg: #fff8f6;
+  --app-panel: rgba(255, 255, 255, 0.88);
+  --app-panel-strong: #ffffff;
+  --app-border: #f0d9d7;
+  --app-text: #221c1a;
+  --app-muted: #6b5752;
+  --app-primary: #c84d67;
+  --app-primary-dark: #b83d55;
+  --app-soft: #fff1ef;
+  --app-danger: #b94149;
+  --app-success: #32785b;
+  --app-shadow: 0 24px 55px rgba(126, 89, 89, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.app-page {
+  min-height: calc(100svh - 4rem);
+  padding: 2rem 1rem 3rem;
+  background: radial-gradient(circle at 10% -10%, rgba(255, 224, 221, 0.8), rgba(255, 248, 246, 0) 40%), radial-gradient(circle at 95% 10%, rgba(252, 210, 220, 0.45), rgba(255, 248, 246, 0) 42%), var(--app-bg);
+}
+
+.app-shell {
+  width: 100%;
+  max-width: 76rem;
+  margin: 0 auto;
+}
+
+.app-card {
+  background: var(--app-panel);
+  border: 1px solid var(--app-border);
+  border-radius: 1.5rem;
+  box-shadow: var(--app-shadow);
+  backdrop-filter: blur(8px);
+}
+
+.app-card-strong {
+  background: var(--app-panel-strong);
+  border: 1px solid var(--app-border);
+  border-radius: 1.5rem;
+  box-shadow: var(--app-shadow);
+}
+
+.app-title {
+  color: var(--app-text);
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.app-subtitle {
+  color: var(--app-muted);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.app-label {
+  color: #b9505d;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.app-input,
+.app-select,
+.app-textarea {
+  width: 100%;
+  border: 1px solid #e7cfcc;
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--app-text);
+  padding: 0.72rem 0.9rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.app-input:focus,
+.app-select:focus,
+.app-textarea:focus {
+  outline: none;
+  border-color: #cf6679;
+  box-shadow: 0 0 0 3px rgba(207, 102, 121, 0.15);
+}
+
+.app-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.85rem;
+  font-weight: 700;
+  padding: 0.72rem 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.app-btn:hover {
+  transform: translateY(-1px);
+}
+
+.app-btn-primary {
+  color: #fff;
+  background: linear-gradient(90deg, var(--app-primary), var(--app-primary-dark));
+  box-shadow: 0 16px 32px rgba(199, 80, 109, 0.28);
+}
+
+.app-btn-primary:hover {
+  box-shadow: 0 20px 36px rgba(199, 80, 109, 0.34);
+}
+
+.app-btn-secondary {
+  color: var(--app-primary-dark);
+  background: #fff;
+  border: 1px solid #e7b9c1;
+}
+
+.app-btn-danger {
+  color: #fff;
+  background: linear-gradient(90deg, var(--app-danger), #a1323a);
+}
+
+.app-alert {
+  border-radius: 0.85rem;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.92rem;
+}
+
+.app-alert-error {
+  background: #ffe8eb;
+  color: #9f2f3c;
+  border: 1px solid #f3c5cb;
+}
+
+.app-alert-success {
+  background: #eaf8ef;
+  color: #2e724f;
+  border: 1px solid #c8e9d4;
+}
+
+.app-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.app-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.app-table th {
+  text-align: left;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #8f7670;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #efddda;
+}
+
+.app-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #f5e8e6;
+  color: #473733;
+}
+
+.app-status {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.app-status-pending {
+  background: #fff3da;
+  color: #8e6422;
+}
+
+.app-status-success {
+  background: #e8f5ee;
+  color: #2b6d4d;
+}
+
+.app-status-danger {
+  background: #ffe8eb;
+  color: #9a3640;
+}
+
+.app-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 248, 246, 0.56), rgba(255, 232, 233, 0.42));
+}
+
+@media (max-width: 768px) {
+  .app-page {
+    padding: 1.4rem 0.9rem 2rem;
+  }
+
+  .app-title {
+    line-height: 1.05;
+  }
 }
 
 @keyframes landingFadeUp {

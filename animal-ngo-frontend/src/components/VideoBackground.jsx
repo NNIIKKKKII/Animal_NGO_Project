@@ -3,8 +3,7 @@ import catVideo from "../assets/videos/cat.mp4";
 
 const VideoBackground = ({ children }) => {
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-      {/* Video */}
+    <div className="relative w-full min-h-screen overflow-hidden">
       <video
         autoPlay
         muted
@@ -15,11 +14,9 @@ const VideoBackground = ({ children }) => {
         <source src={catVideo} type="video/mp4" />
       </video>
 
-      {/* Dark overlay for readability */}
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="app-video-overlay" />
 
-      {/* Content */}
-      <div className="relative z-10 flex items-center justify-center h-full">
+      <div className="relative z-10 flex min-h-screen items-center justify-center">
         {children}
       </div>
     </div>

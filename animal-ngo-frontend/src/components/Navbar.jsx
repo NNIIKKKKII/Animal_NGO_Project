@@ -24,7 +24,7 @@ const Navbar = () => {
 
   const navLink = isLandingPage
     ? "text-[#5c4846] hover:text-[#bf4860] transition-all duration-300"
-    : "text-purple-900 hover:text-blue-900 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105";
+    : "text-[#5c4846] hover:text-[#bf4860] transition-all duration-300";
 
   const handleLogout = (isMobile = false) => {
     const redirectPath = activeSession === "ngo" ? "/ngo/login" : "/login";
@@ -48,7 +48,7 @@ const Navbar = () => {
 
           <button
             onClick={() => handleLogout(isMobile)}
-            className={`text-red-500 hover:text-red-900 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105${isMobile ? " text-left" : ""}`}
+            className={`text-[#b94149] hover:text-[#9f2f3c] transition-all duration-300${isMobile ? " text-left" : ""}`}
           >
             Logout
           </button>
@@ -105,7 +105,7 @@ const Navbar = () => {
 
           <button
             onClick={() => handleLogout(isMobile)}
-            className={`text-red-500 hover:text-red-900 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105${isMobile ? " text-left" : ""}`}
+            className={`text-[#b94149] hover:text-[#9f2f3c] transition-all duration-300${isMobile ? " text-left" : ""}`}
           >
             Logout
           </button>
@@ -157,42 +157,17 @@ const Navbar = () => {
       className={
         isLandingPage
           ? "sticky top-0 z-40 border-b border-[#f1d8d5] bg-[#fff8f6]/85 backdrop-blur-xl shadow-[0_10px_30px_rgba(145,103,103,0.06)]"
-          : "bg-gradient-to-r from-pink-400/90 via-purple-400/90 to-blue-400/90 backdrop-blur-md shadow-lg border-b border-white/20"
+          : "sticky top-0 z-40 border-b border-[#f1d8d5] bg-[#fff8f6]/92 backdrop-blur-xl shadow-[0_10px_30px_rgba(145,103,103,0.06)]"
       }
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <>
-            <style>
-              {`
-@keyframes logoPulse {
-  0%,100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-}
-
-@keyframes logoColor {
-  0% { color: #3b82f6; }
-  33% { color: #8b5cf6; }
-  66% { color: #ec4899; }
-  100% { color: #3b82f6; }
-}
-
-.logo-animation {
-  animation: logoPulse 4.5s ease-in-out infinite,
-             logoColor 6s linear infinite;
-}
-`}
-            </style>
-
-            <Link
-              to={activeSession === "ngo" ? "/ngo/dashboard" : activeSession === "user" ? "/dashboard" : "/"}
-              className={isLandingPage
-                ? "text-2xl font-bold tracking-[0.04em] text-[#221c1a]"
-                : "text-2xl font-bold tracking-wide logo-animation drop-shadow-lg"}
-            >
-              Animal NGO
-            </Link>
-          </>
+          <Link
+            to={activeSession === "ngo" ? "/ngo/dashboard" : activeSession === "user" ? "/dashboard" : "/"}
+            className="text-2xl font-bold tracking-[0.04em] text-[#221c1a]"
+          >
+            Animal NGO
+          </Link>
 
           <nav className="hidden md:flex items-center space-x-6 text-base font-semibold">
             <Link to="/donations" className={navLink}>
@@ -209,7 +184,7 @@ const Navbar = () => {
           <button
             className={isLandingPage
               ? "md:hidden text-[#221c1a] text-base font-semibold hover:text-[#bf4860] transition"
-              : "md:hidden text-white text-2xl hover:scale-110 transition"}
+              : "md:hidden text-[#221c1a] text-base font-semibold hover:text-[#bf4860] transition"}
             onClick={() => setMenuOpen(!menuOpen)}
           >
             Menu
@@ -220,10 +195,10 @@ const Navbar = () => {
       {menuOpen && (
         <div className={isLandingPage
           ? "md:hidden border-t border-[#f1d8d5] backdrop-blur-xl bg-[#fff8f6]/95"
-          : "md:hidden border-t border-white/20 backdrop-blur-md bg-white/20"}>
+          : "md:hidden border-t border-[#f1d8d5] backdrop-blur-xl bg-[#fff8f6]/95"}>
           <div className={isLandingPage
             ? "flex flex-col space-y-4 px-4 py-4 text-base font-medium text-[#5c4846]"
-            : "flex flex-col space-y-4 px-4 py-4 text-base font-medium text-white"}>
+            : "flex flex-col space-y-4 px-4 py-4 text-base font-medium text-[#5c4846]"}>
             <Link
               to="/donations"
               onClick={() => setMenuOpen(false)}

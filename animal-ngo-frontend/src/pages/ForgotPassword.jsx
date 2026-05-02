@@ -27,65 +27,47 @@ const ForgotPassword = () => {
 
   return (
     <VideoBackground>
-      <div className="flex items-center justify-center min-h-screen px-4">
-        <div className="w-full max-w-md backdrop-blur-xl bg-white/40 border border-white/40 shadow-2xl rounded-2xl p-10">
-          <h1 className="text-4xl font-bold text-gray-800 text-center mb-2">
-            Forgot Password? 🔑
-          </h1>
-
-          <p className="text-center text-gray-600 mb-8">
-            Enter your email to receive a reset token
+      <div className="w-full max-w-md p-4">
+        <div className="app-card p-8 md:p-10">
+          <p className="app-label text-center">Account Recovery</p>
+          <h1 className="app-title mt-3 text-center text-4xl">Forgot Password</h1>
+          <p className="app-subtitle mt-3 text-center">
+            Enter your email to generate a password reset token.
           </p>
 
-          {error && (
-            <div className="mb-5 bg-red-100/90 text-red-700 px-4 py-3 rounded-lg text-sm text-center">
-              {error}
-            </div>
-          )}
+          {error && <div className="app-alert app-alert-error mt-6">{error}</div>}
 
           {resetToken && (
-            <div className="mb-5 bg-green-100/90 text-green-700 px-4 py-3 rounded-lg text-sm">
-              <p className="font-semibold mb-2">Reset token generated!</p>
-              <p className="text-xs mb-2">Copy this token (valid for 15 minutes):</p>
-              <div className="bg-white/70 p-3 rounded border border-green-300 break-all font-mono text-xs">
+            <div className="app-alert app-alert-success mt-6">
+              <p className="font-semibold">Reset token generated.</p>
+              <p className="mt-1 text-xs">Valid for 15 minutes:</p>
+              <div className="mt-2 rounded-lg border border-[#c8e9d4] bg-white p-3 break-all font-mono text-xs text-[#2f6048]">
                 {resetToken}
               </div>
-              <Link
-                to="/reset-password"
-                className="block mt-3 text-center text-green-800 font-semibold hover:underline"
-              >
-                Go to Reset Password →
+              <Link to="/reset-password" className="mt-3 inline-block font-semibold text-[#2e724f] hover:text-[#245f40]">
+                Go to Reset Password
               </Link>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <input
-                type="email"
-                placeholder="Email Address"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-5 py-3 bg-white/70 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-              />
-            </div>
+          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+            <input
+              type="email"
+              placeholder="Email Address"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="app-input"
+            />
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-5 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
-            >
+            <button type="submit" disabled={isLoading} className="app-btn app-btn-primary w-full">
               {isLoading ? "Generating..." : "Get Reset Token"}
             </button>
           </form>
 
           <div className="mt-6 text-center">
-            <Link
-              to="/login"
-              className="text-gray-700 hover:text-gray-900 font-medium hover:underline"
-            >
-              ← Back to Login
+            <Link to="/login" className="text-sm text-[#8a6460] hover:text-[#b83d55]">
+              Back to Login
             </Link>
           </div>
         </div>

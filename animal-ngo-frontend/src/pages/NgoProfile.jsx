@@ -10,17 +10,22 @@ const NgoProfile = () => {
     getNgoProfile(id).then(setNgo);
   }, [id]);
 
-  if (!ngo) return <p>Loading...</p>;
+  if (!ngo) return <p className="app-page">Loading...</p>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-4xl font-bold">{ngo.name}</h1>
-      <p className="mt-4 text-gray-700">{ngo.description}</p>
+    <div className="app-page">
+      <div className="app-shell max-w-3xl">
+        <div className="app-card p-8 md:p-10">
+          <p className="app-label">NGO Public Profile</p>
+          <h1 className="app-title mt-3 text-5xl">{ngo.name}</h1>
+          <p className="mt-5 text-[#5c4a48] leading-8">{ngo.description}</p>
 
-      <div className="mt-6 space-y-2">
-        <p><strong>Email:</strong> {ngo.email}</p>
-        <p><strong>Phone:</strong> {ngo.phone_number}</p>
-        <p><strong>Address:</strong> {ngo.address}</p>
+          <div className="mt-8 space-y-3 text-[#3e312e]">
+            <p><strong>Email:</strong> {ngo.email}</p>
+            <p><strong>Phone:</strong> {ngo.phone_number}</p>
+            <p><strong>Address:</strong> {ngo.address}</p>
+          </div>
+        </div>
       </div>
     </div>
   );

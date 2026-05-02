@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { registerNgo } from "../api/ngoService";
 import { useNavigate, Link } from "react-router-dom";
+import VideoBackground from "../components/VideoBackground";
 
 const RegisterNgo = () => {
   const navigate = useNavigate();
@@ -22,148 +23,65 @@ const RegisterNgo = () => {
       alert("NGO registered! Await admin verification.");
       navigate("/ngo/login");
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-        "Registration failed. Please try again."
-      );
+      setError(err.response?.data?.message || "Registration failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  const inputStyle =
-    "w-full px-4 py-2 rounded-lg border border-gray-300 bg-white/80 focus:outline-none focus:ring-2 focus:ring-green-400";
-
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200">
-
-      {/* Glass Card */}
-      <div className="w-full max-w-lg backdrop-blur-lg bg-white/30 border border-white/40 shadow-2xl rounded-2xl p-8">
-
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-800">
-            NGO Registration
-          </h2>
-          <p className="text-gray-700 mt-2 text-sm">
-            Join our platform to help animals in need 🐾
+    <VideoBackground>
+      <div className="w-full max-w-xl p-4">
+        <div className="app-card p-8 md:p-10">
+          <p className="app-label text-center">NGO Onboarding</p>
+          <h2 className="app-title mt-3 text-center text-4xl">NGO Registration</h2>
+          <p className="app-subtitle mt-3 text-center">
+            Join the rescue platform as an organization partner.
           </p>
-        </div>
 
-        {/* Error */}
-        {error && (
-          <div className="bg-red-100/80 text-red-700 p-3 rounded-lg mb-4 text-center">
-            {error}
-          </div>
-        )}
+          {error && <div className="app-alert app-alert-error mt-6">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-
-          {/* NGO Name */}
-          <div>
-            <label className="block text-sm font-medium mb-1 text-gray-700">
-              NGO Name
-            </label>
-            <input
-              name="name"
-              type="text"
-              placeholder="Global Help Foundation"
-              onChange={handleChange}
-              required
-              className={inputStyle}
-            />
-          </div>
-
-          {/* Email + Phone */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
+          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-700">
-                Email
-              </label>
-              <input
-                name="email"
-                type="email"
-                placeholder="contact@ngo.org"
-                onChange={handleChange}
-                required
-                className={inputStyle}
-              />
+              <label className="mb-1 block text-sm font-semibold text-[#4f3f3b]">NGO Name</label>
+              <input name="name" type="text" placeholder="Global Help Foundation" onChange={handleChange} required className="app-input" />
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <label className="mb-1 block text-sm font-semibold text-[#4f3f3b]">Email</label>
+                <input name="email" type="email" placeholder="contact@ngo.org" onChange={handleChange} required className="app-input" />
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-semibold text-[#4f3f3b]">Phone</label>
+                <input name="phone_number" type="text" placeholder="+91..." onChange={handleChange} className="app-input" />
+              </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-700">
-                Phone
-              </label>
-              <input
-                name="phone_number"
-                type="text"
-                placeholder="+91..."
-                onChange={handleChange}
-                className={inputStyle}
-              />
+              <label className="mb-1 block text-sm font-semibold text-[#4f3f3b]">Password</label>
+              <input name="password" type="password" placeholder="Password" onChange={handleChange} required className="app-input" />
             </div>
 
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-[#4f3f3b]">About the NGO</label>
+              <textarea name="description" rows="3" placeholder="Briefly describe your mission..." onChange={handleChange} className="app-textarea" />
+            </div>
+
+            <button type="submit" disabled={loading} className="app-btn app-btn-primary w-full">
+              {loading ? "Registering..." : "Register NGO"}
+            </button>
+          </form>
+
+          <div className="mt-8 border-t border-[#edd9d7] pt-5 text-center">
+            <p className="text-sm text-[#6b5752]">Already have an account?</p>
+            <Link to="/ngo/login" className="mt-2 inline-block font-semibold text-[#b83d55] hover:text-[#a8364d]">
+              Login Here
+            </Link>
           </div>
-
-          {/* Password */}
-          <div>
-            <label className="block text-sm font-medium mb-1 text-gray-700">
-              Password
-            </label>
-            <input
-              name="password"
-              type="password"
-              placeholder="••••••••"
-              onChange={handleChange}
-              required
-              className={inputStyle}
-            />
-          </div>
-
-          {/* Description */}
-          <div>
-            <label className="block text-sm font-medium mb-1 text-gray-700">
-              About the NGO
-            </label>
-            <textarea
-              name="description"
-              rows="3"
-              placeholder="Briefly describe your mission..."
-              onChange={handleChange}
-              className={inputStyle}
-            />
-          </div>
-
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition disabled:opacity-60"
-          >
-            {loading ? "Registering..." : "Register NGO"}
-          </button>
-
-        </form>
-
-        {/* Login Redirect */}
-        <div className="mt-8 text-center border-t pt-5">
-
-          <p className="text-sm text-gray-700">
-            Already have an account?
-          </p>
-
-          <Link
-            to="/ngo/login"
-            className="inline-block mt-2 font-semibold text-green-700 hover:text-green-600"
-          >
-            Login Here
-          </Link>
-
         </div>
-
       </div>
-    </div>
+    </VideoBackground>
   );
 };
 

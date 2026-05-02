@@ -17,7 +17,6 @@ const ResetPassword = () => {
 
     try {
       await resetPassword(token, newPassword);
-      // Success - navigate to login
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Failed to reset password");
@@ -28,66 +27,46 @@ const ResetPassword = () => {
 
   return (
     <VideoBackground>
-      <div className="flex items-center justify-center min-h-screen px-4">
-        <div className="w-full max-w-md backdrop-blur-xl bg-white/40 border border-white/40 shadow-2xl rounded-2xl p-10">
-          <h1 className="text-4xl font-bold text-gray-800 text-center mb-2">
-            Reset Password 🔐
-          </h1>
-
-          <p className="text-center text-gray-600 mb-8">
-            Enter your reset token and new password
+      <div className="w-full max-w-md p-4">
+        <div className="app-card p-8 md:p-10">
+          <p className="app-label text-center">Account Recovery</p>
+          <h1 className="app-title mt-3 text-center text-4xl">Reset Password</h1>
+          <p className="app-subtitle mt-3 text-center">
+            Enter your reset token and set a new password.
           </p>
 
-          {error && (
-            <div className="mb-5 bg-red-100/90 text-red-700 px-4 py-3 rounded-lg text-sm text-center">
-              {error}
-            </div>
-          )}
+          {error && <div className="app-alert app-alert-error mt-6">{error}</div>}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <input
-                type="text"
-                placeholder="Reset Token"
-                required
-                value={token}
-                onChange={(e) => setToken(e.target.value)}
-                className="w-full px-5 py-3 bg-white/70 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 font-mono text-sm"
-              />
-            </div>
+          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+            <input
+              type="text"
+              placeholder="Reset Token"
+              required
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
+              className="app-input font-mono text-sm"
+            />
 
-            <div>
-              <input
-                type="password"
-                placeholder="New Password"
-                required
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full px-5 py-3 bg-white/70 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
-              />
-            </div>
+            <input
+              type="password"
+              placeholder="New Password"
+              required
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="app-input"
+            />
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-5 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
-            >
+            <button type="submit" disabled={isLoading} className="app-btn app-btn-primary w-full">
               {isLoading ? "Resetting..." : "Reset Password"}
             </button>
           </form>
 
-          <div className="mt-6 text-center space-y-2">
-            <Link
-              to="/forgot-password"
-              className="block text-gray-700 hover:text-gray-900 font-medium hover:underline"
-            >
+          <div className="mt-6 space-y-2 text-center">
+            <Link to="/forgot-password" className="block text-sm text-[#8a6460] hover:text-[#b83d55]">
               Need a new token?
             </Link>
-            <Link
-              to="/login"
-              className="block text-gray-700 hover:text-gray-900 font-medium hover:underline"
-            >
-              ← Back to Login
+            <Link to="/login" className="block text-sm text-[#8a6460] hover:text-[#b83d55]">
+              Back to Login
             </Link>
           </div>
         </div>

@@ -34,14 +34,9 @@ const Register = () => {
         ...formData,
         ...extraData,
       });
-
       navigate("/dashboard");
     } catch (err) {
-      console.error(err);
-      setError(
-        err?.response?.data?.message ||
-        "Registration failed. Please try again."
-      );
+      setError(err?.response?.data?.message || "Registration failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -72,94 +67,36 @@ const Register = () => {
 
   return (
     <VideoBackground>
-      <div className="flex items-center justify-center min-h-screen px-4">
-        <div className="w-full max-w-md backdrop-blur-xl bg-white/40 border border-white/40 shadow-2xl rounded-2xl p-10">
-          <h2 className="text-4xl font-bold text-center text-gray-800 mb-2">
-            Create Account
-          </h2>
-
-          <p className="text-center text-gray-600 mb-8">
-            Join the community helping animals
+      <div className="w-full max-w-lg p-4">
+        <div className="app-card p-8 md:p-10">
+          <p className="app-label text-center">Join The Network</p>
+          <h2 className="app-title mt-3 text-center text-4xl">Create Account</h2>
+          <p className="app-subtitle mt-3 text-center">
+            Build your rescue profile as a donor or volunteer.
           </p>
 
-          {error && (
-            <div className="mb-4 bg-red-100/90 text-red-700 p-3 rounded-lg text-sm text-center">
-              {error}
-            </div>
-          )}
+          {error && <div className="app-alert app-alert-error mt-6">{error}</div>}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Full Name"
-              required
-              className="w-full rounded-xl border border-gray-300 bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
-            />
+          <form onSubmit={handleSubmit} className="mt-6 grid grid-cols-1 gap-4">
+            <input name="name" value={formData.name} onChange={handleChange} placeholder="Full Name" required className="app-input" />
+            <input name="email" value={formData.email} onChange={handleChange} type="email" placeholder="Email Address" required className="app-input" />
+            <input name="password" value={formData.password} onChange={handleChange} type="password" placeholder="Password" required className="app-input" />
+            <input name="phone_number" value={formData.phone_number} onChange={handleChange} placeholder="Phone Number" required className="app-input" />
+            <input name="address" value={formData.address} onChange={handleChange} placeholder="Address" required className="app-input" />
 
-            <input
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              type="email"
-              placeholder="Email Address"
-              required
-              className="w-full rounded-xl border border-gray-300 bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
-            />
-
-            <input
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              type="password"
-              placeholder="Password"
-              required
-              className="w-full rounded-xl border border-gray-300 bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
-            />
-
-            <input
-              name="phone_number"
-              value={formData.phone_number}
-              onChange={handleChange}
-              placeholder="Phone Number"
-              required
-              className="w-full rounded-xl border border-gray-300 bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
-            />
-
-            <input
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              placeholder="Address"
-              required
-              className="w-full rounded-xl border border-gray-300 bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
-            />
-
-            <select
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="w-full rounded-xl border border-gray-300 bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
-            >
+            <select name="role" value={formData.role} onChange={handleChange} className="app-select">
               <option value="donor">Donor</option>
               <option value="volunteer">Volunteer</option>
             </select>
 
-            <button
-              disabled={loading}
-              className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition disabled:opacity-60"
-            >
+            <button disabled={loading} className="app-btn app-btn-primary mt-2 w-full">
               {loading ? "Creating..." : "Register"}
             </button>
           </form>
 
-          <p className="text-sm text-center mt-6 text-gray-700">
+          <p className="mt-6 text-center text-sm text-[#6b5752]">
             Already have an account?{" "}
-            <Link
-              to="/login"
-              className="text-green-600 hover:text-green-800 font-semibold transition"
-            >
+            <Link to="/login" className="font-semibold text-[#b83d55] hover:text-[#a8364d]">
               Login
             </Link>
           </p>

@@ -43,7 +43,7 @@ const ReportRescue = () => {
     try {
       await createRescueCase(formData);
       alert("Rescue case reported successfully!");
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       console.error(err);
       setError("Failed to report case. Please try again.");
@@ -52,111 +52,52 @@ const ReportRescue = () => {
     }
   };
 
-  const inputStyle =
-    "w-full px-4 py-2 rounded-lg border border-gray-300 bg-white/80 focus:outline-none focus:ring-2 focus:ring-red-400";
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 flex items-center justify-center px-4 py-12">
-
-      <div className="w-full max-w-3xl backdrop-blur-lg bg-white/30 border border-white/40 shadow-2xl rounded-2xl p-8">
-
-        {/* Header */}
-        <div className="mb-6 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-red-600 flex items-center justify-center gap-2">
-            🚨 Report Rescue Case
-          </h1>
-          <p className="text-gray-700 text-sm mt-2">
+    <div className="app-page">
+      <div className="app-shell">
+        <div className="mx-auto w-full max-w-3xl app-card p-8 md:p-10">
+          <p className="app-label text-center">Emergency Intake</p>
+          <h1 className="app-title mt-3 text-center text-5xl">Report Rescue Case</h1>
+          <p className="app-subtitle mt-3 text-center">
             Provide accurate details so volunteers can respond quickly.
           </p>
-        </div>
 
-        {error && (
-          <div className="bg-red-100/80 text-red-700 p-3 rounded-lg mb-4 text-center">
-            {error}
-          </div>
-        )}
+          {error && <div className="app-alert app-alert-error mt-6">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-
-          {/* Title */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-800 mb-1">
-              What is the emergency?
-            </label>
-
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="Injured dog near highway"
-              required
-              className={inputStyle}
-            />
-          </div>
-
-          {/* Description */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-800 mb-1">
-              Description
-            </label>
-
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              rows="3"
-              placeholder="Describe the animal condition..."
-              required
-              className={inputStyle}
-            />
-          </div>
-
-          {/* Image URL */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-800 mb-1">
-              Image URL (optional)
-            </label>
-
-            <input
-              type="url"
-              name="image_url"
-              value={formData.image_url}
-              onChange={handleChange}
-              placeholder="https://example.com/image.jpg"
-              className={inputStyle}
-            />
-          </div>
-
-          {/* Map */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-800 mb-2">
-              Pin Rescue Location
-            </label>
-
-            <div className="rounded-xl overflow-hidden border border-gray-300 shadow-sm">
-              <MapPicker onLocationSelect={handleLocationSelect} />
+          <form onSubmit={handleSubmit} className="mt-6 space-y-5">
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-[#4f3f3b]">What is the emergency?</label>
+              <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="Injured dog near highway" required className="app-input" />
             </div>
 
-            {formData.latitude && (
-              <p className="text-green-700 text-sm mt-2 font-medium">
-                📍 Location pinned: {formData.latitude.toFixed(4)},{" "}
-                {formData.longitude.toFixed(4)}
-              </p>
-            )}
-          </div>
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-[#4f3f3b]">Description</label>
+              <textarea name="description" value={formData.description} onChange={handleChange} rows="3" placeholder="Describe the animal condition..." required className="app-textarea" />
+            </div>
 
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full py-4 bg-red-600 text-white font-bold text-lg rounded-xl shadow-lg hover:bg-red-700 transition disabled:opacity-60"
-          >
-            {isLoading ? "Submitting..." : "Report Rescue"}
-          </button>
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-[#4f3f3b]">Image URL (optional)</label>
+              <input type="url" name="image_url" value={formData.image_url} onChange={handleChange} placeholder="https://example.com/image.jpg" className="app-input" />
+            </div>
 
-        </form>
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-[#4f3f3b]">Pin Rescue Location</label>
+              <div className="overflow-hidden rounded-xl border border-[#e7cfcc] bg-white">
+                <MapPicker onLocationSelect={handleLocationSelect} />
+              </div>
 
+              {formData.latitude && (
+                <p className="mt-2 text-sm font-medium text-[#2e724f]">
+                  Location pinned: {formData.latitude.toFixed(4)}, {formData.longitude.toFixed(4)}
+                </p>
+              )}
+            </div>
+
+            <button type="submit" disabled={isLoading} className="app-btn app-btn-primary w-full py-4 text-base">
+              {isLoading ? "Submitting..." : "Report Rescue"}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

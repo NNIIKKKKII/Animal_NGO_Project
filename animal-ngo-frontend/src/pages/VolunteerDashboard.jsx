@@ -46,91 +46,84 @@ const VolunteerDashboard = () => {
     return true;
   });
 
-  if (loading)
+  if (loading) {
     return (
-      <div className="p-12 text-center text-gray-500 text-xl">
+      <div className="app-page flex items-center justify-center text-xl text-[#6b5752]">
         Loading your assignments...
       </div>
     );
+  }
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
-          My Assignments
-        </h1>
+    <div className="app-page">
+      <div className="app-shell">
+        <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+          <div>
+            <p className="app-label">Volunteer Operations</p>
+            <h1 className="app-title mt-3 text-5xl">My Assignments</h1>
+          </div>
 
-        <div className="flex bg-gray-200 p-1 rounded-lg">
-          <button
-            onClick={() => setFilter("active")}
-            className={`px-4 py-2 rounded-md font-medium transition ${filter === "active"
-              ? "bg-white text-blue-600 shadow"
-              : "text-gray-600 hover:text-gray-900"
+          <div className="inline-flex rounded-xl border border-[#ebd4d1] bg-white p-1 shadow-sm">
+            <button
+              onClick={() => setFilter("active")}
+              className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
+                filter === "active" ? "bg-[#ffeef1] text-[#b83d55]" : "text-[#7d6661] hover:text-[#3c302d]"
               }`}
-          >
-            Active Cases
-          </button>
-          <button
-            onClick={() => setFilter("resolved")}
-            className={`px-4 py-2 rounded-md font-medium transition ${filter === "resolved"
-              ? "bg-white text-green-600 shadow"
-              : "text-gray-600 hover:text-gray-900"
+            >
+              Active Cases
+            </button>
+            <button
+              onClick={() => setFilter("resolved")}
+              className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
+                filter === "resolved" ? "bg-[#eaf8ef] text-[#2f7150]" : "text-[#7d6661] hover:text-[#3c302d]"
               }`}
-          >
-            Past History
-          </button>
+            >
+              Past History
+            </button>
+          </div>
         </div>
-      </div>
 
-      {displayedCases.length === 0 ? (
-        <div className="text-center p-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-          <p className="text-xl text-gray-500">
+        {displayedCases.length === 0 ? (
+          <div className="app-card p-10 text-center text-[#6b5752]">
             No {filter} cases found.
             {filter === "active" && " Great job clearing your queue!"}
-          </p>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {displayedCases.map((rescue) => (
-            <div
-              key={rescue.id}
-              className="bg-white p-6 rounded-xl shadow border border-gray-100 flex flex-col md:flex-row justify-between items-center transition hover:shadow-md"
-            >
-              <div className="mb-4 md:mb-0 flex-1">
-                <div className="flex items-center space-x-3 mb-2">
-                  <h3 className="text-xl font-bold text-gray-800">
-                    {rescue.title}
-                  </h3>
-                  <span
-                    className={`px-2 py-1 text-xs font-bold uppercase rounded ${rescue.status === "resolved"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-blue-100 text-blue-800"
-                      }`}
-                  >
-                    {rescue.status}
-                  </span>
-                  <span className="text-xs text-gray-400">
-                    reported on{" "}
-                    {new Date(rescue.created_at).toLocaleDateString()}
-                  </span>
-                </div>
-                <p className="text-gray-600 mb-2">{rescue.description}</p>
-              </div>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {displayedCases.map((rescue) => (
+              <div key={rescue.id} className="app-card p-6">
+                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                  <div className="flex-1">
+                    <div className="mb-2 flex flex-wrap items-center gap-2">
+                      <h3 className="text-2xl font-semibold text-[#2d2220]">{rescue.title}</h3>
+                      <span
+                        className={`app-status ${
+                          rescue.status === "resolved" ? "app-status-success" : "app-status-pending"
+                        }`}
+                      >
+                        {rescue.status}
+                      </span>
+                      <span className="text-xs text-[#8f7670]">
+                        reported on {new Date(rescue.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <p className="text-[#5c4a48]">{rescue.description}</p>
+                  </div>
 
-              {rescue.status !== "resolved" && (
-                <div className="flex space-x-3 ml-4">
-                  <button
-                    onClick={() => handleStatusUpdate(rescue.id, "resolved")}
-                    className="bg-green-600 text-white px-5 py-2.5 rounded-lg hover:bg-green-700 transition font-medium shadow-sm"
-                  >
-                    Mark Resolved
-                  </button>
+                  {rescue.status !== "resolved" && (
+                    <button
+                      onClick={() => handleStatusUpdate(rescue.id, "resolved")}
+                      className="app-btn app-btn-primary"
+                    >
+                      Mark Resolved
+                    </button>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

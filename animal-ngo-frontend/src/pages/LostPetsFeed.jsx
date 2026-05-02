@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import LostPetCard from "../components/LostPetCard";
-import squirrelImage from "../assets/pics/squirrel.jpg";
 import { Link } from "react-router-dom";
 import useStore from "../stores/store.js";
 import { deleteLostPet, getLostPets } from "../api/lostPetService";
@@ -38,62 +37,42 @@ const LostPetFeed = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white text-xl">
+      <div className="app-page flex items-center justify-center text-xl text-[#6b5752]">
         Loading...
       </div>
     );
   }
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center blur-md scale-110 brightness-75"
-        style={{ backgroundImage: `url(${squirrelImage})` }}
-      />
-
-      <div className="absolute inset-0 bg-black/40" />
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 py-12">
-        <div className="relative flex items-center justify-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-white text-center drop-shadow-lg">
-            Lost Pets
-          </h2>
-
-          <div className="absolute right-0 hidden md:block">
-            <Link
-              to="/lost-pets/report"
-              className="bg-red-600 text-white px-6 py-3 rounded-xl shadow-lg hover:bg-red-700 transition"
-            >
-              Report Lost Pet
-            </Link>
+    <div className="app-page">
+      <div className="app-shell">
+        <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="app-label">Community Network</p>
+            <h2 className="app-title mt-3 text-5xl">Lost Pets</h2>
           </div>
-        </div>
 
-        <div className="flex justify-center md:hidden mb-6">
-          <Link
-            to="/lost-pets/report"
-            className="bg-red-600 text-white px-6 py-3 rounded-xl shadow-lg hover:bg-red-700 transition"
-          >
+          <Link to="/lost-pets/report" className="app-btn app-btn-primary w-fit">
             Report Lost Pet
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {pets.length === 0 ? (
-            <div className="text-center text-white text-xl mt-10">
-              No lost pets reported yet
-            </div>
-          ) : (
-            pets.map((pet) => (
+        {pets.length === 0 ? (
+          <div className="app-card p-10 text-center text-[#6b5752]">
+            No lost pets reported yet.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {pets.map((pet) => (
               <LostPetCard
                 key={pet.id}
                 pet={pet}
                 onDelete={handleDelete}
                 canDelete={canDeletePet(pet)}
               />
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

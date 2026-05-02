@@ -11,15 +11,17 @@ const AdminUsers = () => {
     setError("");
     try {
       const data = await getAllUsers();
-      setUsers(data.data); // controller returns { count, data, page, limit }
-    } catch (err) {
+      setUsers(data.data);
+    } catch {
       setError("Failed to load users.");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => { loadUsers(); }, []);
+  useEffect(() => {
+    loadUsers();
+  }, []);
 
   const handleRoleChange = async (id, role) => {
     try {
@@ -40,52 +42,61 @@ const AdminUsers = () => {
     }
   };
 
-  if (loading) return <div className="p-8 font-bold">Loading users…</div>;
-  if (error) return <div className="p-8 text-red-600 font-bold">{error}</div>;
+  if (loading) return <div className="app-page p-8 font-semibold text-[#6b5752]">Loading users...</div>;
+  if (error) return <div className="app-page p-8 font-semibold text-[#9f2f3c]">{error}</div>;
 
   return (
-    <div className="p-8 max-w-6xl mx-auto">
-      <h2 className="text-2xl font-black mb-6 uppercase">Admin · Users</h2>
+    <div className="app-page">
+      <div className="app-shell">
+        <div className="mb-6">
+          <p className="app-label">Admin Control</p>
+          <h2 className="app-title mt-3 text-4xl">User Management</h2>
+        </div>
 
-      <table className="w-full bg-white rounded-xl shadow">
-        <thead>
-          <tr className="text-left text-xs uppercase text-gray-400 bg-gray-50">
-            <th className="p-4">Name</th>
-            <th className="p-4">Email</th>
-            <th className="p-4">Phone</th>
-            <th className="p-4">Role</th>
-            <th className="p-4 text-right">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((u) => (
-            <tr key={u.id} className="border-t hover:bg-gray-50">
-              <td className="p-4 font-bold">{u.name}</td>
-              <td className="p-4 text-sm text-gray-600">{u.email}</td>
-              <td className="p-4 text-sm text-gray-500">{u.phone}</td>
-              <td className="p-4">
-                <select
-                  value={u.role}
-                  onChange={(e) => handleRoleChange(u.id, e.target.value)}
-                  className="border rounded px-2 py-1 text-sm"
-                >
-                  <option value="donor">Donor</option>
-                  <option value="volunteer">Volunteer</option>
-                  <option value="admin">Admin</option>
-                </select>
-              </td>
-              <td className="p-4 text-right">
-                <button
-                  onClick={() => handleDelete(u.id)}
-                  className="text-red-600 font-bold text-sm hover:underline"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <div className="app-card-strong p-2 md:p-4">
+          <div className="app-table-wrap">
+            <table className="app-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Role</th>
+                  <th className="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((u) => (
+                  <tr key={u.id}>
+                    <td className="font-semibold">{u.name}</td>
+                    <td className="text-sm">{u.email}</td>
+                    <td className="text-sm">{u.phone}</td>
+                    <td>
+                      <select
+                        value={u.role}
+                        onChange={(e) => handleRoleChange(u.id, e.target.value)}
+                        className="app-select max-w-[130px]"
+                      >
+                        <option value="donor">Donor</option>
+                        <option value="volunteer">Volunteer</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    </td>
+                    <td className="text-right">
+                      <button
+                        onClick={() => handleDelete(u.id)}
+                        className="text-sm font-semibold text-[#b94149] hover:text-[#9f2f3c]"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

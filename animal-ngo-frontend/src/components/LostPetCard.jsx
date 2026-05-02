@@ -2,43 +2,28 @@ import React from "react";
 
 const LostPetCard = ({ pet, onDelete, canDelete = false }) => {
   return (
-    <div className="backdrop-blur-lg bg-white/30 border border-white/40 shadow-xl rounded-2xl overflow-hidden flex flex-col transition transform hover:-translate-y-1 hover:shadow-2xl">
-
-      {/* Image */}
+    <div className="app-card overflow-hidden transition duration-300 hover:-translate-y-1">
       <div className="relative">
         <img
           src={pet.image_url}
           alt={`Lost pet reported by ${pet.owner_name}`}
-          className="w-full h-56 object-cover"
+          className="h-56 w-full object-cover"
         />
-
-        {/* gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-        {/* owner name on image */}
-        <h3 className="absolute bottom-2 left-3 text-white font-semibold text-lg drop-shadow">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+        <h3 className="absolute bottom-2 left-3 text-lg font-semibold text-white drop-shadow">
           {pet.owner_name}
         </h3>
       </div>
 
-      <div className="p-4 flex flex-col flex-grow">
+      <div className="space-y-2 p-5">
+        <p className="app-label">Last Seen</p>
+        <p className="text-sm text-[#4e3f3b]">{pet.last_seen}</p>
 
-        <p className="text-sm text-white font-medium">
-          📍 Last Seen
-        </p>
-        <p className=" ml-6 text-white text-sm mb-2">
-          {pet.last_seen}
-        </p>
-
-        <p className="text-sm text-white font-medium">
-          📞 Contact
-        </p>
-        <p className=" ml-6 text-white font-semibold text-sm">
-          {pet.owner_phone}
-        </p>
+        <p className="app-label pt-2">Contact</p>
+        <p className="text-sm font-semibold text-[#3f312e]">{pet.owner_phone}</p>
 
         {pet.description && (
-          <p className=" ml-6 text-white text-sm mt-3 line-clamp-3">
+          <p className="pt-2 text-sm leading-6 text-[#5c4a48] line-clamp-3">
             {pet.description}
           </p>
         )}
@@ -46,12 +31,11 @@ const LostPetCard = ({ pet, onDelete, canDelete = false }) => {
         {canDelete && (
           <button
             onClick={() => onDelete(pet.id)}
-            className="mt-4 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition"
+            className="app-btn app-btn-danger mt-3 w-full"
           >
             Delete Report
           </button>
         )}
-
       </div>
     </div>
   );

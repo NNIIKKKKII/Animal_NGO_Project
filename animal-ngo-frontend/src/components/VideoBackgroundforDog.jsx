@@ -3,21 +3,20 @@ import dogVideo from "../assets/videos/dog.mp4";
 
 const VideoBackgroundforDog = ({ children }) => {
   return (
-    <div className="relative z-10 flex items-start justify-center pt-24 min-h-screen">      <video
-      autoPlay
-      muted
-      loop
-      playsInline
-      className="absolute inset-0 w-full h-full object-cover"
-    >
-      <source src={dogVideo} type="video/mp4" />
-    </video>
+    <div className="relative z-10 flex min-h-screen items-start justify-center pt-24">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src={dogVideo} type="video/mp4" />
+      </video>
 
-      {/* Dark overlay for readability */}
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="app-video-overlay" />
 
-      {/* Content */}
-      <div className="relative z-10 flex items-center justify-center h-full">
+      <div className="relative z-10 flex h-full items-center justify-center">
         {children}
       </div>
     </div>
