@@ -79,14 +79,20 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/" element={<LandingPage />} />
-          <Route path="/donations" element={<DonationFeed />} />
           <Route path="/ngo/register" element={<RegisterNgo />} />
           <Route path="/ngo/login" element={<LoginNgo />} />
           <Route path="/ngo/:id" element={<NgoProfile />} />
-          <Route path="/lost-pets/report" element={<ReportLostPet />} />
           <Route path="/lost-pets" element={<LostPetsFeed />} />
           <Route path="*" element={<NotFound />} />
 
+          <Route
+            path="/donations"
+            element={<ProtectedRoute element={<DonationFeed />} />}
+          />
+          <Route
+            path="/lost-pets/report"
+            element={<ProtectedRoute element={<ReportLostPet />} />}
+          />
           <Route
             path="/dashboard"
             element={<ProtectedRoute element={<Dashboard />} />}

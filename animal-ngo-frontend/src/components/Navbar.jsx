@@ -170,9 +170,17 @@ const Navbar = () => {
           </Link>
 
           <nav className="hidden md:flex items-center space-x-6 text-base font-semibold">
-            <Link to="/donations" className={navLink}>
-              Donation Feed
-            </Link>
+            {!activeSession && (
+              <Link to="/" className={navLink}>
+                Landing
+              </Link>
+            )}
+
+            {activeSession === "user" && (
+              <Link to="/donations" className={navLink}>
+                Donation Feed
+              </Link>
+            )}
 
             <Link to="/lost-pets" className={navLink}>
               Lost Pets
@@ -199,13 +207,25 @@ const Navbar = () => {
           <div className={isLandingPage
             ? "flex flex-col space-y-4 px-4 py-4 text-base font-medium text-[#5c4846]"
             : "flex flex-col space-y-4 px-4 py-4 text-base font-medium text-[#5c4846]"}>
-            <Link
-              to="/donations"
-              onClick={() => setMenuOpen(false)}
-              className={navLink}
-            >
-              Donation Feed
-            </Link>
+            {!activeSession && (
+              <Link
+                to="/"
+                onClick={() => setMenuOpen(false)}
+                className={navLink}
+              >
+                Landing
+              </Link>
+            )}
+
+            {activeSession === "user" && (
+              <Link
+                to="/donations"
+                onClick={() => setMenuOpen(false)}
+                className={navLink}
+              >
+                Donation Feed
+              </Link>
+            )}
 
             <Link
               to="/lost-pets"
