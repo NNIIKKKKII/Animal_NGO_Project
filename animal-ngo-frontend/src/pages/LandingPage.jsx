@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import catImage from "../assets/pics/cat.jpg";
 import FeatureCard from "../components/landing/FeatureCard.jsx";
 import Stat from "../components/landing/Stat.jsx";
@@ -92,9 +93,20 @@ const roles = [
 ];
 
 const LandingPage = () => {
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setShowBackToTop(window.scrollY > 520);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <div className="overflow-hidden bg-[#fff8f6] text-[#221c1a]">
-      <section className="relative isolate">
+      <section id="hero" className="landing-anchor-section relative isolate">
         <div className="landing-cinema-glow landing-cinema-glow-one" />
         <div className="landing-cinema-glow landing-cinema-glow-two" />
         <div className="landing-cinema-glow landing-cinema-glow-three" />
@@ -131,6 +143,18 @@ const LandingPage = () => {
             </div>
 
             <div className="mt-8 flex flex-wrap gap-5 text-sm font-medium text-[#7b6661]">
+              <a href="#impact" className="transition hover:text-[#b83d55]">
+                Impact
+              </a>
+              <a href="#features" className="transition hover:text-[#b83d55]">
+                Features
+              </a>
+              <a href="#workflow" className="transition hover:text-[#b83d55]">
+                How it Works
+              </a>
+              <a href="#roles" className="transition hover:text-[#b83d55]">
+                Roles
+              </a>
               <Link to="/donations" className="transition hover:text-[#b83d55]">
                 Browse Donations
               </Link>
@@ -176,7 +200,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="relative z-10 mx-auto max-w-7xl px-6 pb-8 md:px-10">
+      <section id="impact" className="landing-anchor-section relative z-10 mx-auto max-w-7xl px-6 pb-8 md:px-10">
         <div className="landing-fade-up landing-delay-2 rounded-[30px] border border-[#f0dbd8] bg-white/88 px-6 py-8 shadow-[0_28px_60px_rgba(139,98,86,0.09)] backdrop-blur md:px-10">
           <div className="flex flex-col gap-8 md:flex-row md:items-start md:gap-0">
             {stats.map((item) => (
@@ -186,7 +210,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="relative">
+      <section id="features" className="landing-anchor-section relative">
         <div className="landing-section-tint landing-section-tint-one" />
         <div className="mx-auto max-w-7xl px-6 py-24 md:px-10">
           <div className="landing-fade-up max-w-3xl">
@@ -213,7 +237,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-24 md:px-10">
+      <section id="workflow" className="landing-anchor-section mx-auto max-w-7xl px-6 py-24 md:px-10">
         <div className="grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
           <div className="landing-fade-up">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#b9505d]">
@@ -243,7 +267,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="relative">
+      <section id="roles" className="landing-anchor-section relative">
         <div className="landing-section-tint landing-section-tint-two" />
         <div className="mx-auto max-w-7xl px-6 py-24 md:px-10">
           <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
@@ -281,7 +305,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-24 md:px-10">
+      <section id="trust" className="landing-anchor-section mx-auto max-w-7xl px-6 py-24 md:px-10">
         <div className="landing-fade-up grid gap-10 rounded-[36px] border border-[#f0dbd8] bg-white/92 p-8 shadow-[0_28px_65px_rgba(126,89,89,0.1)] backdrop-blur md:p-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
           <div className="overflow-hidden rounded-[28px] shadow-[0_18px_40px_rgba(126,89,89,0.12)]">
             <img
@@ -308,7 +332,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="px-6 pb-24 pt-8 md:px-10">
+      <section id="cta" className="landing-anchor-section px-6 pb-24 pt-8 md:px-10">
         <div className="landing-fade-up mx-auto max-w-7xl overflow-hidden rounded-[40px] bg-gradient-to-r from-[#c84d67] via-[#d95f77] to-[#e57d8a] px-8 py-14 text-white shadow-[0_30px_75px_rgba(199,80,109,0.28)] md:px-12 md:py-16">
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
@@ -341,6 +365,16 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      {showBackToTop && (
+        <a
+          href="#hero"
+          aria-label="Back to top"
+          className="fixed bottom-6 right-6 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-[#cd5b66] to-[#b83d55] text-white shadow-[0_18px_30px_rgba(196,78,101,0.32)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_40px_rgba(196,78,101,0.36)]"
+        >
+          ↑
+        </a>
+      )}
     </div>
   );
 };
